@@ -1,0 +1,152 @@
+{
+  "app": {
+    "name": "Easy Converter"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "tools": "Tools",
+    "settings": "Settings"
+  },
+  "common": {
+    "loading": "Loading…",
+    "minutes": "min"
+  },
+  "home": {
+    "title": "Convert and edit files without leaving your computer",
+    "subtitle": "No file is ever uploaded to the internet.",
+    "noOperations": "Operations for these files will be added in upcoming versions."
+  },
+  "dropZone": {
+    "title": "Drag files here",
+    "release": "Drop to add",
+    "or": "or",
+    "browse": "Choose files"
+  },
+  "files": {
+    "title": "Files ({count})",
+    "remove": "Remove",
+    "clear": "Clear list",
+    "unsupported": "Unsupported format",
+    "addFailed": "Could not add {name}"
+  },
+  "categories": {
+    "image": "Image",
+    "pdf": "PDF",
+    "video": "Video",
+    "audio": "Audio",
+    "document": "Document",
+    "spreadsheet": "Spreadsheet",
+    "presentation": "Presentation",
+    "subtitle": "Subtitle",
+    "ebook": "Ebook",
+    "archive": "Archive"
+  },
+  "jobs": {
+    "title": "Jobs",
+    "clearFinished": "Clear finished",
+    "cancel": "Cancel",
+    "openFile": "Open file",
+    "openFolder": "Open folder",
+    "progress": "Progress",
+    "status": {
+      "queued": "Queued",
+      "running": "Running",
+      "done": "Done",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "tools": {
+    "title": "Tools",
+    "subtitle": "External programs used by the app. Features that depend on a missing tool are disabled.",
+    "refresh": "Check again",
+    "required": "Required",
+    "optional": "Optional",
+    "available": "Available",
+    "missing": "Not found",
+    "version": "Version",
+    "path": "Path",
+    "encoders": "{count} encoders",
+    "languages": "OCR languages",
+    "noLanguages": "none",
+    "choosePath": "Choose executable",
+    "clearPath": "Remove chosen path",
+    "source": {
+      "bundled": "Included with the app",
+      "system": "Installed on the system",
+      "knownLocation": "Default install folder",
+      "custom": "Chosen path"
+    },
+    "purpose": {
+      "ffmpeg": "Video and audio",
+      "ffprobe": "Video and audio information",
+      "qpdf": "PDF: merge, split, passwords and compression",
+      "tesseract": "OCR (text recognition)",
+      "pdfium": "PDF: page rendering and text extraction",
+      "libreoffice": "Documents, spreadsheets and presentations",
+      "pandoc": "Markdown, HTML and TXT ↔ DOCX",
+      "calibre": "Ebooks (EPUB, MOBI, AZW3)",
+      "ghostscript": "Strong PDF compression",
+      "sevenZip": "Reading RAR files"
+    },
+    "install": {
+      "title": "How to install",
+      "debian": "Debian / Ubuntu",
+      "fedora": "Fedora",
+      "fedoraFfmpeg": "Fedora's ffmpeg-free lacks some encoders. For the full FFmpeg, use RPM Fusion:",
+      "bundled": "This tool ships with the app. If it was not found, reinstall the app.",
+      "windowsRequired": "This tool ships with the installer. If it was not found, reinstall the app.",
+      "windowsOptional": "Download the installer from the official site: {site}. Then click “Check again” or choose the executable."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "save": "Save",
+    "saved": "Settings saved.",
+    "language": {
+      "label": "Language",
+      "auto": "Automatic (system language)",
+      "ptBR": "Português (Brasil)",
+      "en": "English"
+    },
+    "output": {
+      "label": "Where to save converted files",
+      "sameFolder": "In the same folder as the original",
+      "folder": "In a chosen folder",
+      "chooseFolder": "Choose folder",
+      "noFolder": "No folder chosen"
+    },
+    "suffix": {
+      "label": "File name suffix",
+      "help": "Example: photo-{suffix}.png. If the name already exists, a number is added. The original is never replaced."
+    },
+    "concurrency": {
+      "label": "Jobs at the same time",
+      "help": "How many jobs can run in parallel."
+    },
+    "videoConcurrency": {
+      "label": "Video jobs at the same time",
+      "help": "Video is CPU-heavy; 1 is recommended."
+    },
+    "timeouts": {
+      "label": "Maximum time per job",
+      "help": "In minutes. A job that takes longer is stopped."
+    }
+  },
+  "errors": {
+    "invalidPath": "Invalid path.",
+    "notFound": "File or folder not found.",
+    "invalidParameter": "Invalid value.",
+    "toolMissing": "A required tool was not found.",
+    "processFailed": "The external tool failed.",
+    "timeout": "The job exceeded the maximum time and was stopped.",
+    "cancelled": "Job cancelled.",
+    "jobNotFound": "Job not found.",
+    "notAllowed": "Action not allowed.",
+    "settings": "Could not save the settings.",
+    "io": "Error reading or writing files.",
+    "internal": "Internal error.",
+    "unknown": "Unexpected error."
+  }
+}

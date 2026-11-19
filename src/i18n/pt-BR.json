@@ -2,8 +2,151 @@
   "app": {
     "name": "Easy Converter"
   },
+  "nav": {
+    "label": "Navegação principal",
+    "home": "Início",
+    "tools": "Ferramentas",
+    "settings": "Configurações"
+  },
+  "common": {
+    "loading": "Carregando…",
+    "minutes": "min"
+  },
   "home": {
     "title": "Converta e edite arquivos sem sair do seu computador",
-    "subtitle": "Nenhum arquivo é enviado para a internet."
+    "subtitle": "Nenhum arquivo é enviado para a internet.",
+    "noOperations": "As operações para estes arquivos serão adicionadas nas próximas versões."
+  },
+  "dropZone": {
+    "title": "Arraste arquivos para cá",
+    "release": "Solte para adicionar",
+    "or": "ou",
+    "browse": "Escolher arquivos"
+  },
+  "files": {
+    "title": "Arquivos ({count})",
+    "remove": "Remover",
+    "clear": "Limpar lista",
+    "unsupported": "Formato não suportado",
+    "addFailed": "Não foi possível adicionar {name}"
+  },
+  "categories": {
+    "image": "Imagem",
+    "pdf": "PDF",
+    "video": "Vídeo",
+    "audio": "Áudio",
+    "document": "Documento",
+    "spreadsheet": "Planilha",
+    "presentation": "Apresentação",
+    "subtitle": "Legenda",
+    "ebook": "Ebook",
+    "archive": "Compactado"
+  },
+  "jobs": {
+    "title": "Tarefas",
+    "clearFinished": "Limpar concluídas",
+    "cancel": "Cancelar",
+    "openFile": "Abrir arquivo",
+    "openFolder": "Abrir pasta",
+    "progress": "Progresso",
+    "status": {
+      "queued": "Na fila",
+      "running": "Em andamento",
+      "done": "Concluída",
+      "failed": "Falhou",
+      "cancelled": "Cancelada"
+    }
+  },
+  "tools": {
+    "title": "Ferramentas",
+    "subtitle": "Programas externos usados pelo app. As funções que dependem de uma ferramenta ausente ficam desativadas.",
+    "refresh": "Verificar novamente",
+    "required": "Obrigatória",
+    "optional": "Opcional",
+    "available": "Disponível",
+    "missing": "Não encontrada",
+    "version": "Versão",
+    "path": "Caminho",
+    "encoders": "{count} codificadores",
+    "languages": "Idiomas do OCR",
+    "noLanguages": "nenhum",
+    "choosePath": "Escolher executável",
+    "clearPath": "Remover caminho escolhido",
+    "source": {
+      "bundled": "Incluída no app",
+      "system": "Instalada no sistema",
+      "knownLocation": "Pasta de instalação padrão",
+      "custom": "Caminho escolhido"
+    },
+    "purpose": {
+      "ffmpeg": "Vídeo e áudio",
+      "ffprobe": "Informações de vídeo e áudio",
+      "qpdf": "PDF: juntar, dividir, senhas e compressão",
+      "tesseract": "OCR (reconhecimento de texto)",
+      "pdfium": "PDF: renderizar páginas e extrair texto",
+      "libreoffice": "Documentos, planilhas e apresentações",
+      "pandoc": "Markdown, HTML e TXT ↔ DOCX",
+      "calibre": "Ebooks (EPUB, MOBI, AZW3)",
+      "ghostscript": "Compressão forte de PDF",
+      "sevenZip": "Leitura de arquivos RAR"
+    },
+    "install": {
+      "title": "Como instalar",
+      "debian": "Debian / Ubuntu",
+      "fedora": "Fedora",
+      "fedoraFfmpeg": "O ffmpeg-free do Fedora não tem todos os codificadores. Para o FFmpeg completo, use o RPM Fusion:",
+      "bundled": "Esta ferramenta vem com o app. Se ela não foi encontrada, reinstale o app.",
+      "windowsRequired": "Esta ferramenta vem com o instalador. Se ela não foi encontrada, reinstale o app.",
+      "windowsOptional": "Baixe o instalador no site oficial: {site}. Depois, clique em “Verificar novamente” ou escolha o executável."
+    }
+  },
+  "settings": {
+    "title": "Configurações",
+    "save": "Salvar",
+    "saved": "Configurações salvas.",
+    "language": {
+      "label": "Idioma",
+      "auto": "Automático (idioma do sistema)",
+      "ptBR": "Português (Brasil)",
+      "en": "English"
+    },
+    "output": {
+      "label": "Onde salvar os arquivos convertidos",
+      "sameFolder": "Na mesma pasta do original",
+      "folder": "Em uma pasta escolhida",
+      "chooseFolder": "Escolher pasta",
+      "noFolder": "Nenhuma pasta escolhida"
+    },
+    "suffix": {
+      "label": "Sufixo do nome do arquivo",
+      "help": "Exemplo: foto-{suffix}.png. Se o nome já existir, um número é adicionado. O original nunca é substituído."
+    },
+    "concurrency": {
+      "label": "Tarefas ao mesmo tempo",
+      "help": "Quantas tarefas podem rodar em paralelo."
+    },
+    "videoConcurrency": {
+      "label": "Tarefas de vídeo ao mesmo tempo",
+      "help": "Vídeo usa muito processamento; o recomendado é 1."
+    },
+    "timeouts": {
+      "label": "Tempo máximo por tarefa",
+      "help": "Em minutos. Uma tarefa que passar desse tempo é interrompida."
+    }
+  },
+  "errors": {
+    "invalidPath": "Caminho inválido.",
+    "notFound": "Arquivo ou pasta não encontrado.",
+    "invalidParameter": "Valor inválido.",
+    "toolMissing": "Ferramenta necessária não encontrada.",
+    "processFailed": "A ferramenta externa falhou.",
+    "timeout": "A tarefa passou do tempo máximo e foi interrompida.",
+    "cancelled": "Tarefa cancelada.",
+    "jobNotFound": "Tarefa não encontrada.",
+    "notAllowed": "Ação não permitida.",
+    "settings": "Não foi possível salvar as configurações.",
+    "io": "Erro ao ler ou gravar arquivos.",
+    "internal": "Erro interno.",
+    "unknown": "Erro inesperado."
   }
 }
