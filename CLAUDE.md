@@ -572,11 +572,17 @@ Cada marco termina com um release funcional.
 
 ---
 
-## 14. Decisões pendentes
+## 14. Decisões
+
+### Pendentes
 
 Perguntar ao autor antes de assumir:
 
-1. **Nome do app** e identificador (`com.wvmj.<nome>`). Até decidir, usar um placeholder e não espalhar o nome pelo código.
+1. **Nome do app** e identificador (`com.wvmj.<nome>`). Até decidir, usar o placeholder `Easy Converter` / `com.wvmj.easyconverter` e não espalhar o nome pelo código.
 2. **Ghostscript**: manter como opcional para compressão forte de PDF ou remover.
-3. **Idiomas da interface**: pt-BR e inglês desde o início, ou só pt-BR. Até decidir, estruturar com i18n e preencher pt-BR.
-4. **Biblioteca de componentes de UI**: nenhuma (CSS próprio) ou alguma específica.
+
+### Tomadas
+
+- **Idiomas da interface**: pt-BR e inglês desde o início. Todo texto novo entra em `pt-BR.json` e `en.json`.
+- **Biblioteca de componentes de UI**: nenhuma. CSS próprio, com variáveis CSS e tema claro/escuro.
+- **Crates aprovadas no M1**: `tokio` (processos filhos, timeout, sincronização), `thiserror` (`AppError`), `serde`, `serde_json`, `ts-rs` (tipos TypeScript).
