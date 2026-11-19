@@ -108,6 +108,8 @@ cd src-tauri && cargo fmt --check && cargo clippy --all-targets -- -D warnings &
 
 O build do Rust precisa da pasta `dist/`; rode `npm run build` antes do `cargo clippy` ou `cargo test` se ela ainda não existir.
 
+Os tipos TypeScript em `src/types/` são gerados a partir do Rust (com `ts-rs`) quando o `cargo test` roda. Depois de mudar um tipo exportado no Rust, rode `cargo test` e faça commit dos arquivos gerados; o CI falha se eles estiverem desatualizados.
+
 ## Contribuindo
 
 Veja [CONTRIBUTING.md](CONTRIBUTING.md).

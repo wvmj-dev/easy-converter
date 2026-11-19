@@ -70,3 +70,12 @@ jobs:
       - name: cargo test
         working-directory: src-tauri
         run: cargo test
+
+      # cargo test regenerates src/types; fail if the committed bindings are outdated.
+      - name: Check generated TypeScript types
+        run: |
+          if [ -n "$(git status --porcelain -- src/types)" ]; then
+            git status --porcelain -- src/types
+            echo "src/types is outdated: run 'cargo test' in src-tauri and commit the result."
+            exit 1
+          fi
