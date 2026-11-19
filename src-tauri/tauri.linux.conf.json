@@ -1,0 +1,25 @@
+{
+  "bundle": {
+    "targets": ["deb", "rpm"],
+    "linux": {
+      "deb": {
+        "depends": [
+          "ffmpeg",
+          "qpdf",
+          "tesseract-ocr",
+          "tesseract-ocr-por",
+          "tesseract-ocr-eng"
+        ]
+      },
+      "rpm": {
+        "depends": [
+          "(ffmpeg-free or ffmpeg)",
+          "qpdf",
+          "tesseract",
+          "tesseract-langpack-por",
+          "tesseract-langpack-eng"
+        ]
+      }
+    }
+  }
+}

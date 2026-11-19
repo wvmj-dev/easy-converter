@@ -1,0 +1,29 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1f2328;
+  --color-muted: #59636e;
+
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Liberation Sans', sans-serif;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1b1d21;
+    --color-text: #e6e8eb;
+    --color-muted: #9aa4af;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
