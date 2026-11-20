@@ -1,0 +1,123 @@
+name: Release
+
+# Builds the packages for a version tag (v1.2.3) and attaches them to a draft GitHub
+# Release. Review the draft and publish it by hand.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  create-release:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    outputs:
+      release-id: ${{ steps.release.outputs.id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that the tag matches the app version
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          cargo_version="$(sed -n 's/^version = "\(.*\)"$/\1/p' src-tauri/Cargo.toml | head -n 1)"
+          if [ "v$version" != "$GITHUB_REF_NAME" ] || [ "$version" != "$cargo_version" ]; then
+            echo "Tag $GITHUB_REF_NAME, package.json $version and Cargo.toml $cargo_version must match."
+            exit 1
+          fi
+
+      # One draft for both platforms, so parallel builds never create duplicates.
+      - name: Create draft release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --draft --verify-tag \
+            --title "Easy Converter $GITHUB_REF_NAME" \
+            --notes "Pacotes para Debian/Ubuntu (.deb), Fedora (.rpm) e Windows (.msi e .exe). Veja as instruções de instalação no README."
+          id="$(gh api "repos/$GITHUB_REPOSITORY/releases" \
+            --jq ".[] | select(.tag_name == \"$GITHUB_REF_NAME\") | .id" | head -n 1)"
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
+  linux:
+    needs: create-release
+    # Built on the oldest supported Ubuntu for glibc compatibility.
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev build-essential curl wget file \
+            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev rpm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Fetch PDFium
+        run: ./scripts/fetch-pdfium.sh
+
+      - name: Build and upload .deb and .rpm
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          releaseId: ${{ needs.create-release.outputs.release-id }}
+
+      - name: Check package dependencies
+        run: |
+          deb="$(find src-tauri/target/release/bundle/deb -name '*.deb' | head -n 1)"
+          rpm_file="$(find src-tauri/target/release/bundle/rpm -name '*.rpm' | head -n 1)"
+          # Write to files first: `cmd | grep -q` breaks the pipe under pipefail.
+          dpkg-deb -f "$deb" Depends | tee deb-depends.txt
+          rpm -qpR "$rpm_file" | tee rpm-requires.txt
+          dpkg-deb -c "$deb" > deb-contents.txt
+          grep -q 'tesseract-ocr-por' deb-depends.txt
+          grep -qF '(ffmpeg-free or ffmpeg)' rpm-requires.txt
+          grep -q 'pdfium/libpdfium.so' deb-contents.txt
+
+  windows:
+    needs: create-release
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Fetch sidecars and resources
+        shell: pwsh
+        run: ./scripts/fetch-sidecars.ps1
+
+      - name: Build and upload .msi and .exe
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          releaseId: ${{ needs.create-release.outputs.release-id }}
