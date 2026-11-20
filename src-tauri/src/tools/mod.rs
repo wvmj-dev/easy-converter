@@ -76,6 +76,9 @@ pub enum ToolKind {
         /// Candidate file names, in order of preference (without `.exe`).
         names: &'static [&'static str],
         version_args: &'static [&'static str],
+        /// Text (lowercase) the version output must contain. A configured path that points to
+        /// another program is refused, so it is never run with this tool's arguments.
+        signature: &'static str,
         /// Shipped as a sidecar next to the app executable on Windows.
         windows_sidecar: bool,
     },
@@ -98,11 +101,13 @@ pub struct ToolDefinition {
 const fn exe(
     names: &'static [&'static str],
     version_args: &'static [&'static str],
+    signature: &'static str,
     windows_sidecar: bool,
 ) -> ToolKind {
     ToolKind::Executable {
         names,
         version_args,
+        signature,
         windows_sidecar,
     }
 }
@@ -112,25 +117,25 @@ pub const TOOLS: [ToolDefinition; 10] = [
         id: ToolId::Ffmpeg,
         name: "FFmpeg",
         required: true,
-        kind: exe(&["ffmpeg"], &["-version"], true),
+        kind: exe(&["ffmpeg"], &["-version"], "ffmpeg version", true),
     },
     ToolDefinition {
         id: ToolId::Ffprobe,
         name: "ffprobe",
         required: true,
-        kind: exe(&["ffprobe"], &["-version"], true),
+        kind: exe(&["ffprobe"], &["-version"], "ffprobe version", true),
     },
     ToolDefinition {
         id: ToolId::Qpdf,
         name: "qpdf",
         required: true,
-        kind: exe(&["qpdf"], &["--version"], true),
+        kind: exe(&["qpdf"], &["--version"], "qpdf version", true),
     },
     ToolDefinition {
         id: ToolId::Tesseract,
         name: "Tesseract",
         required: true,
-        kind: exe(&["tesseract"], &["--version"], true),
+        kind: exe(&["tesseract"], &["--version"], "tesseract", true),
     },
     ToolDefinition {
         id: ToolId::Pdfium,
@@ -146,31 +151,37 @@ pub const TOOLS: [ToolDefinition; 10] = [
         id: ToolId::Libreoffice,
         name: "LibreOffice",
         required: false,
-        kind: exe(&["soffice", "libreoffice"], &["--version"], false),
+        kind: exe(
+            &["soffice", "libreoffice"],
+            &["--version"],
+            "libreoffice",
+            false,
+        ),
     },
     ToolDefinition {
         id: ToolId::Pandoc,
         name: "Pandoc",
         required: false,
-        kind: exe(&["pandoc"], &["--version"], false),
+        kind: exe(&["pandoc"], &["--version"], "pandoc", false),
     },
     ToolDefinition {
         id: ToolId::Calibre,
         name: "Calibre",
         required: false,
-        kind: exe(&["ebook-convert"], &["--version"], false),
+        kind: exe(&["ebook-convert"], &["--version"], "calibre", false),
     },
     ToolDefinition {
         id: ToolId::Ghostscript,
         name: "Ghostscript",
         required: false,
-        kind: exe(&["gs", "gswin64c"], &["--version"], false),
+        // `--version` prints only the number; `-h` starts with "GPL Ghostscript <version>".
+        kind: exe(&["gs", "gswin64c"], &["-h"], "ghostscript", false),
     },
     ToolDefinition {
         id: ToolId::SevenZip,
         name: "7-Zip",
         required: false,
-        kind: exe(&["7zz", "7z"], &["i"], false),
+        kind: exe(&["7zz", "7z"], &["i"], "7-zip", false),
     },
 ];
 

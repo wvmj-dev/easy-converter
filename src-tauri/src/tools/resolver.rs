@@ -135,8 +135,9 @@ async fn resolve(def: &ToolDefinition, ctx: &ResolveContext) -> ToolStatus {
         ToolKind::Executable {
             names,
             version_args,
+            signature,
             windows_sidecar,
-        } => resolve_executable(def, ctx, names, version_args, windows_sidecar).await,
+        } => resolve_executable(def, ctx, names, version_args, signature, windows_sidecar).await,
     }
 }
 
@@ -189,6 +190,7 @@ async fn resolve_executable(
     ctx: &ResolveContext,
     names: &[&str],
     version_args: &[&str],
+    signature: &str,
     windows_sidecar: bool,
 ) -> ToolStatus {
     let Some((path, source, runtime_dir)) = locate_executable(def, ctx, names, windows_sidecar)
@@ -210,6 +212,14 @@ async fn resolve_executable(
             let version = parse_version(&out.stdout).or_else(|| parse_version(&out.stderr));
             if version.is_none() && !out.status.success() {
                 status.error = Some(format!("version check exited with {}", out.status));
+                return status;
+            }
+            if !is_expected_tool(&out.stdout, &out.stderr, signature) {
+                status.error = Some(format!(
+                    "{} does not look like {}",
+                    path.display(),
+                    def.name
+                ));
                 return status;
             }
             status.version = version;
@@ -246,6 +256,13 @@ async fn resolve_executable(
         _ => {}
     }
     status
+}
+
+/// Whether the version output names the expected program.
+fn is_expected_tool(stdout: &str, stderr: &str, signature: &str) -> bool {
+    [stdout, stderr]
+        .iter()
+        .any(|text| text.to_lowercase().contains(signature))
 }
 
 type Located = (PathBuf, ToolSource, Option<PathBuf>);
@@ -416,7 +433,12 @@ mod tests {
         std::fs::set_permissions(&fake, std::fs::Permissions::from_mode(0o755)).unwrap();
 
         let def = ToolDefinition {
-            kind: super::super::exe(&["easy-converter-no-such-tool"], &["--version"], false),
+            kind: super::super::exe(
+                &["easy-converter-no-such-tool"],
+                &["--version"],
+                "pandoc",
+                false,
+            ),
             ..*definition(ToolId::Pandoc)
         };
         let ctx = ResolveContext {
@@ -428,6 +450,21 @@ mod tests {
         assert!(status.available, "{status:?}");
         assert_eq!(status.source, Some(ToolSource::Custom));
         assert_eq!(status.version.as_deref(), Some("pandoc 9.9.9"));
+
+        // A configured path that points to another program is refused.
+        let other = dir.join("not-pandoc");
+        std::fs::write(&other, "#!/bin/sh\necho 'Python 3.13.5'\n").unwrap();
+        std::fs::set_permissions(&other, std::fs::Permissions::from_mode(0o755)).unwrap();
+        let ctx = ResolveContext {
+            custom_paths: BTreeMap::from([(ToolId::Pandoc, other.clone())]),
+            ..ResolveContext::default()
+        };
+        let status = resolve(&def, &ctx).await;
+        assert!(!status.available, "{status:?}");
+        assert!(status
+            .error
+            .as_deref()
+            .is_some_and(|e| e.contains("does not look like Pandoc")));
         std::fs::remove_dir_all(dir).unwrap();
     }
 
@@ -435,7 +472,12 @@ mod tests {
     #[tokio::test]
     async fn missing_tool_is_reported_unavailable() {
         let def = ToolDefinition {
-            kind: super::super::exe(&["easy-converter-no-such-tool"], &["--version"], false),
+            kind: super::super::exe(
+                &["easy-converter-no-such-tool"],
+                &["--version"],
+                "pandoc",
+                false,
+            ),
             ..*definition(ToolId::Pandoc)
         };
         let status = resolve(&def, &ResolveContext::default()).await;
