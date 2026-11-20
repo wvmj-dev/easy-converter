@@ -11,7 +11,9 @@ import ImageFlipOptions from '../components/options/ImageFlipOptions.vue'
 import ImageMergeOptions from '../components/options/ImageMergeOptions.vue'
 import ImageResizeOptions from '../components/options/ImageResizeOptions.vue'
 import ImageRotateOptions from '../components/options/ImageRotateOptions.vue'
+import ImageToPdfOptions from '../components/options/ImageToPdfOptions.vue'
 import {
+  COMBINING_OPERATIONS,
   IMAGE_OPERATIONS,
   buildImageRequests,
   defaultImageOptions,
@@ -58,7 +60,8 @@ const problem = computed(
     translate(unavailableReason(operation.value, files.value)) ??
     translate(validateOptions(operation.value, options.value, files.value)),
 )
-const jobCount = computed(() => (operation.value === 'merge' ? 1 : files.value.length))
+const combining = computed(() => COMBINING_OPERATIONS.includes(operation.value))
+const jobCount = computed(() => (combining.value ? 1 : files.value.length))
 
 // Start the crop area from the whole first image.
 const cropReference = computed(() => files.value[0]?.image ?? null)
@@ -146,7 +149,7 @@ async function start() {
     <FileList
       v-if="files.length > 0"
       :files="files"
-      :reorderable="operation === 'merge'"
+      :reorderable="combining"
       @remove="filesStore.remove"
       @clear="filesStore.clear('image')"
       @move="filesStore.move"
@@ -202,6 +205,10 @@ async function start() {
         <ImageMergeOptions
           v-else-if="operation === 'merge'"
           v-model="options.merge"
+        />
+        <ImageToPdfOptions
+          v-else-if="operation === 'toPdf'"
+          v-model="options.toPdf"
         />
         <p
           v-else

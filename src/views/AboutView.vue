@@ -20,6 +20,8 @@ const CREDITS: Record<Group, Credit[]> = {
     { name: 'Pinia', license: 'MIT', source: 'github.com/vuejs/pinia' },
     { name: 'Vue I18n', license: 'MIT', source: 'github.com/intlify/vue-i18n' },
     { name: 'image (Rust)', license: 'MIT / Apache-2.0', source: 'github.com/image-rs/image' },
+    { name: 'lopdf', license: 'MIT', source: 'github.com/J-F-Liu/lopdf' },
+    { name: 'pdfium-render', license: 'MIT / Apache-2.0', source: 'github.com/ajrcarey/pdfium-render' },
     { name: 'Tokio', license: 'MIT', source: 'github.com/tokio-rs/tokio' },
     { name: 'Serde', license: 'MIT / Apache-2.0', source: 'github.com/serde-rs/serde' },
   ],

@@ -8,7 +8,8 @@
     "tools": "Tools",
     "settings": "Settings",
     "image": "Images",
-    "about": "About"
+    "about": "About",
+    "pdf": "PDF"
   },
   "common": {
     "loading": "Loading…",
@@ -20,7 +21,8 @@
     "noOperations": "There are no operations yet for: {categories}. They come in upcoming versions.",
     "next": "Next step",
     "open": {
-      "image": "Edit {n} image | Edit {n} images"
+      "image": "Edit {n} image | Edit {n} images",
+      "pdf": "Edit {n} PDF | Edit {n} PDFs"
     }
   },
   "dropZone": {
@@ -36,7 +38,10 @@
     "unsupported": "Unsupported format",
     "addFailed": "Could not add {name}",
     "moveUp": "Move {name} up",
-    "moveDown": "Move {name} down"
+    "moveDown": "Move {name} down",
+    "pages": "{n} page | {n} pages",
+    "locked": "Password protected",
+    "restricted": "Restricted"
   },
   "categories": {
     "image": "Image",
@@ -72,7 +77,19 @@
       "imageFlip": "Mirror",
       "imageCompress": "Compress",
       "imageStripMetadata": "Remove metadata",
-      "imageMerge": "Join images"
+      "imageMerge": "Join images",
+      "imagesToPdf": "Create PDF",
+      "pdfMerge": "Merge PDFs",
+      "pdfSplit": "Split",
+      "pdfSelectPages": "Extract/reorder pages",
+      "pdfRotate": "Rotate pages",
+      "pdfToImages": "PDF to images",
+      "pdfExtractText": "Extract text",
+      "pdfExtractImages": "Extract images",
+      "pdfProtect": "Protect with password",
+      "pdfUnlock": "Remove password",
+      "pdfCompress": "Compress PDF",
+      "pdfOcr": "OCR"
     }
   },
   "tools": {
@@ -168,7 +185,8 @@
     "settings": "Could not save the settings.",
     "io": "Error reading or writing files.",
     "internal": "Internal error.",
-    "unknown": "Unexpected error."
+    "unknown": "Unexpected error.",
+    "password": "Wrong or missing password."
   },
   "operations": {
     "title": "What to do",
@@ -214,6 +232,10 @@
       "merge": {
         "label": "Join",
         "description": "Combines several images into one."
+      },
+      "toPdf": {
+        "label": "Create PDF",
+        "description": "Puts the images in a PDF, one per page."
       }
     },
     "unavailable": {
@@ -227,7 +249,8 @@
       "dimension": "Use whole numbers from 1 to {max} pixels.",
       "percent": "The percentage must be a whole number from 1 to {max}.",
       "spacing": "The gap must be a whole number from 0 to {max} pixels.",
-      "cropOutside": "The area goes beyond the size of {name} ({width} × {height} px)."
+      "cropOutside": "The area goes beyond the size of {name} ({width} × {height} px).",
+      "margin": "The margin must be a whole number from 0 to {max} mm."
     },
     "format": {
       "label": "Output format",
@@ -307,6 +330,163 @@
       "matchSize": "Match sizes (shrinks the larger ones, never enlarges)",
       "spacing": "Gap between images (px)",
       "order": "Images follow the order of the list. Use the arrows to reorder."
+    },
+    "toPdf": {
+      "pageSize": "Page size",
+      "sizes": {
+        "a4": "A4",
+        "letter": "Letter",
+        "image": "Size of each image"
+      },
+      "margin": "Margin (mm)",
+      "help": "One image per page, in list order. JPEG photos keep their full quality; location and camera data are not copied."
+    }
+  },
+  "pdf": {
+    "title": "PDF",
+    "subtitle": "Merge, split, rotate, compress, convert, OCR and passwords. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not a PDF and is left out of this screen. | {n} files in the list are not PDFs and are left out of this screen.",
+    "noNewFiles": "No new PDF was added: the files are already in the list or are not PDFs.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "merge": {
+        "label": "Merge",
+        "description": "Combines several PDFs into one.",
+        "help": "Files are merged in list order. Use the arrows to change it."
+      },
+      "split": {
+        "label": "Split",
+        "description": "Separates into several files."
+      },
+      "selectPages": {
+        "label": "Extract or reorder pages",
+        "description": "Keeps only the chosen pages, in the chosen order."
+      },
+      "rotate": {
+        "label": "Rotate pages",
+        "description": "Rotates all or some pages."
+      },
+      "compress": {
+        "label": "Compress",
+        "description": "Makes the file smaller."
+      },
+      "toImages": {
+        "label": "PDF to images",
+        "description": "One PNG or JPEG image per page."
+      },
+      "extractText": {
+        "label": "Extract text",
+        "description": "Saves the text to a .txt file.",
+        "help": "Only works with PDFs that contain text. For scanned documents, run OCR first."
+      },
+      "extractImages": {
+        "label": "Extract images",
+        "description": "Saves the images inside the PDF.",
+        "help": "Each image is saved as PNG, with the page number in its name."
+      },
+      "ocr": {
+        "label": "OCR",
+        "description": "Makes the text of scanned documents searchable."
+      },
+      "protect": {
+        "label": "Protect with password",
+        "description": "Requires a password to open the file."
+      },
+      "unlock": {
+        "label": "Remove password",
+        "description": "Creates a copy without password or restrictions."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add PDF files first.",
+      "needsTwo": "Choose at least 2 PDFs.",
+      "tooMany": "At most {max} files at a time.",
+      "tool": "Needs {tool}, which was not found. See the Tools screen.",
+      "locked": "{name} is password protected. Use \"Remove password\" first."
+    },
+    "pages": {
+      "label": "Pages",
+      "placeholder": "E.g. 1-3, 5, 9-7",
+      "help": "Numbers or ranges separated by commas. A backwards range (9-7) reverses the order.",
+      "empty": "Enter the pages.",
+      "invalid": "\"{part}\" is not a valid page or range.",
+      "pastEnd": "Page {page} does not exist (pages in the file: {count}).",
+      "tooMany": "At most {max} ranges."
+    },
+    "scope": {
+      "label": "Which pages",
+      "all": "All",
+      "some": "Only some"
+    },
+    "split": {
+      "label": "How to split",
+      "modes": {
+        "everyPage": "One page per file",
+        "every": "Every N pages",
+        "ranges": "By ranges"
+      },
+      "every": "Pages per file",
+      "ranges": "Ranges",
+      "rangesHelp": "Each range becomes a file. E.g. 1-3, 4-10, 11",
+      "invalidEvery": "Enter a whole number of pages, from 1."
+    },
+    "selectPages": {
+      "label": "Pages, in the desired order",
+      "help": "E.g. \"3, 1-2\" puts page 3 first. \"5-1\" reverses the first five. Pages not listed are removed."
+    },
+    "toImages": {
+      "dpi": "Resolution (DPI)",
+      "dpiHelp": "150 is good for screens; 300 for printing. High values make large files.",
+      "invalidDpi": "The resolution must be a whole number from {min} to {max}."
+    },
+    "protect": {
+      "password": "Password to open",
+      "confirm": "Repeat the password",
+      "restrictions": "Restrictions (optional)",
+      "noPrint": "Prevent printing",
+      "noCopy": "Prevent copying text and images",
+      "noEdit": "Prevent changes",
+      "owner": "Owner password",
+      "ownerHelp": "Needed for restrictions: whoever has this password can lift them. It must differ from the password to open.",
+      "help": "Uses AES-256 encryption. Keep the password: without it the file cannot be opened. Most readers honour the restrictions, but not all.",
+      "passwordRequired": "Enter the password.",
+      "tooLong": "The password is longer than {max} bytes.",
+      "controlChars": "The password has invalid characters.",
+      "mismatch": "The passwords do not match.",
+      "ownerRequired": "To use restrictions, enter the owner password.",
+      "ownerSame": "The owner password must differ from the password to open."
+    },
+    "unlock": {
+      "password": "PDF password",
+      "help": "Leave it empty if the file opens without a password and only has restrictions."
+    },
+    "compress": {
+      "label": "Level",
+      "levels": {
+        "standard": "Standard (lossless)",
+        "strong": "Strong (lowers image quality)"
+      },
+      "hints": {
+        "standard": "Reorganises and recompresses the file without changing its content. Helps most with PDFs made by older programs.",
+        "strong": "Downsamples images to about 150 DPI with Ghostscript. Good for e-mail; not recommended for printing."
+      },
+      "installGhostscript": "Strong compression needs Ghostscript, which was not found. See the Tools screen.",
+      "noGhostscript": "Ghostscript was not found."
+    },
+    "ocr": {
+      "languages": "Document languages",
+      "help": "Adds an invisible text layer over the pages without changing how they look. It may take a few seconds per page.",
+      "chooseLanguages": "Choose from 1 to {max} languages.",
+      "names": {
+        "por": "Portuguese",
+        "eng": "English",
+        "spa": "Spanish",
+        "fra": "French",
+        "deu": "German",
+        "ita": "Italian"
+      }
     }
   },
   "about": {

@@ -42,6 +42,9 @@ const { t, locale } = useI18n()
             </span>
             {{ formatBytes(file.size, locale) }}
             <span v-if="file.image">{{ file.image.width }} × {{ file.image.height }} px</span>
+            <span v-if="file.pdf?.pages != null">{{ t('files.pages', file.pdf.pages) }}</span>
+            <span v-if="file.pdf?.needsPassword">{{ t('files.locked') }}</span>
+            <span v-else-if="file.pdf?.encrypted">{{ t('files.restricted') }}</span>
           </span>
         </div>
         <div class="file-list__actions">

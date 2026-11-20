@@ -19,6 +19,7 @@ function file(name: string, width = 100, height = 50, format: ImageOutputFormat 
     size: 1000,
     category: 'image',
     image: { width, height, format },
+    pdf: null,
   }
 }
 

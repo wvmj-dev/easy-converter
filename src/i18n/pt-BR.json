@@ -8,7 +8,8 @@
     "tools": "Ferramentas",
     "settings": "Configurações",
     "image": "Imagens",
-    "about": "Sobre"
+    "about": "Sobre",
+    "pdf": "PDF"
   },
   "common": {
     "loading": "Carregando…",
@@ -20,7 +21,8 @@
     "noOperations": "Ainda não há operações para: {categories}. Elas chegam nas próximas versões.",
     "next": "Próximo passo",
     "open": {
-      "image": "Editar {n} imagem | Editar {n} imagens"
+      "image": "Editar {n} imagem | Editar {n} imagens",
+      "pdf": "Editar {n} PDF | Editar {n} PDFs"
     }
   },
   "dropZone": {
@@ -36,7 +38,10 @@
     "unsupported": "Formato não suportado",
     "addFailed": "Não foi possível adicionar {name}",
     "moveUp": "Mover {name} para cima",
-    "moveDown": "Mover {name} para baixo"
+    "moveDown": "Mover {name} para baixo",
+    "pages": "{n} página | {n} páginas",
+    "locked": "Protegido por senha",
+    "restricted": "Com restrições"
   },
   "categories": {
     "image": "Imagem",
@@ -72,7 +77,19 @@
       "imageFlip": "Espelhar",
       "imageCompress": "Comprimir",
       "imageStripMetadata": "Remover metadados",
-      "imageMerge": "Juntar imagens"
+      "imageMerge": "Juntar imagens",
+      "imagesToPdf": "Criar PDF",
+      "pdfMerge": "Juntar PDFs",
+      "pdfSplit": "Dividir",
+      "pdfSelectPages": "Extrair/reordenar páginas",
+      "pdfRotate": "Girar páginas",
+      "pdfToImages": "PDF para imagens",
+      "pdfExtractText": "Extrair texto",
+      "pdfExtractImages": "Extrair imagens",
+      "pdfProtect": "Proteger com senha",
+      "pdfUnlock": "Remover senha",
+      "pdfCompress": "Comprimir PDF",
+      "pdfOcr": "OCR"
     }
   },
   "tools": {
@@ -168,7 +185,8 @@
     "settings": "Não foi possível salvar as configurações.",
     "io": "Erro ao ler ou gravar arquivos.",
     "internal": "Erro interno.",
-    "unknown": "Erro inesperado."
+    "unknown": "Erro inesperado.",
+    "password": "Senha incorreta ou ausente."
   },
   "operations": {
     "title": "O que fazer",
@@ -214,6 +232,10 @@
       "merge": {
         "label": "Juntar",
         "description": "Une várias imagens em uma."
+      },
+      "toPdf": {
+        "label": "Criar PDF",
+        "description": "Junta as imagens em um PDF, uma por página."
       }
     },
     "unavailable": {
@@ -227,7 +249,8 @@
       "dimension": "Use números inteiros de 1 a {max} pixels.",
       "percent": "A porcentagem deve ser um número inteiro de 1 a {max}.",
       "spacing": "O espaço deve ser um número inteiro de 0 a {max} pixels.",
-      "cropOutside": "A área passa do tamanho de {name} ({width} × {height} px)."
+      "cropOutside": "A área passa do tamanho de {name} ({width} × {height} px).",
+      "margin": "A margem deve ser um número inteiro de 0 a {max} mm."
     },
     "format": {
       "label": "Formato de saída",
@@ -307,6 +330,163 @@
       "matchSize": "Igualar tamanhos (reduz as maiores, sem ampliar)",
       "spacing": "Espaço entre imagens (px)",
       "order": "As imagens seguem a ordem da lista. Use as setas para reordenar."
+    },
+    "toPdf": {
+      "pageSize": "Tamanho da página",
+      "sizes": {
+        "a4": "A4",
+        "letter": "Carta",
+        "image": "Do tamanho de cada imagem"
+      },
+      "margin": "Margem (mm)",
+      "help": "Uma imagem por página, na ordem da lista. Fotos JPEG entram sem perda de qualidade; localização e dados da câmera não são copiados."
+    }
+  },
+  "pdf": {
+    "title": "PDF",
+    "subtitle": "Juntar, dividir, girar, comprimir, converter, OCR e senhas. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é PDF e fica de fora desta tela. | {n} arquivos da lista não são PDF e ficam de fora desta tela.",
+    "noNewFiles": "Nenhum PDF novo foi adicionado: os arquivos já estão na lista ou não são PDF.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "merge": {
+        "label": "Juntar",
+        "description": "Une vários PDFs em um.",
+        "help": "Os arquivos são unidos na ordem da lista. Use as setas para mudar a ordem."
+      },
+      "split": {
+        "label": "Dividir",
+        "description": "Separa em vários arquivos."
+      },
+      "selectPages": {
+        "label": "Extrair ou reordenar páginas",
+        "description": "Mantém só as páginas escolhidas, na ordem escolhida."
+      },
+      "rotate": {
+        "label": "Girar páginas",
+        "description": "Gira todas ou algumas páginas."
+      },
+      "compress": {
+        "label": "Comprimir",
+        "description": "Reduz o tamanho do arquivo."
+      },
+      "toImages": {
+        "label": "PDF para imagens",
+        "description": "Uma imagem PNG ou JPEG por página."
+      },
+      "extractText": {
+        "label": "Extrair texto",
+        "description": "Salva o texto em um arquivo .txt.",
+        "help": "Só funciona com PDFs que têm texto. Para documentos digitalizados, use o OCR antes."
+      },
+      "extractImages": {
+        "label": "Extrair imagens",
+        "description": "Salva as imagens contidas no PDF.",
+        "help": "Cada imagem é salva em PNG, com o número da página no nome."
+      },
+      "ocr": {
+        "label": "OCR",
+        "description": "Torna o texto de documentos digitalizados pesquisável."
+      },
+      "protect": {
+        "label": "Proteger com senha",
+        "description": "Exige senha para abrir o arquivo."
+      },
+      "unlock": {
+        "label": "Remover senha",
+        "description": "Cria uma cópia sem senha nem restrições."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione arquivos PDF primeiro.",
+      "needsTwo": "Escolha pelo menos 2 PDFs.",
+      "tooMany": "No máximo {max} arquivos por vez.",
+      "tool": "Precisa do {tool}, que não foi encontrado. Veja a tela Ferramentas.",
+      "locked": "{name} está protegido por senha. Use \"Remover senha\" primeiro."
+    },
+    "pages": {
+      "label": "Páginas",
+      "placeholder": "Ex.: 1-3, 5, 9-7",
+      "help": "Números ou intervalos separados por vírgula. Um intervalo de trás para frente (9-7) inverte a ordem.",
+      "empty": "Informe as páginas.",
+      "invalid": "\"{part}\" não é uma página ou intervalo válido.",
+      "pastEnd": "A página {page} não existe (total de páginas do arquivo: {count}).",
+      "tooMany": "No máximo {max} intervalos."
+    },
+    "scope": {
+      "label": "Quais páginas",
+      "all": "Todas",
+      "some": "Só algumas"
+    },
+    "split": {
+      "label": "Como dividir",
+      "modes": {
+        "everyPage": "Uma página por arquivo",
+        "every": "A cada N páginas",
+        "ranges": "Por intervalos"
+      },
+      "every": "Páginas por arquivo",
+      "ranges": "Intervalos",
+      "rangesHelp": "Cada intervalo vira um arquivo. Ex.: 1-3, 4-10, 11",
+      "invalidEvery": "Informe um número inteiro de páginas, a partir de 1."
+    },
+    "selectPages": {
+      "label": "Páginas, na ordem desejada",
+      "help": "Ex.: \"3, 1-2\" coloca a página 3 primeiro. \"5-1\" inverte as cinco primeiras. Páginas fora da lista são removidas."
+    },
+    "toImages": {
+      "dpi": "Resolução (DPI)",
+      "dpiHelp": "150 é bom para tela; 300 para impressão. Valores altos geram arquivos grandes.",
+      "invalidDpi": "A resolução deve ser um número inteiro de {min} a {max}."
+    },
+    "protect": {
+      "password": "Senha para abrir",
+      "confirm": "Repita a senha",
+      "restrictions": "Restrições (opcional)",
+      "noPrint": "Impedir impressão",
+      "noCopy": "Impedir copiar texto e imagens",
+      "noEdit": "Impedir alterações",
+      "owner": "Senha do proprietário",
+      "ownerHelp": "Necessária para usar restrições: quem tiver esta senha pode retirá-las. Deve ser diferente da senha para abrir.",
+      "help": "Usa criptografia AES-256. Guarde a senha: sem ela, não é possível abrir o arquivo. As restrições são respeitadas pela maioria dos leitores, mas não por todos.",
+      "passwordRequired": "Informe a senha.",
+      "tooLong": "A senha passa de {max} bytes.",
+      "controlChars": "A senha tem caracteres inválidos.",
+      "mismatch": "As senhas não conferem.",
+      "ownerRequired": "Para usar restrições, informe a senha do proprietário.",
+      "ownerSame": "A senha do proprietário deve ser diferente da senha para abrir."
+    },
+    "unlock": {
+      "password": "Senha do PDF",
+      "help": "Deixe em branco se o arquivo abre sem senha e só tem restrições."
+    },
+    "compress": {
+      "label": "Nível",
+      "levels": {
+        "standard": "Padrão (sem perda)",
+        "strong": "Forte (reduz a qualidade das imagens)"
+      },
+      "hints": {
+        "standard": "Reorganiza e recomprime o arquivo sem alterar o conteúdo. Ajuda mais em PDFs gerados por programas antigos.",
+        "strong": "Reduz as imagens para cerca de 150 DPI com o Ghostscript. Bom para enviar por e-mail; não recomendado para impressão."
+      },
+      "installGhostscript": "A compressão forte precisa do Ghostscript, que não foi encontrado. Veja a tela Ferramentas.",
+      "noGhostscript": "O Ghostscript não foi encontrado."
+    },
+    "ocr": {
+      "languages": "Idiomas do documento",
+      "help": "Adiciona uma camada de texto invisível sobre as páginas, sem alterar a aparência. Pode levar alguns segundos por página.",
+      "chooseLanguages": "Escolha de 1 a {max} idiomas.",
+      "names": {
+        "por": "Português",
+        "eng": "Inglês",
+        "spa": "Espanhol",
+        "fra": "Francês",
+        "deu": "Alemão",
+        "ita": "Italiano"
+      }
     }
   },
   "about": {

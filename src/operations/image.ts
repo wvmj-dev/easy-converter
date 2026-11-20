@@ -6,6 +6,7 @@ import type { FlipAxis } from '../types/FlipAxis'
 import type { ImageOutputFormat } from '../types/ImageOutputFormat'
 import type { JobRequest } from '../types/JobRequest'
 import type { MergeDirection } from '../types/MergeDirection'
+import type { PdfPageSize } from '../types/PdfPageSize'
 import type { ResizeMode } from '../types/ResizeMode'
 import type { Rotation } from '../types/Rotation'
 
@@ -14,6 +15,8 @@ export const IMAGE_LIMITS = {
   maxPercent: 1_000,
   maxMergeInputs: 50,
   maxSpacing: 2_000,
+  maxPdfInputs: 200,
+  maxPdfMarginMm: 50,
 } as const
 
 export const IMAGE_OPERATIONS = [
@@ -25,6 +28,7 @@ export const IMAGE_OPERATIONS = [
   'compress',
   'stripMetadata',
   'merge',
+  'toPdf',
 ] as const
 export type ImageOperation = (typeof IMAGE_OPERATIONS)[number]
 
@@ -48,7 +52,11 @@ export interface ImageOptions {
   flip: { axis: FlipAxis }
   compress: { quality: number }
   merge: { direction: MergeDirection; format: ImageOutputFormat; matchSize: boolean; spacing: number }
+  toPdf: { pageSize: PdfPageSize; marginMm: number }
 }
+
+/** Operations that make one file from all the images, in list order. */
+export const COMBINING_OPERATIONS: ImageOperation[] = ['merge', 'toPdf']
 
 export function defaultImageOptions(): ImageOptions {
   return {
@@ -59,6 +67,7 @@ export function defaultImageOptions(): ImageOptions {
     flip: { axis: 'horizontal' },
     compress: { quality: 75 },
     merge: { direction: 'horizontal', format: 'png', matchSize: true, spacing: 0 },
+    toPdf: { pageSize: 'a4', marginMm: 10 },
   }
 }
 
@@ -82,6 +91,9 @@ export function unavailableReason(operation: ImageOperation, files: FileInfo[]):
     if (files.length > IMAGE_LIMITS.maxMergeInputs) {
       return { key: 'image.unavailable.tooMany', params: { max: IMAGE_LIMITS.maxMergeInputs } }
     }
+  }
+  if (operation === 'toPdf' && files.length > IMAGE_LIMITS.maxPdfInputs) {
+    return { key: 'image.unavailable.tooMany', params: { max: IMAGE_LIMITS.maxPdfInputs } }
   }
   if (operation === 'stripMetadata') {
     const unsupported = files.find((f) => !f.image || !STRIP_METADATA_FORMATS.includes(f.image.format))
@@ -135,6 +147,10 @@ export function validateOptions(
       return isIntIn(options.merge.spacing, 0, IMAGE_LIMITS.maxSpacing)
         ? null
         : { key: 'image.invalid.spacing', params: { max: IMAGE_LIMITS.maxSpacing } }
+    case 'toPdf':
+      return isIntIn(options.toPdf.marginMm, 0, IMAGE_LIMITS.maxPdfMarginMm)
+        ? null
+        : { key: 'image.invalid.margin', params: { max: IMAGE_LIMITS.maxPdfMarginMm } }
     case 'rotate':
     case 'flip':
     case 'stripMetadata':
@@ -173,6 +189,8 @@ export function buildImageRequests(
       return each((input) => ({ type: 'imageStripMetadata', input }))
     case 'merge':
       return [{ type: 'imageMerge', inputs: files.map((f) => f.path), ...options.merge }]
+    case 'toPdf':
+      return [{ type: 'imagesToPdf', inputs: files.map((f) => f.path), ...options.toPdf }]
   }
 }
 

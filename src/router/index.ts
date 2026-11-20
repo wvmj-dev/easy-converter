@@ -5,6 +5,7 @@ import HomeView from '../views/HomeView.vue'
 export const routes: RouteRecordRaw[] = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/image', name: 'image', component: () => import('../views/ImageView.vue') },
+  { path: '/pdf', name: 'pdf', component: () => import('../views/PdfView.vue') },
   { path: '/tools', name: 'tools', component: () => import('../views/ToolsView.vue') },
   { path: '/settings', name: 'settings', component: () => import('../views/SettingsView.vue') },
   { path: '/about', name: 'about', component: () => import('../views/AboutView.vue') },

@@ -37,6 +37,12 @@ onMounted(() => {
       </RouterLink>
       <RouterLink
         class="sidebar__link"
+        to="/pdf"
+      >
+        {{ t('nav.pdf') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
         to="/tools"
       >
         {{ t('nav.tools') }}
