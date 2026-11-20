@@ -28,7 +28,7 @@ No Linux, FFmpeg, qpdf e Tesseract **não** vêm no pacote: são dependências i
 
 Os arquivos são baixados por `scripts/fetch-sidecars.ps1`, que confere o SHA-256 de cada um.
 
-**FFmpeg (GPL-3.0).** A build inclui bibliotecas externas (por exemplo x264, x265, libvpx, libaom, LAME, Opus). A lista completa e a configuração exata vão junto com o app, no arquivo `ffmpeg/BUILD-INFO.txt` dos recursos, junto com o texto da licença (`ffmpeg/LICENSE.txt`). O código-fonte correspondente está no commit do FFmpeg indicado acima e nos projetos de cada biblioteca, nas versões listadas no `BUILD-INFO.txt`. Se algum desses links deixar de funcionar, abra uma issue no repositório do projeto, e o código-fonte correspondente será disponibilizado, conforme a seção 6 da GPL-3.0.
+**FFmpeg (GPL-3.0).** A build inclui bibliotecas externas (por exemplo x264, x265, libvpx, libaom, LAME, Opus). A lista completa e a configuração exata vão junto com o app, no arquivo `ffmpeg/BUILD-INFO.txt` dos recursos, junto com o texto da licença (`ffmpeg/LICENSE.txt`). O código-fonte correspondente está no commit do FFmpeg indicado acima e nos projetos de cada biblioteca, nas versões listadas no `BUILD-INFO.txt`. Se algum desses links deixar de funcionar, abra uma issue em https://github.com/wvmj-dev/easy-converter, e o código-fonte correspondente será disponibilizado, conforme a seção 6 da GPL-3.0.
 
 **Tesseract.** O instalador do app leva só o `tesseract.exe` e as bibliotecas que ele carrega, todas da build da UB Mannheim (pacotes MSYS2):
 
@@ -71,6 +71,8 @@ O app é construído com estas bibliotecas (dependências diretas), todas com li
 |---|---|---|
 | Tauri e plugins (dialog, opener, store) | 2.12.7 / 2.8.4 / 2.7.3 / 2.5.1 | MIT ou Apache-2.0 |
 | image | 0.25.10 | MIT ou Apache-2.0 |
+| lopdf | 0.47.0 | MIT |
+| pdfium-render | 0.9.5 | MIT ou Apache-2.0 |
 | Tokio | 1.54.1 | MIT |
 | Serde, serde_json | 1.0.229 / 1.0.154 | MIT ou Apache-2.0 |
 | thiserror | 2.0.21 | MIT ou Apache-2.0 |

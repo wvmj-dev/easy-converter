@@ -163,13 +163,13 @@ src-tauri/
     ├── error.rs
     ├── settings.rs
     ├── fs_utils.rs
+    ├── pdf_worker.rs      # PDFium isolado em processo separado
     ├── tools/
     │   ├── mod.rs
     │   ├── resolver.rs
     │   ├── capabilities.rs
     │   ├── ffmpeg.rs
     │   ├── qpdf.rs
-    │   ├── pdfium.rs
     │   ├── tesseract.rs
     │   ├── libreoffice.rs
     │   ├── pandoc.rs
@@ -603,4 +603,9 @@ Nenhuma no momento. Perguntar ao autor antes de assumir qualquer decisão nova d
 - **Ferramentas obrigatórias desde o `v0.1.0`**: FFmpeg, qpdf, Tesseract e PDFium já vão nos pacotes, mesmo antes das fases que os usam.
 - **Versões fixas dos binários**: definidas em `scripts/fetch-pdfium.sh` e `scripts/fetch-sidecars.ps1`, com SHA-256. Ao atualizar uma versão, atualizar também `THIRD_PARTY_LICENSES.md`.
 - **Release**: o `release.yml` cria um rascunho no GitHub; o autor revisa e publica manualmente.
+- **Crates aprovadas no M3**: `lopdf` (só para **escrever** PDFs a partir de imagens; nunca para ler PDFs do usuário) e `pdfium-render` (só dentro do worker).
+- **PDFium em processo separado**: o próprio executável do app, iniciado com `--pdfium-worker <pedido.json>` (`src/pdf_worker.rs`). Um PDF que trave ou derrube o PDFium não derruba o app, e cancelamento e timeout matam o processo na hora. O pedido vai num arquivo na pasta temporária da tarefa, nunca na linha de comando.
+- **Senhas fora da linha de comando**: senhas de PDF vão para o qpdf por arquivo de argumentos (`@arquivo`) ou `--password-file`, criados só legíveis pelo usuário na pasta temporária da tarefa. Os parâmetros com senha têm `Debug` que oculta o valor.
+- **OCR sem perda**: o Tesseract gera páginas só com texto (`textonly_pdf=1`), que o qpdf sobrepõe às páginas originais (`--overlay`); o original não é recodificado.
+- **Repositório**: https://github.com/wvmj-dev/easy-converter. O autor faz push e cria as tags.
 - **Crates aprovadas no M1**: `tokio` (processos filhos, timeout, sincronização), `thiserror` (`AppError`), `serde`, `serde_json`, `ts-rs` (tipos TypeScript).
