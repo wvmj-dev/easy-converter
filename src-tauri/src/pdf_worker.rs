@@ -127,6 +127,7 @@ fn map_worker_error(err: AppError) -> AppError {
         "password" => AppError::Password(detail),
         "tooLarge" => AppError::TooLarge(detail),
         "invalidParameter" => AppError::InvalidParameter(detail),
+        "toolMissing" => AppError::ToolMissing(detail),
         "io" => AppError::Io(std::io::Error::other(detail)),
         _ => AppError::ProcessFailed(detail),
     }
@@ -164,6 +165,7 @@ fn report(err: &AppError) {
         AppError::Password(_) => "password",
         AppError::TooLarge(_) => "tooLarge",
         AppError::InvalidParameter(_) => "invalidParameter",
+        AppError::ToolMissing(_) => "toolMissing",
         AppError::Io(_) => "io",
         _ => "failed",
     };
@@ -365,6 +367,10 @@ mod tests {
         assert!(matches!(
             failed("EC-WORKER-ERROR invalidFile bad"),
             AppError::InvalidFile(_)
+        ));
+        assert!(matches!(
+            failed("EC-WORKER-ERROR toolMissing PDFium could not be loaded"),
+            AppError::ToolMissing(_)
         ));
         assert!(matches!(
             failed("segmentation fault"),
