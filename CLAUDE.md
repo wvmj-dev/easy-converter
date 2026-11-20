@@ -470,6 +470,19 @@ sudo dnf install libreoffice-writer libreoffice-calc libreoffice-impress \
 
 PDFium: baixar `libpdfium.so` de pdfium-binaries para `src-tauri/resources/pdfium/` (script em `scripts/`).
 
+Opcional, para abrir e controlar o app real em testes (tela virtual, WebDriver, cliques):
+
+```bash
+# Debian / Ubuntu
+sudo apt install xvfb webkit2gtk-driver xdotool
+# Fedora (confirmar o pacote do WebKitWebDriver com dnf provides '*/WebKitWebDriver')
+sudo dnf install xorg-x11-server-Xvfb xdotool
+# Ambos
+cargo install tauri-driver --locked
+```
+
+A lista completa, por grupo, fica no README (seção "Programas necessários").
+
 ### 9.4 Observações por distro
 
 - Fedora: `ffmpeg-free` não tem todos os encoders; o FFmpeg completo vem do RPM Fusion (`sudo dnf swap ffmpeg-free ffmpeg --allowerasing`).

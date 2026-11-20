@@ -89,7 +89,75 @@ Suporte a RAR: no Debian, fica no pacote `7zip-rar` (repositório non-free); o p
 
 ## Desenvolvimento
 
-Requisitos: Rust (com `rustfmt` e `clippy`), Node.js LTS e as dependências de sistema do Tauri 2. Veja o [guia do Tauri](https://v2.tauri.app/start/prerequisites/).
+### Programas necessários
+
+| Grupo | Para quê | Obrigatório? |
+|---|---|---|
+| Dependências do Tauri 2 | Compilar o app (WebKitGTK, GTK, OpenSSL etc.) | Sim |
+| Rust (com `rustfmt` e `clippy`) e Node.js LTS | Compilar o backend e o frontend | Sim |
+| FFmpeg, qpdf, Tesseract (com idiomas `por` e `eng`) | Ferramentas obrigatórias do app (vídeo, áudio, PDF e OCR); também usadas nos testes | Sim |
+| ExifTool | Conferir metadados nos testes | Sim, para os testes |
+| LibreOffice, Pandoc, Calibre, Ghostscript, 7-Zip | Ferramentas opcionais (veja acima); os testes que dependem delas são ignorados quando faltam | Não |
+| Xvfb, WebKitWebDriver, xdotool, `tauri-driver` | Abrir e controlar o app real em testes automatizados (tela virtual, cliques) | Não |
+| PDFium | Renderização de PDF (fase de PDF); baixado por script em `scripts/`, não vem do `apt`/`dnf` | A partir da fase de PDF |
+
+#### Debian / Ubuntu
+
+```bash
+# Dependências do Tauri 2
+sudo apt update
+sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file \
+  libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+
+# Ferramentas obrigatórias do app e ExifTool (testes)
+sudo apt install ffmpeg qpdf tesseract-ocr tesseract-ocr-por tesseract-ocr-eng \
+  libimage-exiftool-perl
+
+# Ferramentas opcionais (7zip-rar fica no repositório non-free)
+sudo apt install libreoffice-writer libreoffice-calc libreoffice-impress \
+  pandoc calibre ghostscript 7zip 7zip-rar
+
+# Opcional: testes automatizados da interface
+sudo apt install xvfb webkit2gtk-driver xdotool
+cargo install tauri-driver --locked
+```
+
+#### Fedora
+
+```bash
+# Dependências do Tauri 2
+sudo dnf check-update
+sudo dnf install webkit2gtk4.1-devel openssl-devel curl wget file \
+  libappindicator-gtk3-devel librsvg2-devel libxdo-devel
+sudo dnf group install "c-development"
+
+# Ferramentas obrigatórias do app e ExifTool (testes)
+sudo dnf install ffmpeg-free qpdf tesseract tesseract-langpack-por tesseract-langpack-eng \
+  perl-Image-ExifTool
+
+# Ferramentas opcionais (o 7zip do Fedora não lê RAR)
+sudo dnf install libreoffice-writer libreoffice-calc libreoffice-impress \
+  pandoc calibre ghostscript 7zip
+
+# Opcional: testes automatizados da interface
+# (confirme o pacote do WebKitWebDriver com: dnf provides '*/WebKitWebDriver')
+sudo dnf install xorg-x11-server-Xvfb xdotool
+cargo install tauri-driver --locked
+```
+
+#### Rust e Node.js (todas as distros)
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup component add rustfmt clippy
+
+curl -fsSL https://fnm.vercel.app/install | bash
+fnm install --lts
+```
+
+Confira os nomes dos pacotes antes de cada release com `apt-cache policy <pacote>` ou `dnf info <pacote>`. A tela **Ferramentas** do app mostra o que foi encontrado.
+
+### Comandos
 
 ```bash
 npm install
