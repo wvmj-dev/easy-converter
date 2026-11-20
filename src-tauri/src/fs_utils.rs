@@ -26,6 +26,49 @@ const MAX_NAME_FRAGMENT_LEN: usize = 40;
 /// Temporary session folders older than this are considered leftovers of a crash.
 const STALE_SESSION_AGE: Duration = Duration::from_secs(24 * 60 * 60);
 
+/// Canonical form of an existing path. On Windows the `\\?\` prefix that
+/// `canonicalize` adds is removed when the path does not need it: such paths look odd in
+/// the interface and several external tools (Ghostscript, Tesseract) cannot open them.
+pub fn canonicalize(path: &Path) -> AppResult<PathBuf> {
+    let canonical = path
+        .canonicalize()
+        .map_err(|_| AppError::NotFound(path.display().to_string()))?;
+    if cfg!(windows) {
+        Ok(strip_verbatim(&canonical))
+    } else {
+        Ok(canonical)
+    }
+}
+
+/// `\\?\C:\dir` becomes `C:\dir` and `\\?\UNC\server\share` becomes
+/// `\\server\share`; anything else, or a path too long for the classic form, is kept.
+fn strip_verbatim(path: &Path) -> PathBuf {
+    const MAX_CLASSIC_LEN: usize = 259;
+    let Some(text) = path.to_str() else {
+        return path.to_path_buf();
+    };
+    let simplified = if let Some(rest) = text.strip_prefix(r"\\?\UNC\") {
+        format!(r"\\{rest}")
+    } else if let Some(rest) = text.strip_prefix(r"\\?\") {
+        let bytes = rest.as_bytes();
+        let is_drive = bytes.len() >= 3
+            && bytes[0].is_ascii_alphabetic()
+            && bytes[1] == b':'
+            && bytes[2] == b'\\';
+        if !is_drive {
+            return path.to_path_buf();
+        }
+        rest.to_owned()
+    } else {
+        return path.to_path_buf();
+    };
+    if simplified.len() > MAX_CLASSIC_LEN {
+        path.to_path_buf()
+    } else {
+        PathBuf::from(simplified)
+    }
+}
+
 /// Validates a path received from the frontend that must point to an existing file.
 /// Returns the canonical path.
 pub fn validate_input_file(path: &Path) -> AppResult<PathBuf> {
@@ -35,9 +78,7 @@ pub fn validate_input_file(path: &Path) -> AppResult<PathBuf> {
             path.display()
         )));
     }
-    let canonical = path
-        .canonicalize()
-        .map_err(|_| AppError::NotFound(path.display().to_string()))?;
+    let canonical = canonicalize(path)?;
     if !canonical.is_file() {
         return Err(AppError::InvalidPath(format!(
             "not a regular file: {}",
@@ -55,9 +96,7 @@ pub fn validate_directory(path: &Path) -> AppResult<PathBuf> {
             path.display()
         )));
     }
-    let canonical = path
-        .canonicalize()
-        .map_err(|_| AppError::NotFound(path.display().to_string()))?;
+    let canonical = canonicalize(path)?;
     if !canonical.is_dir() {
         return Err(AppError::InvalidPath(format!(
             "not a directory: {}",
@@ -449,6 +488,21 @@ mod tests {
             Err(AppError::InvalidPath(_))
         ));
         fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn verbatim_prefix_is_removed_only_when_safe() {
+        let strip = |p: &str| strip_verbatim(Path::new(p)).to_string_lossy().into_owned();
+        assert_eq!(strip(r"\\?\C:\Users\a\b.pdf"), r"C:\Users\a\b.pdf");
+        assert_eq!(
+            strip(r"\\?\UNC\server\share\a.pdf"),
+            r"\\server\share\a.pdf"
+        );
+        // Device paths and paths too long for the classic form keep the prefix.
+        assert_eq!(strip(r"\\?\Volume{1234}\a.pdf"), r"\\?\Volume{1234}\a.pdf");
+        let long = format!(r"\\?\C:\{}", "a".repeat(300));
+        assert_eq!(strip(&long), long);
+        assert_eq!(strip("/home/a.pdf"), "/home/a.pdf");
     }
 
     #[test]
