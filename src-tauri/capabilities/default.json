@@ -1,10 +1,20 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Minimal permissions for the main window. Settings, file opening and every file operation go through the app's own commands, which validate their arguments in Rust.",
+  "description": "Minimal permissions for the main window. The frontend only listens to events, opens the file/folder picker and calls the app's own commands, which validate every argument in Rust. It cannot read files, run programs or reach the network.",
   "windows": ["main"],
   "permissions": [
-    "core:event:default",
-    "dialog:allow-open"
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "dialog:allow-open",
+    "allow-enqueue-job",
+    "allow-cancel-job",
+    "allow-get-tools-status",
+    "allow-refresh-tools",
+    "allow-probe-file",
+    "allow-get-settings",
+    "allow-update-settings",
+    "allow-open-output",
+    "allow-reveal-output"
   ]
 }
