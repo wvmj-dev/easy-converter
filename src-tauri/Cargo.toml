@@ -32,3 +32,15 @@ image = { version = "0.25.10", default-features = false, features = ["png", "jpe
 [dev-dependencies]
 tokio = { version = "1", features = ["process", "time", "sync", "io-util", "macros", "rt", "rt-multi-thread", "test-util"] }
 
+# Image codecs are very slow without optimizations; this keeps `cargo test` and
+# `tauri dev` usable while the app's own code stays quick to compile.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+strip = true
+# Keep `panic = "unwind"` (the default): a panic inside a job is caught by the queue and
+# reported as a failed job instead of closing the app.
