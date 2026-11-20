@@ -496,7 +496,7 @@
   },
   "about": {
     "version": "Version {version}",
-    "description": "Converts and edits files on your computer: images and PDF today; video, audio, documents and other formats in upcoming versions.",
+    "description": "Converts and edits files on your computer: images, PDF, video and audio today; documents and other formats in upcoming versions.",
     "privacy": "No file leaves your computer. The app makes no network requests and has no telemetry, usage analytics or automatic updates.",
     "license": {
       "title": "License",

@@ -496,7 +496,7 @@
   },
   "about": {
     "version": "Versão {version}",
-    "description": "Converte e edita arquivos no seu computador: imagens e PDF hoje; vídeo, áudio, documentos e outros formatos nas próximas versões.",
+    "description": "Converte e edita arquivos no seu computador: imagens, PDF, vídeo e áudio hoje; documentos e outros formatos nas próximas versões.",
     "privacy": "Nenhum arquivo sai do seu computador. O app não faz requisições de rede, não tem telemetria, análise de uso nem atualização automática.",
     "license": {
       "title": "Licença",

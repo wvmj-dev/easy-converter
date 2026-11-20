@@ -10,7 +10,7 @@ Uma alternativa a sites como Convertio, iLovePDF e iLoveIMG, com uma diferença:
 - Projeto pessoal, sem fins lucrativos, mantido nas horas livres do autor.
 - Nunca sobrescreve o arquivo original.
 
-> **Situação:** a versão 0.2.0 converte e edita imagens (PNG, JPG, WebP, BMP, GIF, TIFF e ICO) e PDF (juntar, dividir, extrair e reordenar páginas, girar, comprimir, converter para imagens e a partir delas, extrair texto e imagens, OCR e senhas). Vídeo, áudio, documentos e os demais formatos chegam nas próximas versões.
+> **Situação:** a versão 0.3.0 converte e edita imagens (PNG, JPG, WebP, BMP, GIF, TIFF e ICO), PDF (juntar, dividir, extrair e reordenar páginas, girar, comprimir, converter para imagens e a partir delas, extrair texto e imagens, OCR e senhas), vídeo (converter, comprimir, redimensionar, cortar, juntar, extrair áudio, GIF e trocar ou remover a trilha de áudio) e áudio (converter, cortar, normalizar o volume e mono 16 kHz). Documentos e os demais formatos chegam nas próximas versões.
 
 ## Aviso sobre uso de IA
 
