@@ -132,7 +132,8 @@
       "sameFolder": "In the same folder as the original",
       "folder": "In a chosen folder",
       "chooseFolder": "Choose folder",
-      "noFolder": "No folder chosen"
+      "noFolder": "No folder chosen",
+      "folderRequired": "Choose the folder where files will be saved."
     },
     "suffix": {
       "label": "File name suffix",

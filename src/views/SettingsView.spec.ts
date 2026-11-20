@@ -3,6 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import SettingsView from './SettingsView.vue'
 import { setupI18n } from '../i18n'
+import ptBR from '../i18n/pt-BR.json'
 import type { Settings } from '../types/Settings'
 
 const invoke = vi.fn()
@@ -53,5 +54,19 @@ describe('SettingsView', () => {
       newSettings: expect.objectContaining({ outputSuffix: 'final' }),
     })
     expect(wrapper.find('[role="alert"]').text()).toContain('Valor inválido.')
+  })
+
+  it('asks for a folder before saving when "chosen folder" is selected', async () => {
+    invoke.mockResolvedValueOnce(saved)
+    const wrapper = mountSettings()
+    await flushPromises()
+
+    await wrapper.find('input[type="radio"][value="folder"]').setValue(true)
+    expect(wrapper.find('button[type="submit"]').attributes('disabled')).toBeDefined()
+    expect(wrapper.text()).toContain(ptBR.settings.output.folderRequired)
+
+    await wrapper.find('form').trigger('submit')
+    await flushPromises()
+    expect(invoke).not.toHaveBeenCalledWith('update_settings', expect.anything())
   })
 })

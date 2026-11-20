@@ -132,7 +132,8 @@
       "sameFolder": "Na mesma pasta do original",
       "folder": "Em uma pasta escolhida",
       "chooseFolder": "Escolher pasta",
-      "noFolder": "Nenhuma pasta escolhida"
+      "noFolder": "Nenhuma pasta escolhida",
+      "folderRequired": "Escolha a pasta onde os arquivos serão salvos."
     },
     "suffix": {
       "label": "Sufixo do nome do arquivo",

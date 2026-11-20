@@ -64,6 +64,7 @@ const outputMode = computed({
 const outputFolder = computed(() =>
   form.value?.output.mode === 'folder' ? form.value.output.path : '',
 )
+const missingFolder = computed(() => outputMode.value === 'folder' && !outputFolder.value)
 
 async function chooseFolder() {
   const selected = await open({ multiple: false, directory: true })
@@ -73,7 +74,7 @@ async function chooseFolder() {
 }
 
 async function save() {
-  if (!form.value) return
+  if (!form.value || missingFolder.value) return
   saving.value = true
   error.value = null
   saved.value = false
@@ -245,10 +246,15 @@ async function save() {
         <button
           type="submit"
           class="btn btn--primary"
-          :disabled="saving"
+          :disabled="saving || missingFolder"
         >
           {{ t('settings.save') }}
         </button>
+        <span
+          v-if="missingFolder"
+          class="settings__problem"
+          role="status"
+        >{{ t('settings.output.folderRequired') }}</span>
         <span
           v-if="saved"
           class="settings__saved"
@@ -308,5 +314,10 @@ async function save() {
 
 .settings__saved {
   color: var(--color-success);
+}
+
+.settings__problem {
+  color: var(--color-warning);
+  font-size: 0.875rem;
 }
 </style>
