@@ -16,6 +16,7 @@ function info(path: string): FileInfo {
     category: image ? 'image' : 'audio',
     image: image ? { width: 1, height: 1, format: 'png' } : null,
     pdf: null,
+    media: null,
   }
 }
 

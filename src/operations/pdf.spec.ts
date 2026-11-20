@@ -19,6 +19,7 @@ function pdf(name: string, pages: number | null = 10, needsPassword = false): Fi
     category: 'pdf',
     image: null,
     pdf: { pages, encrypted: needsPassword, needsPassword },
+    media: null,
   }
 }
 

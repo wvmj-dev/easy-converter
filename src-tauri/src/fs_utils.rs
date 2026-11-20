@@ -156,7 +156,7 @@ pub fn output_file_name(input: &Path, suffix: &str, ext: &str) -> String {
 
 /// Basic information about a file chosen by the user, returned by `probe_file`.
 /// Details such as pages, duration and codecs are added by each phase.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
+#[derive(Debug, Clone, PartialEq, Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export)]
 pub struct FileInfo {
@@ -170,6 +170,8 @@ pub struct FileInfo {
     pub image: Option<ImageInfo>,
     /// Pages and protection, for PDFs (filled in by `probe_file` with qpdf).
     pub pdf: Option<crate::tools::qpdf::PdfInfo>,
+    /// Duration and tracks, for video and audio (filled in by `probe_file` with ffprobe).
+    pub media: Option<crate::tools::ffmpeg::MediaInfo>,
 }
 
 /// Reads the metadata of a file received from the frontend.
@@ -198,6 +200,7 @@ pub fn probe(path: &Path) -> AppResult<FileInfo> {
         category,
         image,
         pdf: None,
+        media: None,
     })
 }
 
@@ -211,7 +214,7 @@ pub fn detect_category(ext: &str) -> Option<JobCategory> {
         "mp4" | "mkv" | "mov" | "avi" | "webm" | "m4v" | "wmv" | "flv" | "mpg" | "mpeg" | "ts"
         | "3gp" => JobCategory::Video,
         "mp3" | "wav" | "flac" | "ogg" | "oga" | "opus" | "m4a" | "aac" | "wma" | "aiff"
-        | "aif" => JobCategory::Audio,
+        | "aif" | "mka" => JobCategory::Audio,
         "doc" | "docx" | "odt" | "rtf" | "txt" | "md" | "markdown" | "html" | "htm" => {
             JobCategory::Document
         }

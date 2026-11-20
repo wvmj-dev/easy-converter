@@ -25,6 +25,7 @@ function image(name: string, format: 'png' | 'gif' = 'png'): FileInfo {
     category: 'image',
     image: { width: 200, height: 100, format },
     pdf: null,
+    media: null,
   }
 }
 

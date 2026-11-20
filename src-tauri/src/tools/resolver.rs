@@ -117,6 +117,14 @@ impl ToolBox {
             .unwrap_or_default()
     }
 
+    /// FFmpeg encoders, or `None` when the list could not be read (then every encoder is
+    /// assumed to exist and FFmpeg itself reports a missing one).
+    pub fn ffmpeg_encoders(&self) -> Option<&[String]> {
+        self.available(ToolId::Ffmpeg)
+            .ok()
+            .and_then(|s| s.encoders.as_deref())
+    }
+
     /// Builds a command for an available executable tool, with its environment prepared.
     pub fn command(&self, id: ToolId) -> AppResult<Command> {
         let status = self.available(id)?;

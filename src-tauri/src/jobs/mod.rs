@@ -7,6 +7,9 @@ pub mod queue;
 use serde::Deserialize;
 use ts_rs::TS;
 
+use crate::ops::audio::{
+    AudioConvertParams, AudioMonoParams, AudioNormalizeParams, AudioTrimParams,
+};
 use crate::ops::image::{
     ImageCompressParams, ImageConvertParams, ImageCropParams, ImageFlipParams, ImageMergeParams,
     ImageResizeParams, ImageRotateParams, ImageStripMetadataParams,
@@ -15,6 +18,10 @@ use crate::ops::pdf::{
     ImagesToPdfParams, PdfCompressParams, PdfExtractImagesParams, PdfExtractTextParams,
     PdfMergeParams, PdfOcrParams, PdfProtectParams, PdfRotateParams, PdfSelectPagesParams,
     PdfSplitParams, PdfToImagesParams, PdfUnlockParams,
+};
+use crate::ops::video::{
+    VideoAudioTrackParams, VideoCompressParams, VideoConvertParams, VideoExtractAudioParams,
+    VideoMergeParams, VideoResizeParams, VideoToGifParams, VideoTrimParams,
 };
 
 pub use events::{EventSink, JobEvent, TauriEventSink};
@@ -49,4 +56,16 @@ pub enum JobRequest {
     PdfUnlock(PdfUnlockParams),
     PdfCompress(PdfCompressParams),
     PdfOcr(PdfOcrParams),
+    VideoConvert(VideoConvertParams),
+    VideoTrim(VideoTrimParams),
+    VideoCompress(VideoCompressParams),
+    VideoResize(VideoResizeParams),
+    VideoExtractAudio(VideoExtractAudioParams),
+    VideoToGif(VideoToGifParams),
+    VideoMerge(VideoMergeParams),
+    VideoAudioTrack(VideoAudioTrackParams),
+    AudioConvert(AudioConvertParams),
+    AudioTrim(AudioTrimParams),
+    AudioNormalize(AudioNormalizeParams),
+    AudioMono16k(AudioMonoParams),
 }

@@ -12,7 +12,7 @@ use crate::jobs::{JobCategory, JobId, JobQueue, JobRequest};
 use crate::ops;
 use crate::settings::{Settings, SettingsState};
 use crate::tools::resolver::ResolveContext;
-use crate::tools::{qpdf, ToolBox, ToolRegistry, ToolStatus};
+use crate::tools::{ffmpeg, qpdf, ToolBox, ToolId, ToolRegistry, ToolStatus};
 
 pub fn resolve_context<R: Runtime>(app: &AppHandle<R>, settings: &Settings) -> ResolveContext {
     ResolveContext {
@@ -87,9 +87,19 @@ pub async fn probe_file<R: Runtime>(
     let mut info = tokio::task::spawn_blocking(move || fs_utils::probe(&path))
         .await
         .map_err(|err| AppError::Internal(err.to_string()))??;
-    if info.category == Some(JobCategory::Pdf) {
-        let tools = toolbox(&app, &registry, &settings.get()).await;
-        info.pdf = qpdf::info(&tools, &info.path).await;
+    match info.category {
+        Some(JobCategory::Pdf) => {
+            let tools = toolbox(&app, &registry, &settings.get()).await;
+            info.pdf = qpdf::info(&tools, &info.path).await;
+        }
+        Some(JobCategory::Video | JobCategory::Audio) => {
+            let tools = toolbox(&app, &registry, &settings.get()).await;
+            // A file ffprobe cannot read is refused now instead of failing every job later.
+            if tools.is_available(ToolId::Ffprobe) {
+                info.media = Some(ffmpeg::probe(&tools, &info.path).await?);
+            }
+        }
+        _ => {}
     }
     Ok(info)
 }

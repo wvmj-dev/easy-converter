@@ -1,8 +1,11 @@
 //! Operations. Each `JobRequest` variant is turned into a [`JobSpec`] here, with its
 //! parameters validated, and implemented in `ops/<category>.rs`.
 
+pub mod audio;
 pub mod image;
+pub mod media;
 pub mod pdf;
+pub mod video;
 
 use std::future::Future;
 use std::path::{Path, PathBuf};
@@ -47,6 +50,18 @@ pub fn build_job(request: JobRequest, ctx: &OpsContext) -> AppResult<JobSpec> {
         JobRequest::PdfUnlock(params) => pdf::unlock(params, &planner, tools),
         JobRequest::PdfCompress(params) => pdf::compress(params, &planner, tools),
         JobRequest::PdfOcr(params) => pdf::ocr(params, &planner, tools),
+        JobRequest::VideoConvert(params) => video::convert(params, &planner, tools),
+        JobRequest::VideoTrim(params) => video::trim(params, &planner, tools),
+        JobRequest::VideoCompress(params) => video::compress(params, &planner, tools),
+        JobRequest::VideoResize(params) => video::resize(params, &planner, tools),
+        JobRequest::VideoExtractAudio(params) => video::extract_audio(params, &planner, tools),
+        JobRequest::VideoToGif(params) => video::to_gif(params, &planner, tools),
+        JobRequest::VideoMerge(params) => video::merge(params, &planner, tools),
+        JobRequest::VideoAudioTrack(params) => video::audio_track(params, &planner, tools),
+        JobRequest::AudioConvert(params) => audio::convert(params, &planner, tools),
+        JobRequest::AudioTrim(params) => audio::trim(params, &planner, tools),
+        JobRequest::AudioNormalize(params) => audio::normalize(params, &planner, tools),
+        JobRequest::AudioMono16k(params) => audio::mono_16k(params, &planner, tools),
     }
 }
 

@@ -40,6 +40,7 @@ function pdf(name: string): FileInfo {
     category: 'pdf',
     image: null,
     pdf: { pages: 3, encrypted: false, needsPassword: false },
+    media: null,
   }
 }
 
