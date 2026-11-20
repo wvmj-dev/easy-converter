@@ -47,6 +47,12 @@ onMounted(() => {
       >
         {{ t('nav.settings') }}
       </RouterLink>
+      <RouterLink
+        class="sidebar__link"
+        to="/about"
+      >
+        {{ t('nav.about') }}
+      </RouterLink>
     </nav>
     <main class="content">
       <RouterView />

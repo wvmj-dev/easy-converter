@@ -7,7 +7,8 @@
     "home": "Home",
     "tools": "Tools",
     "settings": "Settings",
-    "image": "Images"
+    "image": "Images",
+    "about": "About"
   },
   "common": {
     "loading": "Loading…",
@@ -306,6 +307,26 @@
       "matchSize": "Match sizes (shrinks the larger ones, never enlarges)",
       "spacing": "Gap between images (px)",
       "order": "Images follow the order of the list. Use the arrows to reorder."
+    }
+  },
+  "about": {
+    "version": "Version {version}",
+    "description": "Converts and edits files on your computer: images today; PDF, video, audio, documents and other formats in upcoming versions.",
+    "privacy": "No file leaves your computer. The app makes no network requests and has no telemetry, usage analytics or automatic updates.",
+    "license": {
+      "title": "License",
+      "text": "Free software, distributed under the GNU GPL version 3. You may use, study, modify and redistribute the program under the terms of that license. It comes with no warranty."
+    },
+    "ai": {
+      "title": "Notice about AI use",
+      "text": "This project was developed with the help of artificial intelligence tools. The code may contain bugs, security flaws or unexpected behavior. Review the code before using it with important files and keep backups of your data. The software is provided without warranty, under the GPL-3.0 license."
+    },
+    "credits": {
+      "title": "Credits",
+      "app": "Used to build the app",
+      "bundled": "Tools included in the Windows installer (installed by the system on Linux)",
+      "optional": "Optional tools (not included; used when installed)",
+      "details": "Exact versions, license texts and source code links are in THIRD_PARTY_LICENSES.md, in the project repository. The license texts of the included tools are also in the app installation folder."
     }
   }
 }

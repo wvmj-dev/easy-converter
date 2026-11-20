@@ -7,7 +7,8 @@
     "home": "Início",
     "tools": "Ferramentas",
     "settings": "Configurações",
-    "image": "Imagens"
+    "image": "Imagens",
+    "about": "Sobre"
   },
   "common": {
     "loading": "Carregando…",
@@ -306,6 +307,26 @@
       "matchSize": "Igualar tamanhos (reduz as maiores, sem ampliar)",
       "spacing": "Espaço entre imagens (px)",
       "order": "As imagens seguem a ordem da lista. Use as setas para reordenar."
+    }
+  },
+  "about": {
+    "version": "Versão {version}",
+    "description": "Converte e edita arquivos no seu computador: imagens hoje; PDF, vídeo, áudio, documentos e outros formatos nas próximas versões.",
+    "privacy": "Nenhum arquivo sai do seu computador. O app não faz requisições de rede, não tem telemetria, análise de uso nem atualização automática.",
+    "license": {
+      "title": "Licença",
+      "text": "Software livre e gratuito, distribuído sob a licença GNU GPL versão 3. Você pode usar, estudar, modificar e redistribuir o programa nos termos dessa licença. Ele é fornecido sem nenhuma garantia."
+    },
+    "ai": {
+      "title": "Aviso sobre uso de IA",
+      "text": "Este projeto foi desenvolvido com auxílio de ferramentas de inteligência artificial. O código pode conter erros, falhas de segurança ou comportamentos inesperados. Revise o código antes de usar com arquivos importantes e mantenha backups dos seus dados. O software é fornecido sem garantias, conforme a licença GPL-3.0."
+    },
+    "credits": {
+      "title": "Créditos",
+      "app": "Usados para construir o app",
+      "bundled": "Ferramentas incluídas no instalador do Windows (no Linux, instaladas pelo sistema)",
+      "optional": "Ferramentas opcionais (não incluídas; usadas se estiverem instaladas)",
+      "details": "As versões exatas, os textos das licenças e os links do código-fonte estão no arquivo THIRD_PARTY_LICENSES.md, no repositório do projeto. Os textos das licenças das ferramentas incluídas também ficam na pasta de instalação do app."
     }
   }
 }

@@ -7,6 +7,7 @@ export const routes: RouteRecordRaw[] = [
   { path: '/image', name: 'image', component: () => import('../views/ImageView.vue') },
   { path: '/tools', name: 'tools', component: () => import('../views/ToolsView.vue') },
   { path: '/settings', name: 'settings', component: () => import('../views/SettingsView.vue') },
+  { path: '/about', name: 'about', component: () => import('../views/AboutView.vue') },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
