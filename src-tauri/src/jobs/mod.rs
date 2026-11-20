@@ -7,6 +7,11 @@ pub mod queue;
 use serde::Deserialize;
 use ts_rs::TS;
 
+use crate::ops::image::{
+    ImageCompressParams, ImageConvertParams, ImageCropParams, ImageFlipParams, ImageMergeParams,
+    ImageResizeParams, ImageRotateParams, ImageStripMetadataParams,
+};
+
 pub use events::{EventSink, JobEvent, TauriEventSink};
 pub use job::{Job, JobCategory, JobId, JobStatus};
 pub use queue::{JobContext, JobQueue, JobSpec, PlannedOutput};
@@ -18,4 +23,13 @@ pub use queue::{JobContext, JobQueue, JobSpec, PlannedOutput};
 #[derive(Debug, Clone, Deserialize, TS)]
 #[serde(tag = "type", rename_all = "camelCase")]
 #[ts(export)]
-pub enum JobRequest {}
+pub enum JobRequest {
+    ImageConvert(ImageConvertParams),
+    ImageResize(ImageResizeParams),
+    ImageCrop(ImageCropParams),
+    ImageRotate(ImageRotateParams),
+    ImageFlip(ImageFlipParams),
+    ImageCompress(ImageCompressParams),
+    ImageStripMetadata(ImageStripMetadataParams),
+    ImageMerge(ImageMergeParams),
+}

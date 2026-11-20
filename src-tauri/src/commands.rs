@@ -25,8 +25,16 @@ pub fn resolve_context<R: Runtime>(app: &AppHandle<R>, settings: &Settings) -> R
 }
 
 #[tauri::command]
-pub async fn enqueue_job(request: JobRequest, queue: State<'_, JobQueue>) -> AppResult<JobId> {
-    let spec = ops::build_job(request)?;
+pub async fn enqueue_job(
+    request: JobRequest,
+    queue: State<'_, JobQueue>,
+    settings: State<'_, Arc<SettingsState>>,
+) -> AppResult<JobId> {
+    let settings = settings.get();
+    // Validation touches the file system (canonical paths, format sniffing).
+    let spec = tokio::task::spawn_blocking(move || ops::build_job(request, &settings))
+        .await
+        .map_err(|err| AppError::Internal(err.to_string()))??;
     queue.enqueue(spec)
 }
 

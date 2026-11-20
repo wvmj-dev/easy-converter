@@ -13,6 +13,12 @@ pub enum AppError {
     NotFound(String),
     #[error("invalid parameter: {0}")]
     InvalidParameter(String),
+    /// The file is damaged or its content is not in a supported format.
+    #[error("invalid or unsupported file: {0}")]
+    InvalidFile(String),
+    /// The input or the requested output exceeds the size limits that protect memory.
+    #[error("too large: {0}")]
+    TooLarge(String),
     #[error("tool not available: {0}")]
     ToolMissing(String),
     #[error("external process failed: {0}")]
@@ -40,6 +46,8 @@ pub enum ErrorCode {
     InvalidPath,
     NotFound,
     InvalidParameter,
+    InvalidFile,
+    TooLarge,
     ToolMissing,
     ProcessFailed,
     Timeout,
@@ -64,6 +72,8 @@ impl AppError {
             AppError::InvalidPath(_) => ErrorCode::InvalidPath,
             AppError::NotFound(_) => ErrorCode::NotFound,
             AppError::InvalidParameter(_) => ErrorCode::InvalidParameter,
+            AppError::InvalidFile(_) => ErrorCode::InvalidFile,
+            AppError::TooLarge(_) => ErrorCode::TooLarge,
             AppError::ToolMissing(_) => ErrorCode::ToolMissing,
             AppError::ProcessFailed(_) => ErrorCode::ProcessFailed,
             AppError::Timeout => ErrorCode::Timeout,

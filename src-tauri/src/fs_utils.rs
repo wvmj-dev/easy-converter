@@ -15,6 +15,7 @@ use ts_rs::TS;
 
 use crate::error::{AppError, AppResult};
 use crate::jobs::{JobCategory, JobId};
+use crate::ops::image::ImageInfo;
 
 /// Characters that are invalid in file names on Windows (and therefore avoided everywhere).
 const FORBIDDEN_NAME_CHARS: &[char] = &['<', '>', ':', '"', '/', '\\', '|', '?', '*'];
@@ -126,6 +127,8 @@ pub struct FileInfo {
     pub size: u64,
     /// `null` when the format is not supported.
     pub category: Option<JobCategory>,
+    /// Size and real format, for images whose header could be read.
+    pub image: Option<ImageInfo>,
 }
 
 /// Reads the metadata of a file received from the frontend.
@@ -138,12 +141,21 @@ pub fn probe(path: &Path) -> AppResult<FileInfo> {
         .file_name()
         .map(|n| n.to_string_lossy().into_owned())
         .unwrap_or_default();
+    // An image that cannot be read is refused now instead of failing every job later.
+    let image = match category {
+        Some(JobCategory::Image) => Some(
+            crate::ops::image::probe(&path)
+                .ok_or_else(|| AppError::InvalidFile("not a supported image format".into()))?,
+        ),
+        _ => None,
+    };
     Ok(FileInfo {
         path,
         name,
         extension,
         size,
         category,
+        image,
     })
 }
 
@@ -442,14 +454,20 @@ mod tests {
     #[test]
     fn probe_detects_category_and_size() {
         let dir = scratch("probe");
-        let file = dir.join("Photo.JPG");
+        let file = dir.join("Report.PDF");
         fs::write(&file, [0u8; 10]).unwrap();
 
         let info = probe(&file).unwrap();
-        assert_eq!(info.name, "Photo.JPG");
-        assert_eq!(info.extension.as_deref(), Some("jpg"));
+        assert_eq!(info.name, "Report.PDF");
+        assert_eq!(info.extension.as_deref(), Some("pdf"));
         assert_eq!(info.size, 10);
-        assert_eq!(info.category, Some(JobCategory::Image));
+        assert_eq!(info.category, Some(JobCategory::Pdf));
+        assert_eq!(info.image, None);
+
+        // An image extension on something that is not an image is refused up front.
+        let fake = dir.join("Photo.JPG");
+        fs::write(&fake, b"not an image").unwrap();
+        assert!(matches!(probe(&fake), Err(AppError::InvalidFile(_))));
 
         let other = dir.join("notes.xyz");
         fs::write(&other, "").unwrap();

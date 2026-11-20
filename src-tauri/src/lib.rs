@@ -1,15 +1,11 @@
-// Until the first operation lands (M2), the job API used by operations (job context,
-// progress, tool commands, output naming) has no caller yet.
-// TODO(M2): remove this attribute.
-#![allow(dead_code, unused_imports)]
-
 mod commands;
-mod error;
-mod fs_utils;
-mod jobs;
-mod ops;
-mod settings;
-mod tools;
+// Public so the integration tests in `tests/` can drive operations end to end.
+pub mod error;
+pub mod fs_utils;
+pub mod jobs;
+pub mod ops;
+pub mod settings;
+pub mod tools;
 
 use std::sync::Arc;
 use std::time::Duration;
