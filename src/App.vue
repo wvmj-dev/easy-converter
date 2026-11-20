@@ -43,6 +43,18 @@ onMounted(() => {
       </RouterLink>
       <RouterLink
         class="sidebar__link"
+        to="/video"
+      >
+        {{ t('nav.video') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
+        to="/audio"
+      >
+        {{ t('nav.audio') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
         to="/tools"
       >
         {{ t('nav.tools') }}

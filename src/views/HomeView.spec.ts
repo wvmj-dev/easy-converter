@@ -66,20 +66,20 @@ describe('HomeView', () => {
 
   it('tells which categories have no operations yet', async () => {
     invoke.mockResolvedValue({
-      path: '/home/u/song.mp3',
-      name: 'song.mp3',
-      extension: 'mp3',
+      path: '/home/u/book.epub',
+      name: 'book.epub',
+      extension: 'epub',
       size: 10,
-      category: 'audio',
+      category: 'ebook',
       image: null,
     })
     const wrapper = mountHome()
     await flushPromises()
 
-    dropHandler?.({ payload: { type: 'drop', paths: ['/home/u/song.mp3'] } })
+    dropHandler?.({ payload: { type: 'drop', paths: ['/home/u/book.epub'] } })
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Áudio')
+    expect(wrapper.text()).toContain('Ebook')
     expect(wrapper.findComponent(RouterLinkStub).exists()).toBe(false)
   })
 

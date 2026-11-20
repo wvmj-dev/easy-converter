@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import type { FileInfo } from '../types/FileInfo'
 import { formatBytes } from '../utils/format'
+import { formatDuration } from '../operations/media'
 
 withDefaults(defineProps<{ files: FileInfo[]; reorderable?: boolean }>(), { reorderable: false })
 const emit = defineEmits<{ remove: [path: string]; clear: []; move: [path: string, delta: -1 | 1] }>()
@@ -43,6 +44,9 @@ const { t, locale } = useI18n()
             {{ formatBytes(file.size, locale) }}
             <span v-if="file.image">{{ file.image.width }} × {{ file.image.height }} px</span>
             <span v-if="file.pdf?.pages != null">{{ t('files.pages', file.pdf.pages) }}</span>
+            <span v-if="file.media?.durationMs != null">{{ formatDuration(file.media.durationMs) }}</span>
+            <span v-if="file.media?.video">{{ file.media.video.width }} × {{ file.media.video.height }}</span>
+            <span v-if="file.media && file.media.audio.length === 0">{{ t('files.noAudio') }}</span>
             <span v-if="file.pdf?.needsPassword">{{ t('files.locked') }}</span>
             <span v-else-if="file.pdf?.encrypted">{{ t('files.restricted') }}</span>
           </span>

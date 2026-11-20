@@ -9,7 +9,9 @@
     "settings": "Configurações",
     "image": "Imagens",
     "about": "Sobre",
-    "pdf": "PDF"
+    "pdf": "PDF",
+    "video": "Vídeo",
+    "audio": "Áudio"
   },
   "common": {
     "loading": "Carregando…",
@@ -22,7 +24,9 @@
     "next": "Próximo passo",
     "open": {
       "image": "Editar {n} imagem | Editar {n} imagens",
-      "pdf": "Editar {n} PDF | Editar {n} PDFs"
+      "pdf": "Editar {n} PDF | Editar {n} PDFs",
+      "video": "Editar {n} vídeo | Editar {n} vídeos",
+      "audio": "Editar {n} áudio | Editar {n} áudios"
     }
   },
   "dropZone": {
@@ -41,7 +45,8 @@
     "moveDown": "Mover {name} para baixo",
     "pages": "{n} página | {n} páginas",
     "locked": "Protegido por senha",
-    "restricted": "Com restrições"
+    "restricted": "Com restrições",
+    "noAudio": "Sem áudio"
   },
   "categories": {
     "image": "Imagem",
@@ -507,6 +512,174 @@
       "bundled": "Ferramentas incluídas no instalador do Windows (no Linux, instaladas pelo sistema)",
       "optional": "Ferramentas opcionais (não incluídas; usadas se estiverem instaladas)",
       "details": "As versões exatas, os textos das licenças e os links do código-fonte estão no arquivo THIRD_PARTY_LICENSES.md, no repositório do projeto. Os textos das licenças das ferramentas incluídas também ficam na pasta de instalação do app."
+    }
+  },
+  "media": {
+    "missingTool": "Precisa do {tool}, que não foi encontrado. Veja a tela Ferramentas.",
+    "audioFormat": "Formato do áudio",
+    "audioFormats": {
+      "original": "Original (sem recodificar)",
+      "mp3": "MP3",
+      "m4a": "M4A (AAC)",
+      "ogg": "OGG (Vorbis)",
+      "opus": "Opus",
+      "flac": "FLAC (sem perdas)",
+      "wav": "WAV"
+    },
+    "time": {
+      "label": "Tempo",
+      "start": "Início",
+      "end": "Fim",
+      "startPlaceholder": "0:00",
+      "endPlaceholder": "Fim do arquivo",
+      "help": "Segundos (90), m:ss (1:30) ou h:mm:ss (1:02:03,5). Deixe o fim vazio para ir até o final do arquivo.",
+      "invalid": "\"{value}\" não é um tempo válido.",
+      "order": "O fim deve vir depois do início.",
+      "pastEnd": "O início passa do fim do arquivo ({duration})."
+    }
+  },
+  "video": {
+    "title": "Vídeo",
+    "subtitle": "Converter, comprimir, redimensionar, cortar, juntar, GIF e trilhas de áudio. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é vídeo e fica fora desta tela. | {n} arquivos da lista não são vídeos e ficam fora desta tela.",
+    "noNewFiles": "Nenhum vídeo novo foi adicionado: os arquivos já estão na lista ou não são vídeos.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "convert": {
+        "label": "Converter",
+        "description": "Muda o formato do vídeo."
+      },
+      "compress": {
+        "label": "Comprimir",
+        "description": "Deixa o arquivo menor."
+      },
+      "resize": {
+        "label": "Redimensionar",
+        "description": "Muda a resolução."
+      },
+      "trim": {
+        "label": "Cortar",
+        "description": "Mantém só um trecho do vídeo."
+      },
+      "extractAudio": {
+        "label": "Extrair áudio",
+        "description": "Salva o som como arquivo de áudio."
+      },
+      "toGif": {
+        "label": "Vídeo para GIF",
+        "description": "Cria um GIF animado."
+      },
+      "merge": {
+        "label": "Juntar",
+        "description": "Une vários vídeos em um só.",
+        "help": "Os vídeos são unidos na ordem da lista. Use as setas para mudar. Vídeos do mesmo tipo são unidos sem recodificar; senão ficam com o tamanho do primeiro."
+      },
+      "audioTrack": {
+        "label": "Trilha de áudio",
+        "description": "Remove ou troca o som."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione arquivos de vídeo primeiro.",
+      "needsTwo": "Escolha pelo menos 2 vídeos.",
+      "tooMany": "No máximo {max} arquivos por vez.",
+      "noAudio": "{name} não tem áudio."
+    },
+    "containers": {
+      "mp4": "MP4 (H.264)",
+      "mkv": "MKV",
+      "webm": "WebM (VP9)",
+      "mov": "MOV",
+      "avi": "AVI"
+    },
+    "convert": {
+      "label": "Formato",
+      "help": "As trilhas que o novo formato aceita são copiadas sem perda; as outras são recodificadas.",
+      "noEncoder": "Este FFmpeg não consegue criar vídeos {format}. Veja a tela Ferramentas."
+    },
+    "compress": {
+      "label": "Qualidade",
+      "levels": {
+        "high": "Alta (arquivo maior)",
+        "medium": "Média",
+        "low": "Baixa (arquivo menor)"
+      },
+      "help": "O vídeo é recodificado. Se o resultado não ficar menor, o original é mantido."
+    },
+    "resize": {
+      "label": "Altura",
+      "option": "{height}p",
+      "help": "A largura acompanha a proporção original.",
+      "invalid": "A altura deve ser um número par entre {min} e {max}."
+    },
+    "trim": {
+      "accurate": "Corte exato (mais lento, recodifica)",
+      "fastHelp": "Rápido e sem perda, mas o corte começa no quadro-chave mais próximo, que pode ficar um pouco antes do tempo escolhido.",
+      "accurateHelp": "Corta exatamente nos tempos escolhidos, recodificando o vídeo.",
+      "empty": "Informe o início ou o fim."
+    },
+    "extractAudio": {
+      "help": "Só a primeira trilha de áudio é salva. \"Original\" mantém o som exatamente como está."
+    },
+    "toGif": {
+      "width": "Largura máxima (pixels)",
+      "fps": "Quadros por segundo",
+      "rangeHelp": "Opcional. O GIF pode ter no máximo {max} segundos.",
+      "invalidFps": "Os quadros por segundo devem ficar entre 1 e {max}.",
+      "invalidWidth": "A largura deve ficar entre {min} e {max} pixels.",
+      "tooLong": "O GIF pode ter no máximo {max} segundos. Escolha um trecho menor."
+    },
+    "audioTrack": {
+      "label": "O que fazer",
+      "modes": {
+        "remove": "Remover o áudio",
+        "replace": "Trocar por outro arquivo"
+      },
+      "choose": "Escolher arquivo de áudio",
+      "filter": "Áudio",
+      "none": "Nenhum arquivo escolhido.",
+      "replaceHelp": "O vídeo mantém a duração: um áudio mais longo é cortado.",
+      "chooseAudio": "Escolha o novo arquivo de áudio."
+    }
+  },
+  "audio": {
+    "title": "Áudio",
+    "subtitle": "Converter, cortar, normalizar o volume e preparar para transcrição. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é áudio e fica fora desta tela. | {n} arquivos da lista não são áudio e ficam fora desta tela.",
+    "noNewFiles": "Nenhum áudio novo foi adicionado: os arquivos já estão na lista ou não são áudio.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "convert": {
+        "label": "Converter",
+        "description": "Muda o formato do áudio."
+      },
+      "trim": {
+        "label": "Cortar",
+        "description": "Mantém só um trecho do áudio."
+      },
+      "normalize": {
+        "label": "Normalizar volume",
+        "description": "Ajusta a altura do som (EBU R128).",
+        "help": "Analisa o arquivo inteiro e aplica um ganho único, levando-o à altura usada por serviços de streaming, sem mudar a dinâmica."
+      },
+      "mono16k": {
+        "label": "Mono 16 kHz",
+        "description": "WAV para ferramentas de transcrição.",
+        "help": "Cria um WAV mono, 16 kHz e 16 bits, o formato esperado por ferramentas de reconhecimento de fala."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione arquivos de áudio primeiro."
+    },
+    "convert": {
+      "bitrate": "Taxa de bits",
+      "auto": "Automática",
+      "kbps": "{n} kbit/s",
+      "bitrateHelp": "Automática mantém o som como está quando o formato permite; senão usa 192 kbit/s."
     }
   }
 }

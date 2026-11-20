@@ -9,7 +9,9 @@
     "settings": "Settings",
     "image": "Images",
     "about": "About",
-    "pdf": "PDF"
+    "pdf": "PDF",
+    "video": "Video",
+    "audio": "Audio"
   },
   "common": {
     "loading": "Loading…",
@@ -22,7 +24,9 @@
     "next": "Next step",
     "open": {
       "image": "Edit {n} image | Edit {n} images",
-      "pdf": "Edit {n} PDF | Edit {n} PDFs"
+      "pdf": "Edit {n} PDF | Edit {n} PDFs",
+      "video": "Edit {n} video | Edit {n} videos",
+      "audio": "Edit {n} audio file | Edit {n} audio files"
     }
   },
   "dropZone": {
@@ -41,7 +45,8 @@
     "moveDown": "Move {name} down",
     "pages": "{n} page | {n} pages",
     "locked": "Password protected",
-    "restricted": "Restricted"
+    "restricted": "Restricted",
+    "noAudio": "No audio"
   },
   "categories": {
     "image": "Image",
@@ -507,6 +512,174 @@
       "bundled": "Tools included in the Windows installer (installed by the system on Linux)",
       "optional": "Optional tools (not included; used when installed)",
       "details": "Exact versions, license texts and source code links are in THIRD_PARTY_LICENSES.md, in the project repository. The license texts of the included tools are also in the app installation folder."
+    }
+  },
+  "media": {
+    "missingTool": "Needs {tool}, which was not found. See the Tools screen.",
+    "audioFormat": "Audio format",
+    "audioFormats": {
+      "original": "Original (no re-encoding)",
+      "mp3": "MP3",
+      "m4a": "M4A (AAC)",
+      "ogg": "OGG (Vorbis)",
+      "opus": "Opus",
+      "flac": "FLAC (lossless)",
+      "wav": "WAV"
+    },
+    "time": {
+      "label": "Time",
+      "start": "Start",
+      "end": "End",
+      "startPlaceholder": "0:00",
+      "endPlaceholder": "End of file",
+      "help": "Seconds (90), m:ss (1:30) or h:mm:ss (1:02:03.5). Leave the end empty to go to the end of the file.",
+      "invalid": "\"{value}\" is not a valid time.",
+      "order": "The end must come after the start.",
+      "pastEnd": "The start is past the end of the file ({duration})."
+    }
+  },
+  "video": {
+    "title": "Video",
+    "subtitle": "Convert, compress, resize, cut, join, GIF and audio tracks. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not a video and is left out of this screen. | {n} files in the list are not videos and are left out of this screen.",
+    "noNewFiles": "No new video was added: the files are already in the list or are not videos.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "convert": {
+        "label": "Convert",
+        "description": "Changes the video format."
+      },
+      "compress": {
+        "label": "Compress",
+        "description": "Makes the file smaller."
+      },
+      "resize": {
+        "label": "Resize",
+        "description": "Changes the resolution."
+      },
+      "trim": {
+        "label": "Cut",
+        "description": "Keeps only a part of the video."
+      },
+      "extractAudio": {
+        "label": "Extract audio",
+        "description": "Saves the sound as an audio file."
+      },
+      "toGif": {
+        "label": "Video to GIF",
+        "description": "Creates an animated GIF."
+      },
+      "merge": {
+        "label": "Join",
+        "description": "Combines several videos into one.",
+        "help": "Videos are joined in list order. Use the arrows to change it. Videos of the same kind are joined without re-encoding; otherwise they take the size of the first one."
+      },
+      "audioTrack": {
+        "label": "Audio track",
+        "description": "Removes or replaces the sound."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add video files first.",
+      "needsTwo": "Choose at least 2 videos.",
+      "tooMany": "At most {max} files at a time.",
+      "noAudio": "{name} has no audio."
+    },
+    "containers": {
+      "mp4": "MP4 (H.264)",
+      "mkv": "MKV",
+      "webm": "WebM (VP9)",
+      "mov": "MOV",
+      "avi": "AVI"
+    },
+    "convert": {
+      "label": "Format",
+      "help": "Tracks the new format accepts are copied without loss; the others are re-encoded.",
+      "noEncoder": "This FFmpeg cannot create {format} videos. See the Tools screen."
+    },
+    "compress": {
+      "label": "Quality",
+      "levels": {
+        "high": "High (bigger file)",
+        "medium": "Medium",
+        "low": "Low (smaller file)"
+      },
+      "help": "The video is re-encoded. If the result is not smaller, the original is kept."
+    },
+    "resize": {
+      "label": "Height",
+      "option": "{height}p",
+      "help": "The width follows the original aspect ratio.",
+      "invalid": "The height must be an even number between {min} and {max}."
+    },
+    "trim": {
+      "accurate": "Exact cut (slower, re-encodes)",
+      "fastHelp": "Fast and without loss, but the cut starts at the nearest key frame, which may be a little before the chosen time.",
+      "accurateHelp": "Cuts exactly at the chosen times, re-encoding the video.",
+      "empty": "Enter a start or an end time."
+    },
+    "extractAudio": {
+      "help": "Only the first audio track is saved. \"Original\" keeps the sound exactly as it is."
+    },
+    "toGif": {
+      "width": "Maximum width (pixels)",
+      "fps": "Frames per second",
+      "rangeHelp": "Optional. A GIF can be at most {max} seconds long.",
+      "invalidFps": "Frames per second must be between 1 and {max}.",
+      "invalidWidth": "The width must be between {min} and {max} pixels.",
+      "tooLong": "A GIF can be at most {max} seconds long. Choose a shorter part."
+    },
+    "audioTrack": {
+      "label": "What to do",
+      "modes": {
+        "remove": "Remove the audio",
+        "replace": "Replace with another file"
+      },
+      "choose": "Choose audio file",
+      "filter": "Audio",
+      "none": "No file chosen.",
+      "replaceHelp": "The video keeps its length: longer audio is cut.",
+      "chooseAudio": "Choose the new audio file."
+    }
+  },
+  "audio": {
+    "title": "Audio",
+    "subtitle": "Convert, cut, normalize volume and prepare for transcription. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not audio and is left out of this screen. | {n} files in the list are not audio and are left out of this screen.",
+    "noNewFiles": "No new audio file was added: the files are already in the list or are not audio.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "convert": {
+        "label": "Convert",
+        "description": "Changes the audio format."
+      },
+      "trim": {
+        "label": "Cut",
+        "description": "Keeps only a part of the audio."
+      },
+      "normalize": {
+        "label": "Normalize volume",
+        "description": "Evens out the loudness (EBU R128).",
+        "help": "Analyses the whole file and applies one gain, bringing it to the loudness used by streaming services, without changing its dynamics."
+      },
+      "mono16k": {
+        "label": "Mono 16 kHz",
+        "description": "WAV for transcription tools.",
+        "help": "Creates a mono, 16 kHz, 16-bit WAV file, the format speech recognition tools expect."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add audio files first."
+    },
+    "convert": {
+      "bitrate": "Bitrate",
+      "auto": "Automatic",
+      "kbps": "{n} kbit/s",
+      "bitrateHelp": "Automatic keeps the sound as it is when the format allows; otherwise uses 192 kbit/s."
     }
   }
 }

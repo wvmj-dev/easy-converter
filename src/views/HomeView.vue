@@ -10,7 +10,12 @@ import { errorMessage } from '../utils/errors'
 import { baseName } from '../utils/format'
 
 /** Categories that already have a screen with operations. */
-const SCREENS: Partial<Record<JobCategory, string>> = { image: '/image', pdf: '/pdf' }
+const SCREENS: Partial<Record<JobCategory, string>> = {
+  image: '/image',
+  pdf: '/pdf',
+  video: '/video',
+  audio: '/audio',
+}
 
 const { t } = useI18n()
 const store = useFilesStore()
