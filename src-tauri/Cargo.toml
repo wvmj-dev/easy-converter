@@ -28,6 +28,10 @@ ts-rs = "12"
 # Only the formats the app reads and writes; the default set pulls AVIF/EXR encoders
 # (and their large dependency trees) that are out of scope for now.
 image = { version = "0.25.10", default-features = false, features = ["png", "jpeg", "webp", "bmp", "gif", "tiff", "ico"] }
+# PDF: lopdf builds PDFs from images; pdfium-render drives the bundled PDFium library,
+# always inside an isolated worker process (see `pdf_worker`).
+lopdf = { version = "0.47.0", default-features = false }
+pdfium-render = { version = "0.9.5", default-features = false, features = ["pdfium_latest", "image_latest"] }
 
 [dev-dependencies]
 tokio = { version = "1", features = ["process", "time", "sync", "io-util", "macros", "rt", "rt-multi-thread", "test-util"] }
