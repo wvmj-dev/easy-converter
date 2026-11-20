@@ -226,7 +226,7 @@ async fn strip_metadata_rejects_formats_without_support() {
     let request: JobRequest =
         serde_json::from_value(json!({ "type": "imageStripMetadata", "input": bmp })).unwrap();
     assert!(matches!(
-        ops::build_job(request, &env.settings),
+        ops::build_job(request, &env.ops_context()),
         Err(AppError::InvalidParameter(_))
     ));
 }
@@ -289,7 +289,7 @@ async fn rejects_invalid_requests_before_queueing() {
 
     let build = |value: serde_json::Value| {
         let request: JobRequest = serde_json::from_value(value)?;
-        Ok::<_, serde_json::Error>(ops::build_job(request, &env.settings))
+        Ok::<_, serde_json::Error>(ops::build_job(request, &env.ops_context()))
     };
 
     let cases = [

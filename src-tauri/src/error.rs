@@ -19,6 +19,9 @@ pub enum AppError {
     /// The input or the requested output exceeds the size limits that protect memory.
     #[error("too large: {0}")]
     TooLarge(String),
+    /// The PDF is protected and the password is missing or wrong.
+    #[error("password required or incorrect: {0}")]
+    Password(String),
     #[error("tool not available: {0}")]
     ToolMissing(String),
     #[error("external process failed: {0}")]
@@ -48,6 +51,7 @@ pub enum ErrorCode {
     InvalidParameter,
     InvalidFile,
     TooLarge,
+    Password,
     ToolMissing,
     ProcessFailed,
     Timeout,
@@ -74,6 +78,7 @@ impl AppError {
             AppError::InvalidParameter(_) => ErrorCode::InvalidParameter,
             AppError::InvalidFile(_) => ErrorCode::InvalidFile,
             AppError::TooLarge(_) => ErrorCode::TooLarge,
+            AppError::Password(_) => ErrorCode::Password,
             AppError::ToolMissing(_) => ErrorCode::ToolMissing,
             AppError::ProcessFailed(_) => ErrorCode::ProcessFailed,
             AppError::Timeout => ErrorCode::Timeout,

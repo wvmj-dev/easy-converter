@@ -8,11 +8,11 @@ use tauri_plugin_opener::OpenerExt;
 
 use crate::error::{AppError, AppResult};
 use crate::fs_utils::{self, FileInfo};
-use crate::jobs::{JobId, JobQueue, JobRequest};
+use crate::jobs::{JobCategory, JobId, JobQueue, JobRequest};
 use crate::ops;
 use crate::settings::{Settings, SettingsState};
 use crate::tools::resolver::ResolveContext;
-use crate::tools::{ToolRegistry, ToolStatus};
+use crate::tools::{qpdf, ToolBox, ToolRegistry, ToolStatus};
 
 pub fn resolve_context<R: Runtime>(app: &AppHandle<R>, settings: &Settings) -> ResolveContext {
     ResolveContext {
@@ -24,15 +24,29 @@ pub fn resolve_context<R: Runtime>(app: &AppHandle<R>, settings: &Settings) -> R
     }
 }
 
+/// Tools as they are now, for building a job.
+async fn toolbox<R: Runtime>(
+    app: &AppHandle<R>,
+    registry: &ToolRegistry,
+    settings: &Settings,
+) -> ToolBox {
+    let ctx = resolve_context(app, settings);
+    registry.toolbox(&ctx, std::env::current_exe().ok()).await
+}
+
 #[tauri::command]
-pub async fn enqueue_job(
+pub async fn enqueue_job<R: Runtime>(
+    app: AppHandle<R>,
     request: JobRequest,
     queue: State<'_, JobQueue>,
+    registry: State<'_, ToolRegistry>,
     settings: State<'_, Arc<SettingsState>>,
 ) -> AppResult<JobId> {
     let settings = settings.get();
+    let tools = toolbox(&app, &registry, &settings).await;
+    let ctx = ops::OpsContext { settings, tools };
     // Validation touches the file system (canonical paths, format sniffing).
-    let spec = tokio::task::spawn_blocking(move || ops::build_job(request, &settings))
+    let spec = tokio::task::spawn_blocking(move || ops::build_job(request, &ctx))
         .await
         .map_err(|err| AppError::Internal(err.to_string()))??;
     queue.enqueue(spec)
@@ -64,10 +78,20 @@ pub async fn refresh_tools<R: Runtime>(
 }
 
 #[tauri::command]
-pub async fn probe_file(path: PathBuf) -> AppResult<FileInfo> {
-    tokio::task::spawn_blocking(move || fs_utils::probe(&path))
+pub async fn probe_file<R: Runtime>(
+    app: AppHandle<R>,
+    path: PathBuf,
+    registry: State<'_, ToolRegistry>,
+    settings: State<'_, Arc<SettingsState>>,
+) -> AppResult<FileInfo> {
+    let mut info = tokio::task::spawn_blocking(move || fs_utils::probe(&path))
         .await
-        .map_err(|err| AppError::Internal(err.to_string()))?
+        .map_err(|err| AppError::Internal(err.to_string()))??;
+    if info.category == Some(JobCategory::Pdf) {
+        let tools = toolbox(&app, &registry, &settings.get()).await;
+        info.pdf = qpdf::info(&tools, &info.path).await;
+    }
+    Ok(info)
 }
 
 #[tauri::command]

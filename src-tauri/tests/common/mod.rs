@@ -10,8 +10,10 @@ use std::sync::{Arc, Mutex};
 use easy_converter_lib::error::ErrorCode;
 use easy_converter_lib::fs_utils::TempSpace;
 use easy_converter_lib::jobs::{EventSink, Job, JobEvent, JobId, JobQueue, JobRequest, JobStatus};
-use easy_converter_lib::ops;
+use easy_converter_lib::ops::{self, OpsContext};
 use easy_converter_lib::settings::Settings;
+use easy_converter_lib::tools::resolver::ResolveContext;
+use easy_converter_lib::tools::{ToolBox, ToolId, ToolRegistry};
 use image::{ImageEncoder, Rgba, RgbaImage};
 
 /// Text that must never survive metadata removal.
@@ -32,6 +34,7 @@ impl EventSink for RecordingSink {
 pub struct Env {
     pub dir: PathBuf,
     pub settings: Settings,
+    pub tools: ToolBox,
     pub queue: JobQueue,
     sink: Arc<RecordingSink>,
 }
@@ -53,8 +56,37 @@ impl Env {
         Self {
             dir,
             settings,
+            tools: ToolBox::default(),
             queue,
             sink,
+        }
+    }
+
+    /// Resolves the real tools: system qpdf, Tesseract and Ghostscript, the PDFium
+    /// downloaded by `scripts/fetch-pdfium.sh`, and the app binary as PDFium worker.
+    pub async fn with_tools(mut self) -> Self {
+        let ctx = ResolveContext {
+            resource_dir: Some(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources")),
+            ..ResolveContext::default()
+        };
+        let worker = PathBuf::from(env!("CARGO_BIN_EXE_easy-converter"));
+        self.tools = ToolRegistry::default().toolbox(&ctx, Some(worker)).await;
+        self
+    }
+
+    /// Whether a tool is available; prints why a test is skipped when it is not.
+    pub fn has(&self, id: ToolId) -> bool {
+        let available = self.tools.is_available(id);
+        if !available {
+            eprintln!("skipping: {id:?} is not available");
+        }
+        available
+    }
+
+    pub fn ops_context(&self) -> OpsContext {
+        OpsContext {
+            settings: self.settings.clone(),
+            tools: self.tools.clone(),
         }
     }
 
@@ -64,7 +96,7 @@ impl Env {
 
     /// Validates and enqueues a request, then waits for every job to finish.
     pub async fn run(&self, request: JobRequest) -> Job {
-        let spec = ops::build_job(request, &self.settings).expect("request should be valid");
+        let spec = ops::build_job(request, &self.ops_context()).expect("request should be valid");
         let id = self.queue.enqueue(spec).unwrap();
         self.queue.wait_idle().await;
         self.final_of(id)
@@ -111,6 +143,12 @@ pub fn assert_done(job: &Job) -> PathBuf {
     assert_eq!(job.status, JobStatus::Done, "job failed: {:?}", job.error);
     assert_eq!(job.outputs.len(), 1);
     job.outputs[0].clone()
+}
+
+/// Outputs of a job that must have succeeded.
+pub fn assert_done_many(job: &Job) -> Vec<PathBuf> {
+    assert_eq!(job.status, JobStatus::Done, "job failed: {:?}", job.error);
+    job.outputs.clone()
 }
 
 pub fn assert_failed(job: &Job, code: ErrorCode) {
@@ -231,5 +269,80 @@ pub fn format_of(path: &Path) -> image::ImageFormat {
         .with_guessed_format()
         .unwrap()
         .format()
+        .unwrap()
+}
+
+/// PDF with one line of large text per page: "PAGE <n> HELLO".
+pub fn write_text_pdf(path: &Path, pages: u32) {
+    use lopdf::content::{Content, Operation};
+    use lopdf::{dictionary, Document, Object, Stream};
+
+    let mut doc = Document::with_version("1.7");
+    let pages_id = doc.new_object_id();
+    let font_id = doc.add_object(dictionary! {
+        "Type" => "Font",
+        "Subtype" => "Type1",
+        "BaseFont" => "Helvetica",
+    });
+    let mut kids = Vec::new();
+    for n in 1..=pages {
+        let content = Content {
+            operations: vec![
+                Operation::new("BT", vec![]),
+                Operation::new("Tf", vec!["F1".into(), 40.into()]),
+                Operation::new("Td", vec![60.into(), 700.into()]),
+                Operation::new(
+                    "Tj",
+                    vec![Object::string_literal(format!("PAGE {n} HELLO"))],
+                ),
+                Operation::new("ET", vec![]),
+            ],
+        };
+        let content_id = doc.add_object(Stream::new(dictionary! {}, content.encode().unwrap()));
+        let page_id = doc.add_object(dictionary! {
+            "Type" => "Page",
+            "Parent" => pages_id,
+            "MediaBox" => vec![0.into(), 0.into(), 595.into(), 842.into()],
+            "Contents" => content_id,
+            "Resources" => dictionary! { "Font" => dictionary! { "F1" => font_id } },
+        });
+        kids.push(Object::Reference(page_id));
+    }
+    doc.objects.insert(
+        pages_id,
+        Object::Dictionary(dictionary! {
+            "Type" => "Pages",
+            "Kids" => kids,
+            "Count" => i64::from(pages),
+        }),
+    );
+    let catalog_id = doc.add_object(dictionary! { "Type" => "Catalog", "Pages" => pages_id });
+    doc.trailer.set("Root", catalog_id);
+    doc.save(path).unwrap();
+}
+
+/// Page count as reported by qpdf.
+pub fn qpdf_pages(path: &Path) -> u32 {
+    let out = std::process::Command::new("qpdf")
+        .arg("--show-npages")
+        .arg(path)
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    String::from_utf8_lossy(&out.stdout).trim().parse().unwrap()
+}
+
+/// Exit code of `qpdf --requires-password` (0 = needs a password, 2 = not encrypted).
+pub fn qpdf_requires_password(path: &Path) -> i32 {
+    std::process::Command::new("qpdf")
+        .arg("--requires-password")
+        .arg(path)
+        .status()
+        .unwrap()
+        .code()
         .unwrap()
 }

@@ -168,6 +168,8 @@ pub struct FileInfo {
     pub category: Option<JobCategory>,
     /// Size and real format, for images whose header could be read.
     pub image: Option<ImageInfo>,
+    /// Pages and protection, for PDFs (filled in by `probe_file` with qpdf).
+    pub pdf: Option<crate::tools::qpdf::PdfInfo>,
 }
 
 /// Reads the metadata of a file received from the frontend.
@@ -195,6 +197,7 @@ pub fn probe(path: &Path) -> AppResult<FileInfo> {
         size,
         category,
         image,
+        pdf: None,
     })
 }
 

@@ -11,6 +11,11 @@ use crate::ops::image::{
     ImageCompressParams, ImageConvertParams, ImageCropParams, ImageFlipParams, ImageMergeParams,
     ImageResizeParams, ImageRotateParams, ImageStripMetadataParams,
 };
+use crate::ops::pdf::{
+    ImagesToPdfParams, PdfCompressParams, PdfExtractImagesParams, PdfExtractTextParams,
+    PdfMergeParams, PdfOcrParams, PdfProtectParams, PdfRotateParams, PdfSelectPagesParams,
+    PdfSplitParams, PdfToImagesParams, PdfUnlockParams,
+};
 
 pub use events::{EventSink, JobEvent, TauriEventSink};
 pub use job::{Job, JobCategory, JobId, JobStatus};
@@ -32,4 +37,16 @@ pub enum JobRequest {
     ImageCompress(ImageCompressParams),
     ImageStripMetadata(ImageStripMetadataParams),
     ImageMerge(ImageMergeParams),
+    ImagesToPdf(ImagesToPdfParams),
+    PdfMerge(PdfMergeParams),
+    PdfSplit(PdfSplitParams),
+    PdfSelectPages(PdfSelectPagesParams),
+    PdfRotate(PdfRotateParams),
+    PdfToImages(PdfToImagesParams),
+    PdfExtractText(PdfExtractTextParams),
+    PdfExtractImages(PdfExtractImagesParams),
+    PdfProtect(PdfProtectParams),
+    PdfUnlock(PdfUnlockParams),
+    PdfCompress(PdfCompressParams),
+    PdfOcr(PdfOcrParams),
 }

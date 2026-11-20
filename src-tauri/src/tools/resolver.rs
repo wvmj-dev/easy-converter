@@ -78,29 +78,76 @@ impl ToolRegistry {
             .and_then(|list| list.iter().find(|s| s.id == id).cloned())
     }
 
+    /// Snapshot of the current statuses, used to build the commands of a job.
+    pub async fn toolbox(&self, ctx: &ResolveContext, worker: Option<PathBuf>) -> ToolBox {
+        ToolBox::new(self.statuses(ctx).await, worker)
+    }
+}
+
+/// The tools as they were when a job was created. Operations build their commands from
+/// it synchronously, and a missing tool is reported before the job is queued.
+#[derive(Debug, Clone, Default)]
+pub struct ToolBox {
+    statuses: Vec<ToolStatus>,
+    /// The app's own executable, started in worker mode to run PDFium in isolation.
+    worker: Option<PathBuf>,
+}
+
+impl ToolBox {
+    pub fn new(statuses: Vec<ToolStatus>, worker: Option<PathBuf>) -> Self {
+        Self { statuses, worker }
+    }
+
+    fn available(&self, id: ToolId) -> AppResult<&ToolStatus> {
+        self.statuses
+            .iter()
+            .find(|s| s.id == id && s.available)
+            .ok_or_else(|| AppError::ToolMissing(definition(id).name.to_owned()))
+    }
+
+    pub fn is_available(&self, id: ToolId) -> bool {
+        self.available(id).is_ok()
+    }
+
+    /// OCR languages installed for Tesseract.
+    pub fn tesseract_languages(&self) -> Vec<String> {
+        self.available(ToolId::Tesseract)
+            .ok()
+            .and_then(|s| s.languages.clone())
+            .unwrap_or_default()
+    }
+
     /// Builds a command for an available executable tool, with its environment prepared.
-    pub async fn command(&self, id: ToolId) -> AppResult<Command> {
-        let status = self
-            .status(id)
-            .await
-            .filter(|s| s.available)
-            .ok_or_else(|| AppError::ToolMissing(definition(id).name.to_owned()))?;
+    pub fn command(&self, id: ToolId) -> AppResult<Command> {
+        let status = self.available(id)?;
         if matches!(definition(id).kind, ToolKind::Library { .. }) {
             return Err(AppError::Internal(format!("{id:?} is not an executable")));
         }
         let path = status
             .path
+            .as_deref()
             .ok_or_else(|| AppError::ToolMissing(definition(id).name.to_owned()))?;
-        Ok(tool_command(id, &path, status.runtime_dir.as_deref()))
+        Ok(tool_command(id, path, status.runtime_dir.as_deref()))
     }
 
     /// Path of an available library tool (PDFium).
-    pub async fn library_path(&self, id: ToolId) -> AppResult<PathBuf> {
-        self.status(id)
-            .await
-            .filter(|s| s.available)
-            .and_then(|s| s.path)
+    pub fn library_path(&self, id: ToolId) -> AppResult<PathBuf> {
+        self.available(id)?
+            .path
+            .clone()
             .ok_or_else(|| AppError::ToolMissing(definition(id).name.to_owned()))
+    }
+
+    /// Command that starts the isolated PDFium worker.
+    pub fn pdfium_worker(&self) -> AppResult<(Command, PathBuf)> {
+        let library = self.library_path(ToolId::Pdfium)?;
+        let worker = self
+            .worker
+            .as_deref()
+            .ok_or_else(|| AppError::Internal("worker executable unknown".into()))?;
+        let mut cmd = Command::new(worker);
+        harden(&mut cmd);
+        Ok((cmd, library))
     }
 }
 

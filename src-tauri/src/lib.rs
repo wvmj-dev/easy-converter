@@ -4,6 +4,7 @@ pub mod error;
 pub mod fs_utils;
 pub mod jobs;
 pub mod ops;
+pub mod pdf_worker;
 pub mod settings;
 pub mod tools;
 

@@ -7,6 +7,18 @@ import type { ImageMergeParams } from "./ImageMergeParams";
 import type { ImageResizeParams } from "./ImageResizeParams";
 import type { ImageRotateParams } from "./ImageRotateParams";
 import type { ImageStripMetadataParams } from "./ImageStripMetadataParams";
+import type { ImagesToPdfParams } from "./ImagesToPdfParams";
+import type { PdfCompressParams } from "./PdfCompressParams";
+import type { PdfExtractImagesParams } from "./PdfExtractImagesParams";
+import type { PdfExtractTextParams } from "./PdfExtractTextParams";
+import type { PdfMergeParams } from "./PdfMergeParams";
+import type { PdfOcrParams } from "./PdfOcrParams";
+import type { PdfProtectParams } from "./PdfProtectParams";
+import type { PdfRotateParams } from "./PdfRotateParams";
+import type { PdfSelectPagesParams } from "./PdfSelectPagesParams";
+import type { PdfSplitParams } from "./PdfSplitParams";
+import type { PdfToImagesParams } from "./PdfToImagesParams";
+import type { PdfUnlockParams } from "./PdfUnlockParams";
 
 /**
  * An operation requested by the frontend. Each operation is one variant, tagged by `type`.
@@ -14,4 +26,4 @@ import type { ImageStripMetadataParams } from "./ImageStripMetadataParams";
  * Operations are added phase by phase (images, PDF, video...), each with its function in
  * `ops/<category>.rs`.
  */
-export type JobRequest = { "type": "imageConvert" } & ImageConvertParams | { "type": "imageResize" } & ImageResizeParams | { "type": "imageCrop" } & ImageCropParams | { "type": "imageRotate" } & ImageRotateParams | { "type": "imageFlip" } & ImageFlipParams | { "type": "imageCompress" } & ImageCompressParams | { "type": "imageStripMetadata" } & ImageStripMetadataParams | { "type": "imageMerge" } & ImageMergeParams;
+export type JobRequest = { "type": "imageConvert" } & ImageConvertParams | { "type": "imageResize" } & ImageResizeParams | { "type": "imageCrop" } & ImageCropParams | { "type": "imageRotate" } & ImageRotateParams | { "type": "imageFlip" } & ImageFlipParams | { "type": "imageCompress" } & ImageCompressParams | { "type": "imageStripMetadata" } & ImageStripMetadataParams | { "type": "imageMerge" } & ImageMergeParams | { "type": "imagesToPdf" } & ImagesToPdfParams | { "type": "pdfMerge" } & PdfMergeParams | { "type": "pdfSplit" } & PdfSplitParams | { "type": "pdfSelectPages" } & PdfSelectPagesParams | { "type": "pdfRotate" } & PdfRotateParams | { "type": "pdfToImages" } & PdfToImagesParams | { "type": "pdfExtractText" } & PdfExtractTextParams | { "type": "pdfExtractImages" } & PdfExtractImagesParams | { "type": "pdfProtect" } & PdfProtectParams | { "type": "pdfUnlock" } & PdfUnlockParams | { "type": "pdfCompress" } & PdfCompressParams | { "type": "pdfOcr" } & PdfOcrParams;

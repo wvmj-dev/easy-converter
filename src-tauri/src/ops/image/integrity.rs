@@ -73,6 +73,52 @@ pub fn check_jpeg(mut reader: impl BufRead) -> AppResult<()> {
     }
 }
 
+/// Frame header of a JPEG: size and number of colour components.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct JpegFrame {
+    pub width: u32,
+    pub height: u32,
+    /// 1 = greyscale, 3 = YCbCr/RGB, 4 = CMYK/YCCK.
+    pub components: u8,
+    pub bits: u8,
+}
+
+/// Reads the frame header (SOFn) of a JPEG held in memory.
+pub fn jpeg_frame(data: &[u8]) -> Option<JpegFrame> {
+    if data.get(..2)? != [0xFF, SOI] {
+        return None;
+    }
+    let mut pos = 2;
+    loop {
+        if *data.get(pos)? != 0xFF {
+            return None;
+        }
+        while *data.get(pos)? == 0xFF {
+            pos += 1;
+        }
+        let marker = *data.get(pos)?;
+        pos += 1;
+        if marker == 0x01 || (0xD0..=0xD7).contains(&marker) {
+            continue;
+        }
+        if marker == SOS || marker == EOI {
+            return None;
+        }
+        let length = usize::from(u16::from_be_bytes([*data.get(pos)?, *data.get(pos + 1)?]));
+        let segment = data.get(pos + 2..pos + length)?;
+        // SOF0..SOF15, except DHT (C4), JPG (C8) and DAC (CC).
+        if (0xC0..=0xCF).contains(&marker) && ![0xC4, 0xC8, 0xCC].contains(&marker) {
+            return Some(JpegFrame {
+                bits: *segment.first()?,
+                height: u32::from(u16::from_be_bytes([*segment.get(1)?, *segment.get(2)?])),
+                width: u32::from(u16::from_be_bytes([*segment.get(3)?, *segment.get(4)?])),
+                components: *segment.get(5)?,
+            });
+        }
+        pos += length;
+    }
+}
+
 struct Stream<'a, R: BufRead> {
     reader: &'a mut R,
 }
@@ -190,6 +236,25 @@ mod tests {
         assert!(check(&[0xFF, SOI, 0xFF, 0xE0, 0x00, 0x01]).is_err());
         assert!(check(b"\x89PNG\r\n\x1a\n").is_err());
         assert!(check(&[0xFF, SOI, 0x12, 0x34]).is_err());
+    }
+
+    #[test]
+    fn reads_the_frame_header() {
+        let frame = jpeg_frame(&jpeg(40, 30, false)).unwrap();
+        assert_eq!(
+            frame,
+            JpegFrame {
+                width: 40,
+                height: 30,
+                components: 3,
+                bits: 8
+            }
+        );
+        assert_eq!(jpeg_frame(b"\x89PNG"), None);
+        let data = jpeg(24, 24, true);
+        for len in 0..data.len() {
+            let _ = jpeg_frame(&data[..len]);
+        }
     }
 
     #[test]

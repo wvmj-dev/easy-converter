@@ -3,6 +3,7 @@
 pub mod capabilities;
 pub mod ffmpeg;
 pub mod process;
+pub mod qpdf;
 pub mod resolver;
 
 use std::path::PathBuf;
@@ -10,7 +11,7 @@ use std::path::PathBuf;
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
-pub use resolver::ToolRegistry;
+pub use resolver::{ToolBox, ToolRegistry};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, TS)]
 #[serde(rename_all = "camelCase")]

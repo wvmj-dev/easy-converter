@@ -10,8 +10,8 @@
 //! - Truncated JPEG files are refused: the decoder would silently fill the missing part
 //!   with grey and the job would look successful.
 
-mod integrity;
-mod metadata;
+pub(crate) mod integrity;
+pub(crate) mod metadata;
 
 use std::fs::{self, File};
 use std::io::{BufReader, BufWriter, Cursor, Read, Seek, Write};
@@ -526,7 +526,7 @@ fn swaps_sides(orientation: Orientation) -> bool {
 // ---------------------------------------------------------------------------------------
 
 /// Checks that the path is an existing file with an image extension.
-fn validate_input(path: &Path) -> AppResult<PathBuf> {
+pub(crate) fn validate_input(path: &Path) -> AppResult<PathBuf> {
     let path = fs_utils::validate_input_file(path)?;
     let is_image = fs_utils::extension_of(&path)
         .as_deref()
@@ -541,7 +541,7 @@ fn validate_input(path: &Path) -> AppResult<PathBuf> {
     Ok(path)
 }
 
-fn validate_quality(quality: u8) -> AppResult<u8> {
+pub(crate) fn validate_quality(quality: u8) -> AppResult<u8> {
     if (1..=100).contains(&quality) {
         Ok(quality)
     } else {
@@ -579,7 +579,7 @@ fn check_output_size(width: u32, height: u32) -> AppResult<()> {
 }
 
 /// Format of an input file, from its content.
-fn detect_format(path: &Path) -> AppResult<ImageOutputFormat> {
+pub(crate) fn detect_format(path: &Path) -> AppResult<ImageOutputFormat> {
     open_reader(path).map(|(_, format)| format)
 }
 
@@ -778,10 +778,10 @@ fn merge_images(
 // Decoding
 // ---------------------------------------------------------------------------------------
 
-struct Loaded {
+pub(crate) struct Loaded {
     /// Upright image (EXIF orientation already applied).
-    image: DynamicImage,
-    icc: Option<Vec<u8>>,
+    pub(crate) image: DynamicImage,
+    pub(crate) icc: Option<Vec<u8>>,
 }
 
 fn decode_limits() -> Limits {
@@ -810,7 +810,7 @@ fn prepare_reader<R: std::io::BufRead + Seek>(
     Ok((reader, format))
 }
 
-fn load(path: &Path) -> AppResult<Loaded> {
+pub(crate) fn load(path: &Path) -> AppResult<Loaded> {
     let (reader, format) = open_reader(path)?;
     if format == ImageOutputFormat::Jpeg {
         integrity::check_jpeg(BufReader::new(File::open(path)?))?;
@@ -825,7 +825,7 @@ fn load(path: &Path) -> AppResult<Loaded> {
 }
 
 /// EXIF orientation (1 to 8) of an image held in memory.
-fn orientation_of(data: &[u8]) -> AppResult<u8> {
+pub(crate) fn orientation_of(data: &[u8]) -> AppResult<u8> {
     let (reader, _) = prepare_reader(Cursor::new(data))?;
     let mut decoder = reader.into_decoder().map_err(image_error)?;
     Ok(decoder
@@ -834,7 +834,7 @@ fn orientation_of(data: &[u8]) -> AppResult<u8> {
         .to_exif())
 }
 
-fn read_limited(path: &Path) -> AppResult<Vec<u8>> {
+pub(crate) fn read_limited(path: &Path) -> AppResult<Vec<u8>> {
     let file = File::open(path)?;
     let size = file.metadata()?.len();
     if size > MAX_INPUT_BYTES {
@@ -904,7 +904,7 @@ fn resize_image(image: &DynamicImage, width: u32, height: u32) -> DynamicImage {
 }
 
 /// Whether any pixel is not fully opaque.
-fn has_transparency(image: &DynamicImage) -> bool {
+pub(crate) fn has_transparency(image: &DynamicImage) -> bool {
     match image {
         DynamicImage::ImageLumaA8(buf) => buf.pixels().any(|p| p[1] < u8::MAX),
         DynamicImage::ImageRgba8(buf) => buf.pixels().any(|p| p[3] < u8::MAX),
