@@ -28,7 +28,7 @@ jobs:
         run: |
           sudo apt-get install -y \
             ffmpeg qpdf tesseract-ocr tesseract-ocr-por tesseract-ocr-eng \
-            libimage-exiftool-perl
+            libimage-exiftool-perl ghostscript
 
       # Bundled with the app as a resource; the Rust build fails without it.
       - name: Fetch PDFium
