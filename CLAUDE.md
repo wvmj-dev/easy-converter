@@ -184,6 +184,7 @@ src-tauri/
     └── ops/
         ├── image.rs
         ├── pdf.rs
+        ├── media.rs       # formatos, cópia vs. recodificação, encoders, intervalos de tempo
         ├── video.rs
         ├── audio.rs
         ├── document.rs
@@ -581,7 +582,7 @@ Cada marco termina com um release funcional.
 - [x] **M1: Infraestrutura**: resolvedor de ferramentas, fila, progresso, cancelamento, timeout, configurações, tela de ferramentas, drag and drop, i18n
 - [x] **M2: Imagens**: Fase 1. Release `v0.1.0`
 - [x] **M3: PDF**: Fase 2 com OCR. Release `v0.2.0`
-- [ ] **M4: Vídeo e áudio**: Fase 3. Release `v0.3.0`
+- [x] **M4: Vídeo e áudio**: Fase 3. Release `v0.3.0`
 - [ ] **M5: Escritório**: Fase 4. Release `v0.4.0`
 - [ ] **M6: Restante**: Fase 5. Release `v0.5.0`
 - [ ] **M7: Polimento**: revisão de erros e mensagens, `THIRD_PARTY_LICENSES.md`, i18n completo. Release `v1.0.0`
@@ -608,4 +609,5 @@ Nenhuma no momento. Perguntar ao autor antes de assumir qualquer decisão nova d
 - **Senhas fora da linha de comando**: senhas de PDF vão para o qpdf por arquivo de argumentos (`@arquivo`) ou `--password-file`, criados só legíveis pelo usuário na pasta temporária da tarefa. Os parâmetros com senha têm `Debug` que oculta o valor.
 - **OCR sem perda**: o Tesseract gera páginas só com texto (`textonly_pdf=1`), que o qpdf sobrepõe às páginas originais (`--overlay`); o original não é recodificado.
 - **Repositório**: https://github.com/wvmj-dev/easy-converter. O autor faz push e cria as tags.
+- **Vídeo e áudio (M4)**: toda tarefa roda o `ffprobe` antes e copia (`-c copy`) cada trilha que o contêiner de saída aceita; só o resto é recodificado. Encoders escolhidos da lista do FFmpeg com alternativas (`libx264` → `libopenh264` → `mpeg4`), porque o `ffmpeg-free` do Fedora não tem x264. Entradas sempre como `file:<caminho>` com `-protocol_whitelist file` (nenhum arquivo malicioso faz o FFmpeg abrir a rede). Juntar vídeos: concat sem recodificar quando as trilhas são idênticas; senão filtro `concat` no tamanho do primeiro, com silêncio para vídeos sem áudio. GIF limitado a 120 s. Normalização em duas passagens (`loudnorm`, ganho linear). Formatos fora da lista de escrita (WMV, FLV, MPEG, TS, 3GP) saem em MP4.
 - **Crates aprovadas no M1**: `tokio` (processos filhos, timeout, sincronização), `thiserror` (`AppError`), `serde`, `serde_json`, `ts-rs` (tipos TypeScript).
