@@ -10,7 +10,7 @@ Uma alternativa a sites como Convertio, iLovePDF e iLoveIMG, com uma diferença:
 - Projeto pessoal, sem fins lucrativos, mantido nas horas livres do autor.
 - Nunca sobrescreve o arquivo original.
 
-> **Situação:** em desenvolvimento inicial. Ainda não há versões publicadas.
+> **Situação:** a versão 0.1.0 converte e edita imagens (PNG, JPG, WebP, BMP, GIF, TIFF e ICO). PDF, vídeo, áudio, documentos e os demais formatos chegam nas próximas versões.
 
 ## Aviso sobre uso de IA
 
@@ -31,18 +31,18 @@ Android, iOS e macOS não são suportados.
 
 ## Instalação
 
-Os pacotes serão publicados na página de releases do GitHub.
+Baixe o pacote do seu sistema na página de releases do GitHub.
 
 ### Debian / Ubuntu
 
 ```bash
-sudo apt install ./app_<versao>_amd64.deb
+sudo apt install ./Easy.Converter_<versão>_amd64.deb
 ```
 
 ### Fedora
 
 ```bash
-sudo dnf install ./app-<versao>-1.x86_64.rpm
+sudo dnf install ./Easy.Converter-<versão>-1.x86_64.rpm
 ```
 
 Use `apt` ou `dnf` como acima: eles instalam automaticamente as dependências (FFmpeg, qpdf e Tesseract). O `dpkg -i` não resolve dependências e não é recomendado.
@@ -55,7 +55,7 @@ sudo dnf swap ffmpeg-free ffmpeg --allowerasing
 
 ### Windows
 
-Baixe o instalador `.msi` ou `.exe`. As ferramentas obrigatórias já vêm dentro do instalador.
+Baixe o instalador `Easy.Converter_<versão>_x64-setup.exe` (ou o `.msi`). As ferramentas obrigatórias já vêm dentro do instalador.
 
 O app não tem assinatura de código, então o Windows SmartScreen exibe um aviso na primeira execução. Para continuar, clique em **Mais informações** e depois em **Executar assim mesmo**.
 
@@ -99,7 +99,7 @@ Suporte a RAR: no Debian, fica no pacote `7zip-rar` (repositório non-free); o p
 | ExifTool | Conferir metadados nos testes | Sim, para os testes |
 | LibreOffice, Pandoc, Calibre, Ghostscript, 7-Zip | Ferramentas opcionais (veja acima); os testes que dependem delas são ignorados quando faltam | Não |
 | Xvfb, WebKitWebDriver, xdotool, `tauri-driver` | Abrir e controlar o app real em testes automatizados (tela virtual, cliques) | Não |
-| PDFium | Renderização de PDF (fase de PDF); baixado por script em `scripts/`, não vem do `apt`/`dnf` | A partir da fase de PDF |
+| PDFium | Renderização de PDF; baixado por `scripts/fetch-pdfium.sh`, não vem do `apt`/`dnf` | Sim (necessário para compilar) |
 
 #### Debian / Ubuntu
 
@@ -161,6 +161,7 @@ Confira os nomes dos pacotes antes de cada release com `apt-cache policy <pacote
 
 ```bash
 npm install
+./scripts/fetch-pdfium.sh   # uma vez: baixa o PDFium, necessário para compilar
 npm run tauri dev      # executa o app em modo de desenvolvimento
 npm run tauri build    # gera os pacotes
 ```
@@ -178,10 +179,19 @@ O build do Rust precisa da pasta `dist/`; rode `npm run build` antes do `cargo c
 
 Os tipos TypeScript em `src/types/` são gerados a partir do Rust (com `ts-rs`) quando o `cargo test` roda. Depois de mudar um tipo exportado no Rust, rode `cargo test` e faça commit dos arquivos gerados; o CI falha se eles estiverem desatualizados.
 
+### Publicar uma versão
+
+1. Atualize a versão em `package.json`, `package-lock.json` e `src-tauri/Cargo.toml` (o `tauri.conf.json` lê a do `package.json`).
+2. Faça o commit e crie a tag: `git tag v<versão>` e `git push origin v<versão>`.
+3. O workflow `release.yml` gera os pacotes `.deb`, `.rpm`, `.msi` e `.exe` e os anexa a um **rascunho** de release no GitHub.
+4. Revise o rascunho e publique.
+
+As versões dos binários incluídos ficam fixas nos scripts de `scripts/`, com SHA-256. Ao atualizar uma delas, atualize também o [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
+
 ## Contribuindo
 
 Veja [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Licença
 
-[GPL-3.0](LICENSE). As ferramentas externas usadas pelo app têm licenças próprias.
+[GPL-3.0](LICENSE). As ferramentas externas usadas pelo app têm licenças próprias; veja [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).

@@ -385,6 +385,7 @@ Verificar no primeiro build com `rpm -qpR <arquivo>.rpm` que a dependência bool
       "binaries/tesseract"
     ],
     "resources": {
+      "resources/windows/ffmpeg/": "ffmpeg/",
       "resources/windows/qpdf/": "qpdf/",
       "resources/windows/tesseract/": "tesseract/"
     },
@@ -400,6 +401,8 @@ Verificar no primeiro build com `rpm -qpR <arquivo>.rpm` que a dependência bool
 - Sidecars nomeados com target triple (ex.: `ffmpeg-x86_64-pc-windows-msvc.exe`).
 - DLLs do qpdf e do Tesseract vão em `resources`; o Rust inicia esses processos com diretório de trabalho e `PATH` apontando para a pasta das DLLs.
 - `por.traineddata` e `eng.traineddata` em `resources`; definir `TESSDATA_PREFIX` ao chamar o Tesseract.
+- Do instalador do Tesseract (UB Mannheim) vão só o `tesseract.exe`, as DLLs que ele importa, `pdf.ttf` e `configs/pdf`; as ferramentas de treino ficam de fora.
+- Textos de licença e informações de build vão junto, em `resources/windows/<ferramenta>/`.
 - `scripts/fetch-sidecars.ps1` baixa versões fixas e confere SHA-256.
 - Sem assinatura de código: o SmartScreen avisa na primeira execução. Explicar no README.
 
@@ -574,8 +577,8 @@ Este é um projeto pessoal, mantido nas horas livres do autor.
 
 Cada marco termina com um release funcional.
 
-- [ ] **M0: Base**: repositório, LICENSE, README, CONTRIBUTING, `.gitignore`, CI, projeto Tauri + Vue rodando, CSP e capabilities
-- [ ] **M1: Infraestrutura**: resolvedor de ferramentas, fila, progresso, cancelamento, timeout, configurações, tela de ferramentas, drag and drop, i18n
+- [x] **M0: Base**: repositório, LICENSE, README, CONTRIBUTING, `.gitignore`, CI, projeto Tauri + Vue rodando, CSP e capabilities
+- [x] **M1: Infraestrutura**: resolvedor de ferramentas, fila, progresso, cancelamento, timeout, configurações, tela de ferramentas, drag and drop, i18n
 - [ ] **M2: Imagens**: Fase 1. Release `v0.1.0`
 - [ ] **M3: PDF**: Fase 2 com OCR. Release `v0.2.0`
 - [ ] **M4: Vídeo e áudio**: Fase 3. Release `v0.3.0`
@@ -589,13 +592,15 @@ Cada marco termina com um release funcional.
 
 ### Pendentes
 
-Perguntar ao autor antes de assumir:
-
-1. **Nome do app** e identificador (`com.wvmj.<nome>`). Até decidir, usar o placeholder `Easy Converter` / `com.wvmj.easyconverter` e não espalhar o nome pelo código.
-2. **Ghostscript**: manter como opcional para compressão forte de PDF ou remover.
+Nenhuma no momento. Perguntar ao autor antes de assumir qualquer decisão nova de produto, licença ou distribuição.
 
 ### Tomadas
 
 - **Idiomas da interface**: pt-BR e inglês desde o início. Todo texto novo entra em `pt-BR.json` e `en.json`.
 - **Biblioteca de componentes de UI**: nenhuma. CSS próprio, com variáveis CSS e tema claro/escuro.
+- **Nome do app**: `Easy Converter`, identificador `com.wvmj.easyconverter` (decidido antes do `v0.1.0`; trocar depois faz os usuários perderem as configurações).
+- **Ghostscript**: mantido como ferramenta opcional para compressão forte de PDF (processo separado, nunca distribuído).
+- **Ferramentas obrigatórias desde o `v0.1.0`**: FFmpeg, qpdf, Tesseract e PDFium já vão nos pacotes, mesmo antes das fases que os usam.
+- **Versões fixas dos binários**: definidas em `scripts/fetch-pdfium.sh` e `scripts/fetch-sidecars.ps1`, com SHA-256. Ao atualizar uma versão, atualizar também `THIRD_PARTY_LICENSES.md`.
+- **Release**: o `release.yml` cria um rascunho no GitHub; o autor revisa e publica manualmente.
 - **Crates aprovadas no M1**: `tokio` (processos filhos, timeout, sincronização), `thiserror` (`AppError`), `serde`, `serde_json`, `ts-rs` (tipos TypeScript).
