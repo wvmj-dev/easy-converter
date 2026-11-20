@@ -66,6 +66,7 @@ impl OutputPlanner {
 /// Builds a job whose work runs on a blocking thread, so CPU-heavy code done in Rust never
 /// stalls the async runtime. `work` must call `ctx.check_cancelled()` between steps: a
 /// cancelled or timed-out job is reported right away, and the thread stops at the next check.
+/// Until then the queue keeps the job's slot, so stopped work cannot pile up.
 pub fn blocking_job<F>(kind: &str, category: JobCategory, inputs: Vec<PathBuf>, work: F) -> JobSpec
 where
     F: FnOnce(&JobContext) -> AppResult<Vec<PlannedOutput>> + Send + 'static,

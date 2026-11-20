@@ -5,7 +5,7 @@ use std::pin::Pin;
 use std::sync::{Arc, Mutex, MutexGuard};
 use std::time::{Duration, Instant};
 
-use tokio::sync::{watch, Notify};
+use tokio::sync::{oneshot, watch, Notify};
 
 use super::events::{EventSink, JobEvent};
 use super::job::{Job, JobCategory, JobId, JobStatus};
@@ -72,6 +72,8 @@ pub struct JobContext {
     pub temp_dir: PathBuf,
     cancel: CancelToken,
     progress: ProgressReporter,
+    /// Dropped together with the context; tells the queue the job's code has really stopped.
+    _alive: oneshot::Sender<()>,
 }
 
 impl JobContext {
@@ -374,12 +376,18 @@ fn schedule(inner: &Arc<Inner>) {
 
 async fn run_job(inner: Arc<Inner>, pending: Pending, cancel: CancelToken, timeout: Duration) {
     let id = pending.id;
-    let result = execute(&inner, pending, &cancel, timeout).await;
+    let (alive_tx, stopped) = oneshot::channel();
+    let result = execute(&inner, pending, &cancel, timeout, alive_tx).await;
+    report(&inner, id, result);
 
+    // Code running on a blocking thread cannot be interrupted, only asked to stop at its
+    // next check. Keep the job's slot and temporary folder until it really has, so cancelled
+    // or timed-out work never piles up beyond the concurrency limit nor writes into a
+    // folder that was already removed.
+    let _ = stopped.await;
     let temp = inner.temp.clone();
     let _ = tokio::task::spawn_blocking(move || temp.remove_job_dir(id)).await;
-
-    finish(&inner, id, result);
+    release(&inner, id);
 }
 
 async fn execute(
@@ -387,6 +395,7 @@ async fn execute(
     pending: Pending,
     cancel: &CancelToken,
     timeout: Duration,
+    alive: oneshot::Sender<()>,
 ) -> AppResult<Vec<PathBuf>> {
     let id = pending.id;
     let temp_dir = inner.temp.create_job_dir(id)?;
@@ -399,6 +408,7 @@ async fn execute(
             id,
             last: Mutex::new(None),
         },
+        _alive: alive,
     };
 
     // Run in a separate task so a panic becomes an error instead of a stuck job.
@@ -443,10 +453,10 @@ fn finalize_outputs(planned: Vec<PlannedOutput>) -> AppResult<Vec<PathBuf>> {
     Ok(finals)
 }
 
-fn finish(inner: &Arc<Inner>, id: JobId, result: AppResult<Vec<PathBuf>>) {
+/// Publishes the final state of a job. Its slot stays taken until [`release`].
+fn report(inner: &Arc<Inner>, id: JobId, result: AppResult<Vec<PathBuf>>) {
     let snapshot = {
         let mut state = lock(&inner.state);
-        state.running.remove(&id);
         let Some(mut job) = state.jobs.remove(&id) else {
             return;
         };
@@ -471,6 +481,11 @@ fn finish(inner: &Arc<Inner>, id: JobId, result: AppResult<Vec<PathBuf>>) {
         JobEvent::Finished
     };
     inner.sink.emit(event, &snapshot);
+}
+
+/// Frees the slot of a job whose code has stopped and starts the next ones.
+fn release(inner: &Arc<Inner>, id: JobId) {
+    lock(&inner.state).running.remove(&id);
     schedule(inner);
     notify_if_idle(inner);
 }
@@ -652,6 +667,58 @@ mod tests {
             h.queue.cancel(running),
             Err(AppError::JobNotFound(_))
         ));
+    }
+
+    #[tokio::test]
+    async fn cancelled_blocking_work_keeps_its_slot_until_it_stops() {
+        let settings = Settings {
+            concurrency: 1,
+            ..Settings::default()
+        };
+        let h = harness("blocking-cancel", settings);
+        let stopped_at = Arc::new(Mutex::new(None::<Instant>));
+        let started_at = Arc::new(Mutex::new(None::<Instant>));
+
+        // A long step that only notices the cancellation when it ends.
+        let stopped = Arc::clone(&stopped_at);
+        let slow = crate::ops::blocking_job("test", JobCategory::Image, vec![], move |ctx| {
+            std::thread::sleep(Duration::from_millis(300));
+            assert!(
+                ctx.temp_dir.is_dir(),
+                "temp folder removed under a running job"
+            );
+            *lock(&stopped) = Some(Instant::now());
+            ctx.check_cancelled()?;
+            Ok(vec![])
+        });
+        let started = Arc::clone(&started_at);
+        let next = spec(JobCategory::Image, move |_| async move {
+            *lock(&started) = Some(Instant::now());
+            Ok(vec![])
+        });
+
+        let slow_id = h.queue.enqueue(slow).unwrap();
+        let next_id = h.queue.enqueue(next).unwrap();
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        h.queue.cancel(slow_id).unwrap();
+
+        // The cancellation is reported right away...
+        tokio::time::sleep(Duration::from_millis(50)).await;
+        assert_eq!(
+            h.sink.final_of(slow_id).unwrap().status,
+            JobStatus::Cancelled
+        );
+        assert!(lock(&stopped_at).is_none());
+
+        // ...but the next job only starts once the blocking work has stopped.
+        tokio::time::timeout(Duration::from_secs(5), h.queue.wait_idle())
+            .await
+            .unwrap();
+        assert_eq!(h.sink.final_of(next_id).unwrap().status, JobStatus::Done);
+        let stopped = lock(&stopped_at).expect("blocking work should have finished");
+        let started = lock(&started_at).expect("next job should have run");
+        assert!(started >= stopped);
+        assert!(!h.queue.temp().job_dir(slow_id).exists());
     }
 
     #[tokio::test]
