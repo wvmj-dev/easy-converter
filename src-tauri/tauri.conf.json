@@ -52,7 +52,11 @@
     "active": true,
     "category": "Utility",
     "shortDescription": "Convert and edit files locally",
+    "longDescription": "Converts and edits images, PDFs, videos, audio, documents and other files entirely on your computer. No file is uploaded and the app makes no network requests.",
     "license": "GPL-3.0-only",
+    "resources": {
+      "resources/pdfium/": "pdfium/"
+    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

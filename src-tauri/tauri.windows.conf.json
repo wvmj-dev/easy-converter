@@ -1,6 +1,17 @@
 {
   "bundle": {
     "targets": ["msi", "nsis"],
+    "externalBin": [
+      "binaries/ffmpeg",
+      "binaries/ffprobe",
+      "binaries/qpdf",
+      "binaries/tesseract"
+    ],
+    "resources": {
+      "resources/windows/ffmpeg/": "ffmpeg/",
+      "resources/windows/qpdf/": "qpdf/",
+      "resources/windows/tesseract/": "tesseract/"
+    },
     "windows": {
       "webviewInstallMode": { "type": "downloadBootstrapper" }
     }

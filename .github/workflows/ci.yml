@@ -30,6 +30,10 @@ jobs:
             ffmpeg qpdf tesseract-ocr tesseract-ocr-por tesseract-ocr-eng \
             libimage-exiftool-perl
 
+      # Bundled with the app as a resource; the Rust build fails without it.
+      - name: Fetch PDFium
+        run: ./scripts/fetch-pdfium.sh
+
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
