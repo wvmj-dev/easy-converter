@@ -579,8 +579,8 @@ Cada marco termina com um release funcional.
 
 - [x] **M0: Base**: repositório, LICENSE, README, CONTRIBUTING, `.gitignore`, CI, projeto Tauri + Vue rodando, CSP e capabilities
 - [x] **M1: Infraestrutura**: resolvedor de ferramentas, fila, progresso, cancelamento, timeout, configurações, tela de ferramentas, drag and drop, i18n
-- [ ] **M2: Imagens**: Fase 1. Release `v0.1.0`
-- [ ] **M3: PDF**: Fase 2 com OCR. Release `v0.2.0`
+- [x] **M2: Imagens**: Fase 1. Release `v0.1.0`
+- [x] **M3: PDF**: Fase 2 com OCR. Release `v0.2.0`
 - [ ] **M4: Vídeo e áudio**: Fase 3. Release `v0.3.0`
 - [ ] **M5: Escritório**: Fase 4. Release `v0.4.0`
 - [ ] **M6: Restante**: Fase 5. Release `v0.5.0`
