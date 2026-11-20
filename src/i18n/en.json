@@ -6,7 +6,8 @@
     "label": "Main navigation",
     "home": "Home",
     "tools": "Tools",
-    "settings": "Settings"
+    "settings": "Settings",
+    "image": "Images"
   },
   "common": {
     "loading": "Loading…",
@@ -15,7 +16,11 @@
   "home": {
     "title": "Convert and edit files without leaving your computer",
     "subtitle": "No file is ever uploaded to the internet.",
-    "noOperations": "Operations for these files will be added in upcoming versions."
+    "noOperations": "There are no operations yet for: {categories}. They come in upcoming versions.",
+    "next": "Next step",
+    "open": {
+      "image": "Edit {n} image | Edit {n} images"
+    }
   },
   "dropZone": {
     "title": "Drag files here",
@@ -28,7 +33,9 @@
     "remove": "Remove",
     "clear": "Clear list",
     "unsupported": "Unsupported format",
-    "addFailed": "Could not add {name}"
+    "addFailed": "Could not add {name}",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down"
   },
   "categories": {
     "image": "Image",
@@ -55,6 +62,16 @@
       "done": "Done",
       "failed": "Failed",
       "cancelled": "Cancelled"
+    },
+    "kinds": {
+      "imageConvert": "Convert",
+      "imageResize": "Resize",
+      "imageCrop": "Crop",
+      "imageRotate": "Rotate",
+      "imageFlip": "Mirror",
+      "imageCompress": "Compress",
+      "imageStripMetadata": "Remove metadata",
+      "imageMerge": "Join images"
     }
   },
   "tools": {
@@ -138,6 +155,8 @@
     "invalidPath": "Invalid path.",
     "notFound": "File or folder not found.",
     "invalidParameter": "Invalid value.",
+    "invalidFile": "The file is damaged or in an unsupported format.",
+    "tooLarge": "The file or the result is too large.",
     "toolMissing": "A required tool was not found.",
     "processFailed": "The external tool failed.",
     "timeout": "The job exceeded the maximum time and was stopped.",
@@ -148,5 +167,144 @@
     "io": "Error reading or writing files.",
     "internal": "Internal error.",
     "unknown": "Unexpected error."
+  },
+  "operations": {
+    "title": "What to do",
+    "options": "Operation options"
+  },
+  "image": {
+    "title": "Images",
+    "subtitle": "PNG, JPG, WebP, BMP, GIF, TIFF and ICO. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not an image and is left out of this screen. | {n} files in the list are not images and are left out of this screen.",
+    "noNewImages": "No new image was added: the files are already in the list or are not images.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "convert": {
+        "label": "Convert",
+        "description": "Changes the file format."
+      },
+      "resize": {
+        "label": "Resize",
+        "description": "Changes the width and height."
+      },
+      "crop": {
+        "label": "Crop",
+        "description": "Keeps only an area of the image."
+      },
+      "rotate": {
+        "label": "Rotate",
+        "description": "Rotates by 90° or 180°."
+      },
+      "flip": {
+        "label": "Mirror",
+        "description": "Flips horizontally or vertically."
+      },
+      "compress": {
+        "label": "Compress",
+        "description": "Reduces the file size."
+      },
+      "stripMetadata": {
+        "label": "Remove metadata",
+        "description": "Erases location, camera and dates."
+      },
+      "merge": {
+        "label": "Join",
+        "description": "Combines several images into one."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add images first.",
+      "needsTwo": "Choose at least 2 images.",
+      "tooMany": "At most {max} images at a time.",
+      "unsupportedFormat": "Only JPEG, PNG, WebP and TIFF ({name} is not)."
+    },
+    "invalid": {
+      "quality": "Quality must be a whole number from 1 to 100.",
+      "dimension": "Use whole numbers from 1 to {max} pixels.",
+      "percent": "The percentage must be a whole number from 1 to {max}.",
+      "spacing": "The gap must be a whole number from 0 to {max} pixels.",
+      "cropOutside": "The area goes beyond the size of {name} ({width} × {height} px)."
+    },
+    "format": {
+      "label": "Output format",
+      "names": {
+        "jpeg": "JPEG (.jpg)",
+        "png": "PNG",
+        "webp": "WebP",
+        "gif": "GIF",
+        "bmp": "BMP",
+        "tiff": "TIFF",
+        "ico": "ICO (icon)"
+      },
+      "hints": {
+        "jpeg": "Best for photos. No transparency: transparent areas become white.",
+        "png": "Lossless with transparency. Best for screenshots and logos.",
+        "webp": "Lossless with transparency, usually smaller than PNG.",
+        "gif": "Up to 256 colours. Animations keep only the first frame.",
+        "bmp": "Uncompressed: large files.",
+        "tiff": "Lossless, used for printing and scanning.",
+        "ico": "Windows icon. Images larger than 256 px are scaled down."
+      }
+    },
+    "quality": {
+      "label": "Quality",
+      "help": "Lower values give smaller files with more loss of detail. 85 to 92 is a good balance."
+    },
+    "convert": {
+      "metadataNote": "The photo orientation is applied and the colour profile is kept. Data such as location and camera is not copied."
+    },
+    "resize": {
+      "mode": "How to resize",
+      "modes": {
+        "fit": "Fit within",
+        "exact": "Exact size",
+        "percent": "Percentage"
+      },
+      "help": {
+        "fit": "keeps the proportions inside the width and height",
+        "exact": "may distort the image",
+        "percent": "scales both sides"
+      },
+      "width": "Width (px)",
+      "height": "Height (px)",
+      "percent": "Percentage (%)"
+    },
+    "crop": {
+      "reference": "First image: {width} × {height} px.",
+      "whole": "Use the whole image",
+      "x": "Distance from the left (px)",
+      "y": "Distance from the top (px)",
+      "width": "Width (px)",
+      "height": "Height (px)",
+      "sameArea": "The same area is cropped from every image."
+    },
+    "rotate": {
+      "label": "Angle",
+      "cw90": "90° to the right",
+      "cw180": "180°",
+      "cw270": "90° to the left"
+    },
+    "flip": {
+      "label": "Direction",
+      "horizontal": "Horizontal (left ↔ right)",
+      "vertical": "Vertical (top ↕ bottom)"
+    },
+    "compress": {
+      "qualityHelp": "Used for JPEG. Lower values give smaller files.",
+      "help": "PNG uses the strongest lossless compression. If the result is not smaller than the original, the original is kept."
+    },
+    "strip": {
+      "help": "Removes location (GPS), camera model, dates, comments and thumbnails without recompressing the image. Orientation and colour profile are kept."
+    },
+    "merge": {
+      "direction": "Layout",
+      "horizontal": "Side by side",
+      "vertical": "Stacked",
+      "matchSize": "Match sizes (shrinks the larger ones, never enlarges)",
+      "spacing": "Gap between images (px)",
+      "order": "Images follow the order of the list. Use the arrows to reorder."
+    }
   }
 }

@@ -6,7 +6,8 @@
     "label": "Navegação principal",
     "home": "Início",
     "tools": "Ferramentas",
-    "settings": "Configurações"
+    "settings": "Configurações",
+    "image": "Imagens"
   },
   "common": {
     "loading": "Carregando…",
@@ -15,7 +16,11 @@
   "home": {
     "title": "Converta e edite arquivos sem sair do seu computador",
     "subtitle": "Nenhum arquivo é enviado para a internet.",
-    "noOperations": "As operações para estes arquivos serão adicionadas nas próximas versões."
+    "noOperations": "Ainda não há operações para: {categories}. Elas chegam nas próximas versões.",
+    "next": "Próximo passo",
+    "open": {
+      "image": "Editar {n} imagem | Editar {n} imagens"
+    }
   },
   "dropZone": {
     "title": "Arraste arquivos para cá",
@@ -28,7 +33,9 @@
     "remove": "Remover",
     "clear": "Limpar lista",
     "unsupported": "Formato não suportado",
-    "addFailed": "Não foi possível adicionar {name}"
+    "addFailed": "Não foi possível adicionar {name}",
+    "moveUp": "Mover {name} para cima",
+    "moveDown": "Mover {name} para baixo"
   },
   "categories": {
     "image": "Imagem",
@@ -55,6 +62,16 @@
       "done": "Concluída",
       "failed": "Falhou",
       "cancelled": "Cancelada"
+    },
+    "kinds": {
+      "imageConvert": "Converter",
+      "imageResize": "Redimensionar",
+      "imageCrop": "Cortar",
+      "imageRotate": "Girar",
+      "imageFlip": "Espelhar",
+      "imageCompress": "Comprimir",
+      "imageStripMetadata": "Remover metadados",
+      "imageMerge": "Juntar imagens"
     }
   },
   "tools": {
@@ -138,6 +155,8 @@
     "invalidPath": "Caminho inválido.",
     "notFound": "Arquivo ou pasta não encontrado.",
     "invalidParameter": "Valor inválido.",
+    "invalidFile": "O arquivo está danificado ou em um formato não suportado.",
+    "tooLarge": "O arquivo ou o resultado é grande demais.",
     "toolMissing": "Ferramenta necessária não encontrada.",
     "processFailed": "A ferramenta externa falhou.",
     "timeout": "A tarefa passou do tempo máximo e foi interrompida.",
@@ -148,5 +167,144 @@
     "io": "Erro ao ler ou gravar arquivos.",
     "internal": "Erro interno.",
     "unknown": "Erro inesperado."
+  },
+  "operations": {
+    "title": "O que fazer",
+    "options": "Opções da operação"
+  },
+  "image": {
+    "title": "Imagens",
+    "subtitle": "PNG, JPG, WebP, BMP, GIF, TIFF e ICO. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é imagem e fica de fora desta tela. | {n} arquivos da lista não são imagens e ficam de fora desta tela.",
+    "noNewImages": "Nenhuma imagem nova foi adicionada: os arquivos já estão na lista ou não são imagens.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "convert": {
+        "label": "Converter",
+        "description": "Muda o formato do arquivo."
+      },
+      "resize": {
+        "label": "Redimensionar",
+        "description": "Muda a largura e a altura."
+      },
+      "crop": {
+        "label": "Cortar",
+        "description": "Mantém só uma área da imagem."
+      },
+      "rotate": {
+        "label": "Girar",
+        "description": "Gira 90° ou 180°."
+      },
+      "flip": {
+        "label": "Espelhar",
+        "description": "Inverte na horizontal ou na vertical."
+      },
+      "compress": {
+        "label": "Comprimir",
+        "description": "Reduz o tamanho do arquivo."
+      },
+      "stripMetadata": {
+        "label": "Remover metadados",
+        "description": "Apaga localização, câmera e datas."
+      },
+      "merge": {
+        "label": "Juntar",
+        "description": "Une várias imagens em uma."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione imagens primeiro.",
+      "needsTwo": "Escolha pelo menos 2 imagens.",
+      "tooMany": "No máximo {max} imagens por vez.",
+      "unsupportedFormat": "Só JPEG, PNG, WebP e TIFF ({name} não é)."
+    },
+    "invalid": {
+      "quality": "A qualidade deve ser um número inteiro de 1 a 100.",
+      "dimension": "Use números inteiros de 1 a {max} pixels.",
+      "percent": "A porcentagem deve ser um número inteiro de 1 a {max}.",
+      "spacing": "O espaço deve ser um número inteiro de 0 a {max} pixels.",
+      "cropOutside": "A área passa do tamanho de {name} ({width} × {height} px)."
+    },
+    "format": {
+      "label": "Formato de saída",
+      "names": {
+        "jpeg": "JPEG (.jpg)",
+        "png": "PNG",
+        "webp": "WebP",
+        "gif": "GIF",
+        "bmp": "BMP",
+        "tiff": "TIFF",
+        "ico": "ICO (ícone)"
+      },
+      "hints": {
+        "jpeg": "Ideal para fotos. Não tem transparência: áreas transparentes ficam brancas.",
+        "png": "Sem perdas e com transparência. Ideal para capturas de tela e logotipos.",
+        "webp": "Sem perdas e com transparência, geralmente menor que PNG.",
+        "gif": "Até 256 cores. Animações ficam só com o primeiro quadro.",
+        "bmp": "Sem compressão: arquivos grandes.",
+        "tiff": "Sem perdas, usado em impressão e digitalização.",
+        "ico": "Ícone do Windows. Imagens maiores que 256 px são reduzidas."
+      }
+    },
+    "quality": {
+      "label": "Qualidade",
+      "help": "Valores menores geram arquivos menores, com mais perda de detalhes. 85 a 92 é um bom equilíbrio."
+    },
+    "convert": {
+      "metadataNote": "A orientação da foto é aplicada e o perfil de cor é mantido. Dados como localização e câmera não são copiados."
+    },
+    "resize": {
+      "mode": "Como redimensionar",
+      "modes": {
+        "fit": "Caber em",
+        "exact": "Tamanho exato",
+        "percent": "Porcentagem"
+      },
+      "help": {
+        "fit": "mantém as proporções dentro da largura e altura",
+        "exact": "pode distorcer a imagem",
+        "percent": "escala os dois lados"
+      },
+      "width": "Largura (px)",
+      "height": "Altura (px)",
+      "percent": "Porcentagem (%)"
+    },
+    "crop": {
+      "reference": "Primeira imagem: {width} × {height} px.",
+      "whole": "Usar imagem inteira",
+      "x": "Distância da esquerda (px)",
+      "y": "Distância do topo (px)",
+      "width": "Largura (px)",
+      "height": "Altura (px)",
+      "sameArea": "A mesma área é cortada de todas as imagens."
+    },
+    "rotate": {
+      "label": "Ângulo",
+      "cw90": "90° para a direita",
+      "cw180": "180°",
+      "cw270": "90° para a esquerda"
+    },
+    "flip": {
+      "label": "Direção",
+      "horizontal": "Horizontal (esquerda ↔ direita)",
+      "vertical": "Vertical (cima ↕ baixo)"
+    },
+    "compress": {
+      "qualityHelp": "Usada em JPEG. Valores menores geram arquivos menores.",
+      "help": "PNG usa a compressão máxima sem perdas. Se o resultado não ficar menor que o original, o original é mantido."
+    },
+    "strip": {
+      "help": "Remove localização (GPS), modelo da câmera, datas, comentários e miniaturas, sem recomprimir a imagem. A orientação e o perfil de cor são mantidos."
+    },
+    "merge": {
+      "direction": "Disposição",
+      "horizontal": "Lado a lado",
+      "vertical": "Empilhadas",
+      "matchSize": "Igualar tamanhos (reduz as maiores, sem ampliar)",
+      "spacing": "Espaço entre imagens (px)",
+      "order": "As imagens seguem a ordem da lista. Use as setas para reordenar."
+    }
   }
 }

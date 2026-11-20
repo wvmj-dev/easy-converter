@@ -9,7 +9,7 @@ import { baseName } from '../utils/format'
 
 const props = defineProps<{ job: Job }>()
 const emit = defineEmits<{ cancel: [id: number] }>()
-const { t } = useI18n()
+const { t, te } = useI18n()
 const actionError = ref<string | null>(null)
 
 const title = computed(() => {
@@ -17,6 +17,9 @@ const title = computed(() => {
   const name = first ? baseName(first) : props.job.kind
   return props.job.inputs.length > 1 ? `${name} +${props.job.inputs.length - 1}` : name
 })
+const kindLabel = computed(() =>
+  te(`jobs.kinds.${props.job.kind}`) ? t(`jobs.kinds.${props.job.kind}`) : props.job.kind,
+)
 const firstOutput = computed(() => props.job.outputs[0] ?? null)
 const percent = computed(() =>
   props.job.progress === null ? null : Math.round(props.job.progress),
@@ -45,6 +48,7 @@ async function run(action: (path: string) => Promise<void>) {
       >{{ title }}</span>
       <span class="job__status">{{ t(`jobs.status.${job.status}`) }}</span>
     </div>
+    <span class="job__kind">{{ kindLabel }}</span>
 
     <div
       v-if="job.status === 'running'"
@@ -125,17 +129,32 @@ async function run(action: (path: string) => Promise<void>) {
   white-space: nowrap;
 }
 
+.job__kind {
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+}
+
 .job__status {
   flex-shrink: 0;
   color: var(--color-muted);
   font-size: 0.875rem;
 }
 
-.job--failed .job__status {
+.job--failed .job__kind {
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+}
+
+.job__status {
   color: var(--color-danger);
 }
 
-.job--done .job__status {
+.job--done .job__kind {
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+}
+
+.job__status {
   color: var(--color-success);
 }
 

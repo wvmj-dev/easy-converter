@@ -212,3 +212,80 @@ a:focus-visible {
   background: var(--color-danger-soft);
   color: var(--color-danger);
 }
+
+.alert--success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.alert--info {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+/* Forms */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  min-width: 0;
+  margin: 0;
+}
+
+fieldset.field:not(.card) {
+  border: 0;
+  padding: 0;
+}
+
+.field__label {
+  padding: 0;
+  font-weight: 600;
+}
+
+.field__label--spaced {
+  margin-top: var(--space-3);
+}
+
+.field__help {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.field__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-3) var(--space-4);
+  width: 100%;
+}
+
+.range {
+  width: min(320px, 100%);
+  accent-color: var(--color-accent);
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  accent-color: var(--color-accent);
+}

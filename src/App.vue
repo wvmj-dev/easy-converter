@@ -31,6 +31,12 @@ onMounted(() => {
       </RouterLink>
       <RouterLink
         class="sidebar__link"
+        to="/image"
+      >
+        {{ t('nav.image') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
         to="/tools"
       >
         {{ t('nav.tools') }}

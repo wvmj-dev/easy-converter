@@ -1,34 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import DropZone from '../components/DropZone.vue'
 import FileList from '../components/FileList.vue'
-import { api } from '../services/api'
-import type { FileInfo } from '../types/FileInfo'
+import { useFilesStore } from '../stores/files'
+import type { JobCategory } from '../types/JobCategory'
 import { errorMessage } from '../utils/errors'
 import { baseName } from '../utils/format'
 
+/** Categories that already have a screen with operations. */
+const SCREENS: Partial<Record<JobCategory, string>> = { image: '/image' }
+
 const { t } = useI18n()
-const files = ref<FileInfo[]>([])
+const store = useFilesStore()
 const errors = ref<string[]>([])
 
-async function addPaths(paths: string[]) {
-  errors.value = []
-  const results = await Promise.allSettled(paths.map((path) => api.probeFile(path)))
-  results.forEach((result, index) => {
-    if (result.status === 'fulfilled') {
-      if (!files.value.some((f) => f.path === result.value.path)) {
-        files.value.push(result.value)
-      }
-    } else {
-      const name = baseName(paths[index] ?? '')
-      errors.value.push(`${t('files.addFailed', { name })}: ${errorMessage(t, result.reason)}`)
-    }
-  })
-}
+const ready = computed(() =>
+  [...store.categories]
+    .filter(([category]) => SCREENS[category])
+    .map(([category, count]) => ({ category, count, to: SCREENS[category] ?? '/' })),
+)
+const pending = computed(() =>
+  [...store.categories.keys()].filter((category) => !SCREENS[category]),
+)
 
-function remove(path: string) {
-  files.value = files.value.filter((f) => f.path !== path)
+async function addPaths(paths: string[]) {
+  const failures = await store.add(paths)
+  errors.value = failures.map(
+    (f) => `${t('files.addFailed', { name: baseName(f.path) })}: ${errorMessage(t, f.error)}`,
+  )
 }
 </script>
 
@@ -58,15 +59,48 @@ function remove(path: string) {
       </li>
     </ul>
 
-    <template v-if="files.length > 0">
+    <template v-if="store.files.length > 0">
       <FileList
-        :files="files"
-        @remove="remove"
-        @clear="files = []"
+        :files="store.files"
+        @remove="store.remove"
+        @clear="store.clear()"
       />
-      <p class="page__subtitle">
-        {{ t('home.noOperations') }}
+
+      <section
+        v-if="ready.length > 0"
+        class="next"
+      >
+        <h2 class="section-title">
+          {{ t('home.next') }}
+        </h2>
+        <RouterLink
+          v-for="item in ready"
+          :key="item.category"
+          class="btn btn--primary next__link"
+          :to="item.to"
+        >
+          {{ t(`home.open.${item.category}`, item.count) }}
+        </RouterLink>
+      </section>
+      <p
+        v-if="pending.length > 0"
+        class="page__subtitle"
+      >
+        {{ t('home.noOperations', { categories: pending.map((c) => t(`categories.${c}`)).join(', ') }) }}
       </p>
     </template>
   </div>
 </template>
+
+<style scoped>
+.next {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.next__link {
+  text-decoration: none;
+}
+</style>

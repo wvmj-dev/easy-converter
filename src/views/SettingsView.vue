@@ -274,44 +274,8 @@ async function save() {
   gap: var(--space-3);
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-1);
-  margin: 0;
-}
-
-.field__label {
-  padding: 0;
-  font-weight: 600;
-}
-
-.field__label--spaced {
-  margin-top: var(--space-3);
-}
-
-.field__help {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: 0.875rem;
-}
-
-.field__row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
 .field__path {
   overflow-wrap: anywhere;
-}
-
-.radio {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
 }
 
 .timeouts {

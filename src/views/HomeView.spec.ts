@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, RouterLinkStub } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
 import HomeView from './HomeView.vue'
 import { setupI18n } from '../i18n'
 import ptBR from '../i18n/pt-BR.json'
@@ -19,11 +20,14 @@ vi.mock('@tauri-apps/api/webview', () => ({
 }))
 
 function mountHome() {
-  return mount(HomeView, { global: { plugins: [setupI18n('pt-BR')] } })
+  return mount(HomeView, {
+    global: { plugins: [setupI18n('pt-BR')], stubs: { RouterLink: RouterLinkStub } },
+  })
 }
 
 describe('HomeView', () => {
   beforeEach(() => {
+    setActivePinia(createPinia())
     invoke.mockReset()
     dropHandler = null
   })
@@ -41,6 +45,7 @@ describe('HomeView', () => {
       extension: 'png',
       size: 2048,
       category: 'image',
+      image: { width: 640, height: 480, format: 'png' },
     }))
     const wrapper = mountHome()
     await flushPromises()
@@ -52,6 +57,30 @@ describe('HomeView', () => {
     expect(wrapper.findAll('.file-list__item')).toHaveLength(1)
     expect(wrapper.text()).toContain('a.png')
     expect(wrapper.text()).toContain('Imagem')
+    expect(wrapper.text()).toContain('640 × 480 px')
+    // Images already have a screen: the next step links to it.
+    const link = wrapper.findComponent(RouterLinkStub)
+    expect(link.props('to')).toBe('/image')
+    expect(link.text()).toBe('Editar 1 imagem')
+  })
+
+  it('tells which categories have no operations yet', async () => {
+    invoke.mockResolvedValue({
+      path: '/home/u/song.mp3',
+      name: 'song.mp3',
+      extension: 'mp3',
+      size: 10,
+      category: 'audio',
+      image: null,
+    })
+    const wrapper = mountHome()
+    await flushPromises()
+
+    dropHandler?.({ payload: { type: 'drop', paths: ['/home/u/song.mp3'] } })
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Áudio')
+    expect(wrapper.findComponent(RouterLinkStub).exists()).toBe(false)
   })
 
   it('shows translated errors for files the backend rejects', async () => {

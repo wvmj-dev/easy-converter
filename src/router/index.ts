@@ -1,12 +1,13 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import SettingsView from '../views/SettingsView.vue'
-import ToolsView from '../views/ToolsView.vue'
 
+// Screens other than the home screen are loaded on first visit, keeping startup light.
 export const routes: RouteRecordRaw[] = [
   { path: '/', name: 'home', component: HomeView },
-  { path: '/tools', name: 'tools', component: ToolsView },
-  { path: '/settings', name: 'settings', component: SettingsView },
+  { path: '/image', name: 'image', component: () => import('../views/ImageView.vue') },
+  { path: '/tools', name: 'tools', component: () => import('../views/ToolsView.vue') },
+  { path: '/settings', name: 'settings', component: () => import('../views/SettingsView.vue') },
+  { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
 export function setupRouter() {
