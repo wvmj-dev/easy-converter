@@ -29,6 +29,10 @@ jobs:
           sudo apt-get install -y \
             ffmpeg qpdf tesseract-ocr tesseract-ocr-por tesseract-ocr-eng \
             libimage-exiftool-perl ghostscript
+          # Optional tools of the office phase; the -nogui builds are enough headless.
+          sudo apt-get install -y --no-install-recommends \
+            libreoffice-writer-nogui libreoffice-calc-nogui libreoffice-impress-nogui \
+            pandoc
 
       # Bundled with the app as a resource; the Rust build fails without it.
       - name: Fetch PDFium
