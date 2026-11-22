@@ -65,8 +65,8 @@ Algumas funções dependem de programas que não vêm com o app. O app detecta s
 
 | Ferramenta | Para quê |
 |---|---|
-| LibreOffice | Documentos, planilhas e apresentações (DOCX, XLSX, PPTX, ODT etc.) |
-| Pandoc | Markdown, HTML e TXT ↔ DOCX |
+| LibreOffice | Documentos, planilhas e apresentações (DOCX, XLSX, PPTX, ODT etc.) e PDF → DOCX/ODT |
+| Pandoc | Markdown e HTML ↔ DOCX, ODT, RTF e TXT (para PDF, junto com o LibreOffice) |
 | Calibre | Ebooks (EPUB, MOBI, AZW3) |
 | Ghostscript | Compressão forte de PDF |
 | 7-Zip | Leitura de arquivos RAR |
