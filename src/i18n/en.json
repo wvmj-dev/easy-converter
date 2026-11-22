@@ -107,7 +107,19 @@
       "csvToJson": "CSV to JSON",
       "jsonToCsv": "JSON to CSV",
       "presentationConvert": "Convert presentation",
-      "presentationToImages": "Slides to images"
+      "presentationToImages": "Slides to images",
+      "videoConvert": "Convert video",
+      "videoTrim": "Trim video",
+      "videoCompress": "Compress video",
+      "videoResize": "Resize video",
+      "videoExtractAudio": "Extract audio",
+      "videoToGif": "Video to GIF",
+      "videoMerge": "Join videos",
+      "videoAudioTrack": "Audio track",
+      "audioConvert": "Convert audio",
+      "audioTrim": "Trim audio",
+      "audioNormalize": "Normalize volume",
+      "audioMono16k": "Mono 16 kHz"
     }
   },
   "tools": {
