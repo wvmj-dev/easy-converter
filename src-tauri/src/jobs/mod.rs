@@ -10,6 +10,7 @@ use ts_rs::TS;
 use crate::ops::audio::{
     AudioConvertParams, AudioMonoParams, AudioNormalizeParams, AudioTrimParams,
 };
+use crate::ops::document::{DocumentConvertParams, PdfToDocumentParams};
 use crate::ops::image::{
     ImageCompressParams, ImageConvertParams, ImageCropParams, ImageFlipParams, ImageMergeParams,
     ImageResizeParams, ImageRotateParams, ImageStripMetadataParams,
@@ -19,6 +20,8 @@ use crate::ops::pdf::{
     PdfMergeParams, PdfOcrParams, PdfProtectParams, PdfRotateParams, PdfSelectPagesParams,
     PdfSplitParams, PdfToImagesParams, PdfUnlockParams,
 };
+use crate::ops::presentation::{PresentationConvertParams, PresentationToImagesParams};
+use crate::ops::spreadsheet::{CsvToJsonParams, JsonToCsvParams, SpreadsheetConvertParams};
 use crate::ops::video::{
     VideoAudioTrackParams, VideoCompressParams, VideoConvertParams, VideoExtractAudioParams,
     VideoMergeParams, VideoResizeParams, VideoToGifParams, VideoTrimParams,
@@ -68,4 +71,11 @@ pub enum JobRequest {
     AudioTrim(AudioTrimParams),
     AudioNormalize(AudioNormalizeParams),
     AudioMono16k(AudioMonoParams),
+    DocumentConvert(DocumentConvertParams),
+    PdfToDocument(PdfToDocumentParams),
+    SpreadsheetConvert(SpreadsheetConvertParams),
+    CsvToJson(CsvToJsonParams),
+    JsonToCsv(JsonToCsvParams),
+    PresentationConvert(PresentationConvertParams),
+    PresentationToImages(PresentationToImagesParams),
 }

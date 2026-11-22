@@ -3,6 +3,8 @@ import type { AudioConvertParams } from "./AudioConvertParams";
 import type { AudioMonoParams } from "./AudioMonoParams";
 import type { AudioNormalizeParams } from "./AudioNormalizeParams";
 import type { AudioTrimParams } from "./AudioTrimParams";
+import type { CsvToJsonParams } from "./CsvToJsonParams";
+import type { DocumentConvertParams } from "./DocumentConvertParams";
 import type { ImageCompressParams } from "./ImageCompressParams";
 import type { ImageConvertParams } from "./ImageConvertParams";
 import type { ImageCropParams } from "./ImageCropParams";
@@ -12,6 +14,7 @@ import type { ImageResizeParams } from "./ImageResizeParams";
 import type { ImageRotateParams } from "./ImageRotateParams";
 import type { ImageStripMetadataParams } from "./ImageStripMetadataParams";
 import type { ImagesToPdfParams } from "./ImagesToPdfParams";
+import type { JsonToCsvParams } from "./JsonToCsvParams";
 import type { PdfCompressParams } from "./PdfCompressParams";
 import type { PdfExtractImagesParams } from "./PdfExtractImagesParams";
 import type { PdfExtractTextParams } from "./PdfExtractTextParams";
@@ -21,8 +24,12 @@ import type { PdfProtectParams } from "./PdfProtectParams";
 import type { PdfRotateParams } from "./PdfRotateParams";
 import type { PdfSelectPagesParams } from "./PdfSelectPagesParams";
 import type { PdfSplitParams } from "./PdfSplitParams";
+import type { PdfToDocumentParams } from "./PdfToDocumentParams";
 import type { PdfToImagesParams } from "./PdfToImagesParams";
 import type { PdfUnlockParams } from "./PdfUnlockParams";
+import type { PresentationConvertParams } from "./PresentationConvertParams";
+import type { PresentationToImagesParams } from "./PresentationToImagesParams";
+import type { SpreadsheetConvertParams } from "./SpreadsheetConvertParams";
 import type { VideoAudioTrackParams } from "./VideoAudioTrackParams";
 import type { VideoCompressParams } from "./VideoCompressParams";
 import type { VideoConvertParams } from "./VideoConvertParams";
@@ -38,4 +45,4 @@ import type { VideoTrimParams } from "./VideoTrimParams";
  * Operations are added phase by phase (images, PDF, video...), each with its function in
  * `ops/<category>.rs`.
  */
-export type JobRequest = { "type": "imageConvert" } & ImageConvertParams | { "type": "imageResize" } & ImageResizeParams | { "type": "imageCrop" } & ImageCropParams | { "type": "imageRotate" } & ImageRotateParams | { "type": "imageFlip" } & ImageFlipParams | { "type": "imageCompress" } & ImageCompressParams | { "type": "imageStripMetadata" } & ImageStripMetadataParams | { "type": "imageMerge" } & ImageMergeParams | { "type": "imagesToPdf" } & ImagesToPdfParams | { "type": "pdfMerge" } & PdfMergeParams | { "type": "pdfSplit" } & PdfSplitParams | { "type": "pdfSelectPages" } & PdfSelectPagesParams | { "type": "pdfRotate" } & PdfRotateParams | { "type": "pdfToImages" } & PdfToImagesParams | { "type": "pdfExtractText" } & PdfExtractTextParams | { "type": "pdfExtractImages" } & PdfExtractImagesParams | { "type": "pdfProtect" } & PdfProtectParams | { "type": "pdfUnlock" } & PdfUnlockParams | { "type": "pdfCompress" } & PdfCompressParams | { "type": "pdfOcr" } & PdfOcrParams | { "type": "videoConvert" } & VideoConvertParams | { "type": "videoTrim" } & VideoTrimParams | { "type": "videoCompress" } & VideoCompressParams | { "type": "videoResize" } & VideoResizeParams | { "type": "videoExtractAudio" } & VideoExtractAudioParams | { "type": "videoToGif" } & VideoToGifParams | { "type": "videoMerge" } & VideoMergeParams | { "type": "videoAudioTrack" } & VideoAudioTrackParams | { "type": "audioConvert" } & AudioConvertParams | { "type": "audioTrim" } & AudioTrimParams | { "type": "audioNormalize" } & AudioNormalizeParams | { "type": "audioMono16k" } & AudioMonoParams;
+export type JobRequest = { "type": "imageConvert" } & ImageConvertParams | { "type": "imageResize" } & ImageResizeParams | { "type": "imageCrop" } & ImageCropParams | { "type": "imageRotate" } & ImageRotateParams | { "type": "imageFlip" } & ImageFlipParams | { "type": "imageCompress" } & ImageCompressParams | { "type": "imageStripMetadata" } & ImageStripMetadataParams | { "type": "imageMerge" } & ImageMergeParams | { "type": "imagesToPdf" } & ImagesToPdfParams | { "type": "pdfMerge" } & PdfMergeParams | { "type": "pdfSplit" } & PdfSplitParams | { "type": "pdfSelectPages" } & PdfSelectPagesParams | { "type": "pdfRotate" } & PdfRotateParams | { "type": "pdfToImages" } & PdfToImagesParams | { "type": "pdfExtractText" } & PdfExtractTextParams | { "type": "pdfExtractImages" } & PdfExtractImagesParams | { "type": "pdfProtect" } & PdfProtectParams | { "type": "pdfUnlock" } & PdfUnlockParams | { "type": "pdfCompress" } & PdfCompressParams | { "type": "pdfOcr" } & PdfOcrParams | { "type": "videoConvert" } & VideoConvertParams | { "type": "videoTrim" } & VideoTrimParams | { "type": "videoCompress" } & VideoCompressParams | { "type": "videoResize" } & VideoResizeParams | { "type": "videoExtractAudio" } & VideoExtractAudioParams | { "type": "videoToGif" } & VideoToGifParams | { "type": "videoMerge" } & VideoMergeParams | { "type": "videoAudioTrack" } & VideoAudioTrackParams | { "type": "audioConvert" } & AudioConvertParams | { "type": "audioTrim" } & AudioTrimParams | { "type": "audioNormalize" } & AudioNormalizeParams | { "type": "audioMono16k" } & AudioMonoParams | { "type": "documentConvert" } & DocumentConvertParams | { "type": "pdfToDocument" } & PdfToDocumentParams | { "type": "spreadsheetConvert" } & SpreadsheetConvertParams | { "type": "csvToJson" } & CsvToJsonParams | { "type": "jsonToCsv" } & JsonToCsvParams | { "type": "presentationConvert" } & PresentationConvertParams | { "type": "presentationToImages" } & PresentationToImagesParams;

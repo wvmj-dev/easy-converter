@@ -250,7 +250,7 @@ pub fn validate_pdf(path: &Path) -> AppResult<PathBuf> {
     Ok(path)
 }
 
-fn validate_dpi(dpi: u32) -> AppResult<u32> {
+pub(crate) fn validate_dpi(dpi: u32) -> AppResult<u32> {
     if (MIN_DPI..=MAX_DPI).contains(&dpi) {
         Ok(dpi)
     } else {
@@ -630,7 +630,7 @@ pub fn extract_images(
 }
 
 /// Maps the files the worker wrote to their destinations, in name order.
-fn numbered_outputs(
+pub(crate) fn numbered_outputs(
     dir: &Path,
     planner: &OutputPlanner,
     input: &Path,

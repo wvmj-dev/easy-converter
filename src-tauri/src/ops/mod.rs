@@ -2,9 +2,13 @@
 //! parameters validated, and implemented in `ops/<category>.rs`.
 
 pub mod audio;
+pub mod document;
 pub mod image;
 pub mod media;
+pub mod office;
 pub mod pdf;
+pub mod presentation;
+pub mod spreadsheet;
 pub mod video;
 
 use std::future::Future;
@@ -62,6 +66,15 @@ pub fn build_job(request: JobRequest, ctx: &OpsContext) -> AppResult<JobSpec> {
         JobRequest::AudioTrim(params) => audio::trim(params, &planner, tools),
         JobRequest::AudioNormalize(params) => audio::normalize(params, &planner, tools),
         JobRequest::AudioMono16k(params) => audio::mono_16k(params, &planner, tools),
+        JobRequest::DocumentConvert(params) => document::convert(params, &planner, tools),
+        JobRequest::PdfToDocument(params) => document::pdf_to_document(params, &planner, tools),
+        JobRequest::SpreadsheetConvert(params) => spreadsheet::convert(params, &planner, tools),
+        JobRequest::CsvToJson(params) => spreadsheet::csv_to_json(params, &planner),
+        JobRequest::JsonToCsv(params) => spreadsheet::json_to_csv(params, &planner),
+        JobRequest::PresentationConvert(params) => presentation::convert(params, &planner, tools),
+        JobRequest::PresentationToImages(params) => {
+            presentation::to_images(params, &planner, tools)
+        }
     }
 }
 

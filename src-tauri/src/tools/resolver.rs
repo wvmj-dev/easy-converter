@@ -138,12 +138,17 @@ impl ToolBox {
         Ok(tool_command(id, path, status.runtime_dir.as_deref()))
     }
 
-    /// Path of an available library tool (PDFium).
-    pub fn library_path(&self, id: ToolId) -> AppResult<PathBuf> {
+    /// Path of an available executable or library tool.
+    pub fn path(&self, id: ToolId) -> AppResult<PathBuf> {
         self.available(id)?
             .path
             .clone()
             .ok_or_else(|| AppError::ToolMissing(definition(id).name.to_owned()))
+    }
+
+    /// Path of an available library tool (PDFium).
+    pub fn library_path(&self, id: ToolId) -> AppResult<PathBuf> {
+        self.path(id)
     }
 
     /// Command that starts the isolated PDFium worker.
