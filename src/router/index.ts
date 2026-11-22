@@ -8,6 +8,17 @@ export const routes: RouteRecordRaw[] = [
   { path: '/pdf', name: 'pdf', component: () => import('../views/PdfView.vue') },
   { path: '/video', name: 'video', component: () => import('../views/VideoView.vue') },
   { path: '/audio', name: 'audio', component: () => import('../views/AudioView.vue') },
+  { path: '/document', name: 'document', component: () => import('../views/DocumentView.vue') },
+  {
+    path: '/spreadsheet',
+    name: 'spreadsheet',
+    component: () => import('../views/SpreadsheetView.vue'),
+  },
+  {
+    path: '/presentation',
+    name: 'presentation',
+    component: () => import('../views/PresentationView.vue'),
+  },
   { path: '/tools', name: 'tools', component: () => import('../views/ToolsView.vue') },
   { path: '/settings', name: 'settings', component: () => import('../views/SettingsView.vue') },
   { path: '/about', name: 'about', component: () => import('../views/AboutView.vue') },

@@ -22,6 +22,7 @@ const CREDITS: Record<Group, Credit[]> = {
     { name: 'image (Rust)', license: 'MIT / Apache-2.0', source: 'github.com/image-rs/image' },
     { name: 'lopdf', license: 'MIT', source: 'github.com/J-F-Liu/lopdf' },
     { name: 'pdfium-render', license: 'MIT / Apache-2.0', source: 'github.com/ajrcarey/pdfium-render' },
+    { name: 'csv (Rust)', license: 'MIT / Unlicense', source: 'github.com/BurntSushi/rust-csv' },
     { name: 'Tokio', license: 'MIT', source: 'github.com/tokio-rs/tokio' },
     { name: 'Serde', license: 'MIT / Apache-2.0', source: 'github.com/serde-rs/serde' },
   ],

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import DropZone from '../components/DropZone.vue'
 import FileList from '../components/FileList.vue'
 import OperationPicker, { type OperationChoice } from '../components/OperationPicker.vue'
+import FormatChoiceOptions from '../components/options/FormatChoiceOptions.vue'
 import PdfCompressOptions from '../components/options/PdfCompressOptions.vue'
 import PdfOcrOptions from '../components/options/PdfOcrOptions.vue'
 import PdfProtectOptions from '../components/options/PdfProtectOptions.vue'
@@ -207,6 +208,13 @@ async function start() {
         <PdfToImagesOptions
           v-else-if="operation === 'toImages'"
           v-model="options.toImages"
+        />
+        <FormatChoiceOptions
+          v-else-if="operation === 'toDocument'"
+          v-model="options.toDocument.format"
+          name="pdf-document-format"
+          prefix="pdf.toDocument"
+          :formats="['docx', 'odt']"
         />
         <PdfOcrOptions
           v-else-if="operation === 'ocr'"

@@ -5,6 +5,7 @@ import type { FileInfo } from '../types/FileInfo'
 import type { JobRequest } from '../types/JobRequest'
 import type { PageRange } from '../types/PageRange'
 import type { PdfCompressLevel } from '../types/PdfCompressLevel'
+import type { PdfDocumentFormat } from '../types/PdfDocumentFormat'
 import type { PdfImageFormat } from '../types/PdfImageFormat'
 import type { Rotation } from '../types/Rotation'
 import type { ToolId } from '../types/ToolId'
@@ -27,6 +28,7 @@ export const PDF_OPERATIONS = [
   'rotate',
   'compress',
   'toImages',
+  'toDocument',
   'extractText',
   'extractImages',
   'ocr',
@@ -42,6 +44,7 @@ export interface PdfOptions {
   selectPages: { pages: string }
   rotate: { rotation: Rotation; scope: PageScope; pages: string }
   toImages: { format: PdfImageFormat; dpi: number; quality: number; scope: PageScope; pages: string }
+  toDocument: { format: PdfDocumentFormat }
   protect: {
     password: string
     confirm: string
@@ -61,6 +64,7 @@ export function defaultPdfOptions(ocrLanguages: string[] = []): PdfOptions {
     selectPages: { pages: '' },
     rotate: { rotation: 'cw90', scope: 'all', pages: '' },
     toImages: { format: 'png', dpi: 150, quality: 90, scope: 'all', pages: '' },
+    toDocument: { format: 'docx' },
     protect: { password: '', confirm: '', ownerPassword: '', noPrint: false, noCopy: false, noEdit: false },
     unlock: { password: '' },
     compress: { level: 'standard' },
@@ -88,6 +92,7 @@ const REQUIRED_TOOLS: Record<PdfOperation, ToolId[]> = {
   rotate: ['qpdf'],
   compress: [],
   toImages: ['pdfium'],
+  toDocument: ['libreoffice'],
   extractText: ['pdfium'],
   extractImages: ['pdfium'],
   ocr: ['qpdf', 'pdfium', 'tesseract'],
@@ -100,6 +105,7 @@ const TOOL_NAMES: Record<string, string> = {
   pdfium: 'PDFium',
   tesseract: 'Tesseract',
   ghostscript: 'Ghostscript',
+  libreoffice: 'LibreOffice',
 }
 
 function isIntIn(value: unknown, min: number, max: number): value is number {
@@ -202,6 +208,7 @@ export function validateOptions(
         : { key: 'pdf.ocr.chooseLanguages', params: { max: PDF_LIMITS.maxOcrLanguages } }
     }
     case 'merge':
+    case 'toDocument':
     case 'extractText':
     case 'extractImages':
     case 'unlock':
@@ -256,6 +263,8 @@ export function buildPdfRequests(
         ...(o.scope === 'some' ? { pages: pages(o.pages) } : {}),
       }))
     }
+    case 'toDocument':
+      return each((input) => ({ type: 'pdfToDocument', input, format: options.toDocument.format }))
     case 'extractText':
       return each((input) => ({ type: 'pdfExtractText', input }))
     case 'extractImages':

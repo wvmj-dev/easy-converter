@@ -11,7 +11,10 @@
     "about": "About",
     "pdf": "PDF",
     "video": "Video",
-    "audio": "Audio"
+    "audio": "Audio",
+    "document": "Documents",
+    "spreadsheet": "Spreadsheets",
+    "presentation": "Presentations"
   },
   "common": {
     "loading": "Loading…",
@@ -26,7 +29,10 @@
       "image": "Edit {n} image | Edit {n} images",
       "pdf": "Edit {n} PDF | Edit {n} PDFs",
       "video": "Edit {n} video | Edit {n} videos",
-      "audio": "Edit {n} audio file | Edit {n} audio files"
+      "audio": "Edit {n} audio file | Edit {n} audio files",
+      "document": "Edit {n} document | Edit {n} documents",
+      "spreadsheet": "Edit {n} spreadsheet | Edit {n} spreadsheets",
+      "presentation": "Edit {n} presentation | Edit {n} presentations"
     }
   },
   "dropZone": {
@@ -94,7 +100,14 @@
       "pdfProtect": "Protect with password",
       "pdfUnlock": "Remove password",
       "pdfCompress": "Compress PDF",
-      "pdfOcr": "OCR"
+      "pdfOcr": "OCR",
+      "documentConvert": "Convert document",
+      "pdfToDocument": "PDF to document",
+      "spreadsheetConvert": "Convert spreadsheet",
+      "csvToJson": "CSV to JSON",
+      "jsonToCsv": "JSON to CSV",
+      "presentationConvert": "Convert presentation",
+      "presentationToImages": "Slides to images"
     }
   },
   "tools": {
@@ -402,6 +415,10 @@
       "unlock": {
         "label": "Remove password",
         "description": "Creates a copy without password or restrictions."
+      },
+      "toDocument": {
+        "label": "PDF to document",
+        "description": "Editable DOCX or ODT (LibreOffice)."
       }
     },
     "unavailable": {
@@ -491,6 +508,19 @@
         "fra": "French",
         "deu": "German",
         "ita": "Italian"
+      }
+    },
+    "toDocument": {
+      "format": {
+        "legend": "Document format",
+        "names": {
+          "docx": "DOCX (Word)",
+          "odt": "ODT (LibreOffice)"
+        },
+        "hints": {
+          "docx": "Text becomes text boxes placed as in the PDF. Good for small fixes; the layout may change. Scanned PDFs need OCR first.",
+          "odt": "Text becomes text boxes placed as in the PDF. Good for small fixes; the layout may change. Scanned PDFs need OCR first."
+        }
       }
     }
   },
@@ -680,6 +710,151 @@
       "auto": "Automatic",
       "kbps": "{n} kbit/s",
       "bitrateHelp": "Automatic keeps the sound as it is when the format allows; otherwise uses 192 kbit/s."
+    }
+  },
+  "office": {
+    "missingTool": "Needs {tool}, which was not found. See the Tools screen."
+  },
+  "document": {
+    "title": "Documents",
+    "subtitle": "Convert between Word, ODT, RTF, PDF, Markdown, HTML and text. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not a document and is left out of this screen. | {n} files in the list are not documents and are left out of this screen.",
+    "noNewFiles": "No new document was added: the files are already in the list or are not documents.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "convertTitle": "Convert",
+    "unavailable": {
+      "noFiles": "Add documents first.",
+      "same": "{name} is already {format}. Remove it from the list or choose another format.",
+      "notOffered": "{name} cannot be converted to {format}. Remove it from the list or choose another format."
+    },
+    "format": {
+      "legend": "Convert to",
+      "names": {
+        "pdf": "PDF",
+        "docx": "DOCX (Word)",
+        "odt": "ODT (LibreOffice)",
+        "rtf": "RTF",
+        "txt": "Text (TXT)",
+        "html": "HTML",
+        "md": "Markdown"
+      },
+      "hints": {
+        "pdf": "Uses LibreOffice. Markdown and HTML go through Pandoc first.",
+        "docx": "Word documents, ODT, RTF and text use LibreOffice; Markdown and HTML use Pandoc. Only images in the file's folder (or subfolders) are included; images from the internet are never downloaded.",
+        "odt": "Word documents, ODT, RTF and text use LibreOffice; Markdown and HTML use Pandoc. Only images in the file's folder (or subfolders) are included; images from the internet are never downloaded.",
+        "rtf": "Word documents, ODT and text use LibreOffice; Markdown and HTML use Pandoc.",
+        "txt": "Text only, in UTF-8. Images and formatting are not kept.",
+        "html": "Uses Pandoc. Images are not included; their description takes their place.",
+        "md": "GitHub-style Markdown, with Pandoc. Images are not included; their description takes their place."
+      }
+    }
+  },
+  "spreadsheet": {
+    "title": "Spreadsheets",
+    "subtitle": "Convert between XLSX, ODS, CSV and PDF, and between CSV and JSON. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not a spreadsheet and is left out of this screen. | {n} files in the list are not spreadsheets and are left out of this screen.",
+    "noNewFiles": "No new spreadsheet was added: the files are already in the list or are not spreadsheets.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "convert": {
+        "label": "Convert",
+        "description": "XLSX, ODS, CSV or PDF (LibreOffice)."
+      },
+      "csvToJson": {
+        "label": "CSV to JSON",
+        "description": "One object or list per row."
+      },
+      "jsonToCsv": {
+        "label": "JSON to CSV",
+        "description": "One column per key."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add spreadsheets first.",
+      "convert": "{name} is JSON. Use \"JSON to CSV\" or remove it from the list.",
+      "csvToJson": "{name} is not CSV. Remove it from the list to use this operation.",
+      "jsonToCsv": "{name} is not JSON. Remove it from the list to use this operation."
+    },
+    "convert": {
+      "same": "{name} is already {format}. Remove it from the list or choose another format."
+    },
+    "format": {
+      "legend": "Convert to",
+      "names": {
+        "xlsx": "XLSX (Excel)",
+        "ods": "ODS (LibreOffice)",
+        "csv": "CSV",
+        "pdf": "PDF"
+      },
+      "hints": {
+        "csv": "Only the first sheet is saved, in UTF-8 and separated by commas. For CSV input, the delimiter and encoding are detected.",
+        "pdf": "Each sheet becomes pages, as when printing."
+      }
+    },
+    "delimiter": {
+      "label": "Delimiter",
+      "names": {
+        "auto": "Detect automatically",
+        "comma": "Comma (,)",
+        "semicolon": "Semicolon (;)",
+        "tab": "Tab",
+        "pipe": "Vertical bar (|)"
+      }
+    },
+    "csvToJson": {
+      "legend": "Content",
+      "header": "The first row has the column names",
+      "typed": "Convert numbers and true/false (empty cells become null)",
+      "help": "With column names each row becomes an object; without, a list. Numbers are only converted when nothing is lost (\"007\" and \"1.50\" stay text). UTF-8 and Windows-1252 files are accepted."
+    },
+    "jsonToCsv": {
+      "legend": "Output file",
+      "bom": "Mark as UTF-8 (BOM), so Excel shows accents",
+      "escapeFormulas": "Protect against formulas (recommended)",
+      "help": "Accepts a list of objects (one column per key), of lists or of values. Nested values are written as JSON text. The protection puts ' before text that starts with =, +, - or @, so nothing runs when the file is opened in a spreadsheet."
+    }
+  },
+  "presentation": {
+    "title": "Presentations",
+    "subtitle": "Convert PPTX, PPT and ODP to PDF, to each other or to images. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not a presentation and is left out of this screen. | {n} files in the list are not presentations and are left out of this screen.",
+    "noNewFiles": "No new presentation was added: the files are already in the list or are not presentations.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "convert": {
+        "label": "Convert",
+        "description": "PDF, PPTX or ODP (LibreOffice)."
+      },
+      "toImages": {
+        "label": "Slides to images",
+        "description": "One PNG or JPEG image per slide."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add presentations first."
+    },
+    "convert": {
+      "same": "{name} is already {format}. Remove it from the list or choose another format."
+    },
+    "format": {
+      "legend": "Convert to",
+      "names": {
+        "pdf": "PDF",
+        "pptx": "PPTX (PowerPoint)",
+        "odp": "ODP (LibreOffice)"
+      },
+      "hints": {
+        "pdf": "One slide per page. Animations and videos are not kept."
+      }
+    },
+    "toImages": {
+      "dpiHelp": "150 dpi gives about 2000 pixels of width on a 16:9 slide; 96 dpi is enough for screens."
     }
   }
 }

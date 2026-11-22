@@ -11,7 +11,10 @@
     "about": "Sobre",
     "pdf": "PDF",
     "video": "Vídeo",
-    "audio": "Áudio"
+    "audio": "Áudio",
+    "document": "Documentos",
+    "spreadsheet": "Planilhas",
+    "presentation": "Apresentações"
   },
   "common": {
     "loading": "Carregando…",
@@ -26,7 +29,10 @@
       "image": "Editar {n} imagem | Editar {n} imagens",
       "pdf": "Editar {n} PDF | Editar {n} PDFs",
       "video": "Editar {n} vídeo | Editar {n} vídeos",
-      "audio": "Editar {n} áudio | Editar {n} áudios"
+      "audio": "Editar {n} áudio | Editar {n} áudios",
+      "document": "Editar {n} documento | Editar {n} documentos",
+      "spreadsheet": "Editar {n} planilha | Editar {n} planilhas",
+      "presentation": "Editar {n} apresentação | Editar {n} apresentações"
     }
   },
   "dropZone": {
@@ -94,7 +100,14 @@
       "pdfProtect": "Proteger com senha",
       "pdfUnlock": "Remover senha",
       "pdfCompress": "Comprimir PDF",
-      "pdfOcr": "OCR"
+      "pdfOcr": "OCR",
+      "documentConvert": "Converter documento",
+      "pdfToDocument": "PDF para documento",
+      "spreadsheetConvert": "Converter planilha",
+      "csvToJson": "CSV para JSON",
+      "jsonToCsv": "JSON para CSV",
+      "presentationConvert": "Converter apresentação",
+      "presentationToImages": "Slides para imagens"
     }
   },
   "tools": {
@@ -402,6 +415,10 @@
       "unlock": {
         "label": "Remover senha",
         "description": "Cria uma cópia sem senha nem restrições."
+      },
+      "toDocument": {
+        "label": "PDF para documento",
+        "description": "DOCX ou ODT editável (LibreOffice)."
       }
     },
     "unavailable": {
@@ -491,6 +508,19 @@
         "fra": "Francês",
         "deu": "Alemão",
         "ita": "Italiano"
+      }
+    },
+    "toDocument": {
+      "format": {
+        "legend": "Formato do documento",
+        "names": {
+          "docx": "DOCX (Word)",
+          "odt": "ODT (LibreOffice)"
+        },
+        "hints": {
+          "docx": "O texto vira caixas de texto posicionadas como no PDF. Bom para pequenas correções; o layout pode mudar. PDFs escaneados precisam de OCR antes.",
+          "odt": "O texto vira caixas de texto posicionadas como no PDF. Bom para pequenas correções; o layout pode mudar. PDFs escaneados precisam de OCR antes."
+        }
       }
     }
   },
@@ -680,6 +710,151 @@
       "auto": "Automática",
       "kbps": "{n} kbit/s",
       "bitrateHelp": "Automática mantém o som como está quando o formato permite; senão usa 192 kbit/s."
+    }
+  },
+  "office": {
+    "missingTool": "Precisa do {tool}, que não foi encontrado. Veja a tela Ferramentas."
+  },
+  "document": {
+    "title": "Documentos",
+    "subtitle": "Converter entre Word, ODT, RTF, PDF, Markdown, HTML e texto. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é documento e fica fora desta tela. | {n} arquivos da lista não são documentos e ficam fora desta tela.",
+    "noNewFiles": "Nenhum documento novo foi adicionado: os arquivos já estão na lista ou não são documentos.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "convertTitle": "Converter",
+    "unavailable": {
+      "noFiles": "Adicione documentos primeiro.",
+      "same": "{name} já está em {format}. Remova-o da lista ou escolha outro formato.",
+      "notOffered": "{name} não pode ser convertido para {format}. Remova-o da lista ou escolha outro formato."
+    },
+    "format": {
+      "legend": "Converter para",
+      "names": {
+        "pdf": "PDF",
+        "docx": "DOCX (Word)",
+        "odt": "ODT (LibreOffice)",
+        "rtf": "RTF",
+        "txt": "Texto (TXT)",
+        "html": "HTML",
+        "md": "Markdown"
+      },
+      "hints": {
+        "pdf": "Usa o LibreOffice. Markdown e HTML passam antes pelo Pandoc.",
+        "docx": "Documentos do Word, ODT, RTF e texto usam o LibreOffice; Markdown e HTML usam o Pandoc. Só imagens da mesma pasta (ou subpastas) do arquivo são incluídas; imagens da internet nunca são baixadas.",
+        "odt": "Documentos do Word, ODT, RTF e texto usam o LibreOffice; Markdown e HTML usam o Pandoc. Só imagens da mesma pasta (ou subpastas) do arquivo são incluídas; imagens da internet nunca são baixadas.",
+        "rtf": "Documentos do Word, ODT e texto usam o LibreOffice; Markdown e HTML usam o Pandoc.",
+        "txt": "Só o texto, em UTF-8. Imagens e formatação não são mantidas.",
+        "html": "Usa o Pandoc. As imagens não são incluídas; no lugar fica a descrição delas.",
+        "md": "Markdown no estilo do GitHub, pelo Pandoc. As imagens não são incluídas; no lugar fica a descrição delas."
+      }
+    }
+  },
+  "spreadsheet": {
+    "title": "Planilhas",
+    "subtitle": "Converter entre XLSX, ODS, CSV e PDF, e entre CSV e JSON. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é planilha e fica fora desta tela. | {n} arquivos da lista não são planilhas e ficam fora desta tela.",
+    "noNewFiles": "Nenhuma planilha nova foi adicionada: os arquivos já estão na lista ou não são planilhas.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "convert": {
+        "label": "Converter",
+        "description": "XLSX, ODS, CSV ou PDF (LibreOffice)."
+      },
+      "csvToJson": {
+        "label": "CSV para JSON",
+        "description": "Uma linha por objeto ou lista."
+      },
+      "jsonToCsv": {
+        "label": "JSON para CSV",
+        "description": "Uma coluna por chave."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione planilhas primeiro.",
+      "convert": "{name} é JSON. Use \"JSON para CSV\" ou remova-o da lista.",
+      "csvToJson": "{name} não é CSV. Remova-o da lista para usar esta operação.",
+      "jsonToCsv": "{name} não é JSON. Remova-o da lista para usar esta operação."
+    },
+    "convert": {
+      "same": "{name} já está em {format}. Remova-o da lista ou escolha outro formato."
+    },
+    "format": {
+      "legend": "Converter para",
+      "names": {
+        "xlsx": "XLSX (Excel)",
+        "ods": "ODS (LibreOffice)",
+        "csv": "CSV",
+        "pdf": "PDF"
+      },
+      "hints": {
+        "csv": "Só a primeira aba é salva, em UTF-8 e separada por vírgulas. Em CSV de entrada, o separador e a codificação são detectados.",
+        "pdf": "Cada aba vira páginas, como na impressão."
+      }
+    },
+    "delimiter": {
+      "label": "Separador",
+      "names": {
+        "auto": "Detectar automaticamente",
+        "comma": "Vírgula (,)",
+        "semicolon": "Ponto e vírgula (;)",
+        "tab": "Tabulação",
+        "pipe": "Barra vertical (|)"
+      }
+    },
+    "csvToJson": {
+      "legend": "Conteúdo",
+      "header": "A primeira linha tem os nomes das colunas",
+      "typed": "Converter números e true/false (células vazias viram null)",
+      "help": "Com nomes de colunas, cada linha vira um objeto; sem, uma lista. Números só são convertidos quando nada se perde (\"007\" e \"1,50\" continuam texto). Arquivos em UTF-8 ou Windows-1252 são aceitos."
+    },
+    "jsonToCsv": {
+      "legend": "Arquivo gerado",
+      "bom": "Marcar como UTF-8 (BOM), para o Excel mostrar acentos",
+      "escapeFormulas": "Proteger contra fórmulas (recomendado)",
+      "help": "Aceita uma lista de objetos (uma coluna por chave), de listas ou de valores. Valores aninhados ficam como texto JSON. A proteção coloca ' antes de textos que começam com =, +, - ou @, para que nada seja executado ao abrir o arquivo numa planilha."
+    }
+  },
+  "presentation": {
+    "title": "Apresentações",
+    "subtitle": "Converter PPTX, PPT e ODP para PDF, entre si ou em imagens. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é apresentação e fica fora desta tela. | {n} arquivos da lista não são apresentações e ficam fora desta tela.",
+    "noNewFiles": "Nenhuma apresentação nova foi adicionada: os arquivos já estão na lista ou não são apresentações.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "convert": {
+        "label": "Converter",
+        "description": "PDF, PPTX ou ODP (LibreOffice)."
+      },
+      "toImages": {
+        "label": "Slides para imagens",
+        "description": "Uma imagem PNG ou JPEG por slide."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione apresentações primeiro."
+    },
+    "convert": {
+      "same": "{name} já está em {format}. Remova-o da lista ou escolha outro formato."
+    },
+    "format": {
+      "legend": "Converter para",
+      "names": {
+        "pdf": "PDF",
+        "pptx": "PPTX (PowerPoint)",
+        "odp": "ODP (LibreOffice)"
+      },
+      "hints": {
+        "pdf": "Um slide por página. Animações e vídeos não são mantidos."
+      }
+    },
+    "toImages": {
+      "dpiHelp": "150 dpi dá cerca de 2000 pixels de largura num slide 16:9; 96 dpi basta para a tela."
     }
   }
 }

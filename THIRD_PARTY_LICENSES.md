@@ -73,6 +73,7 @@ O app é construído com estas bibliotecas (dependências diretas), todas com li
 | image | 0.25.10 | MIT ou Apache-2.0 |
 | lopdf | 0.47.0 | MIT |
 | pdfium-render | 0.9.5 | MIT ou Apache-2.0 |
+| csv | 1.4.0 | MIT ou Unlicense |
 | Tokio | 1.54.1 | MIT |
 | Serde, serde_json | 1.0.229 / 1.0.154 | MIT ou Apache-2.0 |
 | thiserror | 2.0.21 | MIT ou Apache-2.0 |

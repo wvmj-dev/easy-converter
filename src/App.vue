@@ -55,6 +55,24 @@ onMounted(() => {
       </RouterLink>
       <RouterLink
         class="sidebar__link"
+        to="/document"
+      >
+        {{ t('nav.document') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
+        to="/spreadsheet"
+      >
+        {{ t('nav.spreadsheet') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
+        to="/presentation"
+      >
+        {{ t('nav.presentation') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
         to="/tools"
       >
         {{ t('nav.tools') }}

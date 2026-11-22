@@ -15,6 +15,9 @@ const SCREENS: Partial<Record<JobCategory, string>> = {
   pdf: '/pdf',
   video: '/video',
   audio: '/audio',
+  document: '/document',
+  spreadsheet: '/spreadsheet',
+  presentation: '/presentation',
 }
 
 const { t } = useI18n()
