@@ -985,7 +985,6 @@
   "archive": {
     "title": "Archives",
     "subtitle": "Extract and create ZIP, 7z and TAR. RAR, xz and bzip2 need 7-Zip. Everything is processed on your computer.",
-    "otherFiles": "{n} file in the list is not an archive and is left out of this screen. | {n} files in the list are not archives and are left out of this screen.",
     "noNewFiles": "No new file was added: they are already in the list.",
     "start": "Start ({n} job) | Start ({n} jobs)",
     "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",

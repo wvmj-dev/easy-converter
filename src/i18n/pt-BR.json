@@ -985,7 +985,6 @@
   "archive": {
     "title": "Compactados",
     "subtitle": "Extrair e criar ZIP, 7z e TAR. RAR, xz e bzip2 precisam do 7-Zip. Tudo é processado no seu computador.",
-    "otherFiles": "{n} arquivo da lista não é compactado e fica fora desta tela. | {n} arquivos da lista não são compactados e ficam fora desta tela.",
     "noNewFiles": "Nenhum arquivo novo foi adicionado: eles já estão na lista.",
     "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
     "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
