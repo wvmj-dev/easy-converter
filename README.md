@@ -10,7 +10,7 @@ Uma alternativa a sites como Convertio, iLovePDF e iLoveIMG, com uma diferença:
 - Projeto pessoal, sem fins lucrativos, mantido nas horas livres do autor.
 - Nunca sobrescreve o arquivo original.
 
-> **Situação:** a versão 0.5.0 converte e edita imagens (PNG, JPG, WebP, BMP, GIF, TIFF e ICO), PDF (juntar, dividir, extrair e reordenar páginas, girar, comprimir, converter para imagens e a partir delas, extrair texto e imagens, OCR e senhas), vídeo (converter, comprimir, redimensionar, cortar, juntar, extrair áudio, GIF e trocar ou remover a trilha de áudio) áudio (converter, cortar, normalizar o volume e mono 16 kHz), documentos (DOCX, DOC, ODT, RTF, TXT, Markdown, HTML e PDF), planilhas (XLSX, XLS, ODS, CSV, JSON e PDF) apresentações (PPTX, PPT, ODP, PDF e imagens), legendas (SRT, VTT e ASS, deslocar tempos e incorporar no vídeo), ebooks (EPUB, AZW3, MOBI e PDF) e compactados (ZIP, 7z, TAR e TAR.GZ; RAR, xz e bzip2 com o 7-Zip).
+> **Situação:** a versão 1.0.0 converte e edita imagens (PNG, JPG, WebP, BMP, GIF, TIFF e ICO), PDF (juntar, dividir, extrair e reordenar páginas, girar, comprimir, converter para imagens e a partir delas, extrair texto e imagens, OCR e senhas), vídeo (converter, comprimir, redimensionar, cortar, juntar, extrair áudio, GIF e trocar ou remover a trilha de áudio) áudio (converter, cortar, normalizar o volume e mono 16 kHz), documentos (DOCX, DOC, ODT, RTF, TXT, Markdown, HTML e PDF), planilhas (XLSX, XLS, ODS, CSV, JSON e PDF) apresentações (PPTX, PPT, ODP, PDF e imagens), legendas (SRT, VTT e ASS, deslocar tempos e incorporar no vídeo), ebooks (EPUB, AZW3, MOBI e PDF) e compactados (ZIP, 7z, TAR e TAR.GZ; RAR, xz e bzip2 com o 7-Zip).
 
 ## Aviso sobre uso de IA
 
