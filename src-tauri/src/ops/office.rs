@@ -41,7 +41,9 @@ pub fn validate_input(path: &Path, allowed: &[&str], what: &str) -> AppResult<(P
 /// not checked: programs often save HTML or RTF under those names.
 fn signature_matches(ext: &str, head: &[u8]) -> bool {
     match ext {
-        "docx" | "xlsx" | "pptx" | "odt" | "ods" | "odp" => head.starts_with(b"PK\x03\x04"),
+        "docx" | "xlsx" | "pptx" | "odt" | "ods" | "odp" | "epub" => {
+            head.starts_with(b"PK\x03\x04")
+        }
         "rtf" => head.starts_with(b"{\\rtf"),
         _ => true,
     }
@@ -95,6 +97,26 @@ pub fn detect_encoding(head: &[u8]) -> TextEncoding {
         Ok(_) => TextEncoding::Utf8,
         Err(err) if err.error_len().is_none() => TextEncoding::Utf8,
         Err(_) => TextEncoding::Windows1252,
+    }
+}
+
+/// Text of a file: UTF-8, or Windows-1252 when the bytes are not valid UTF-8.
+pub fn decode_text(bytes: Vec<u8>) -> String {
+    match String::from_utf8(bytes) {
+        Ok(text) => text,
+        Err(err) => err.as_bytes().iter().map(|&b| windows_1252(b)).collect(),
+    }
+}
+
+fn windows_1252(byte: u8) -> char {
+    const HIGH: [char; 32] = [
+        '€', '\u{81}', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u{8d}', 'Ž',
+        '\u{8f}', '\u{90}', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u{9d}',
+        'ž', 'Ÿ',
+    ];
+    match byte {
+        0x80..=0x9f => HIGH[usize::from(byte - 0x80)],
+        _ => char::from(byte),
     }
 }
 

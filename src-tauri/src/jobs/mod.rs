@@ -7,10 +7,12 @@ pub mod queue;
 use serde::Deserialize;
 use ts_rs::TS;
 
+use crate::ops::archive::{ArchiveCreateParams, ArchiveExtractParams};
 use crate::ops::audio::{
     AudioConvertParams, AudioMonoParams, AudioNormalizeParams, AudioTrimParams,
 };
 use crate::ops::document::{DocumentConvertParams, PdfToDocumentParams};
+use crate::ops::ebook::EbookConvertParams;
 use crate::ops::image::{
     ImageCompressParams, ImageConvertParams, ImageCropParams, ImageFlipParams, ImageMergeParams,
     ImageResizeParams, ImageRotateParams, ImageStripMetadataParams,
@@ -22,6 +24,7 @@ use crate::ops::pdf::{
 };
 use crate::ops::presentation::{PresentationConvertParams, PresentationToImagesParams};
 use crate::ops::spreadsheet::{CsvToJsonParams, JsonToCsvParams, SpreadsheetConvertParams};
+use crate::ops::subtitle::{SubtitleConvertParams, SubtitleShiftParams, VideoEmbedSubtitleParams};
 use crate::ops::video::{
     VideoAudioTrackParams, VideoCompressParams, VideoConvertParams, VideoExtractAudioParams,
     VideoMergeParams, VideoResizeParams, VideoToGifParams, VideoTrimParams,
@@ -78,4 +81,10 @@ pub enum JobRequest {
     JsonToCsv(JsonToCsvParams),
     PresentationConvert(PresentationConvertParams),
     PresentationToImages(PresentationToImagesParams),
+    SubtitleConvert(SubtitleConvertParams),
+    SubtitleShift(SubtitleShiftParams),
+    VideoEmbedSubtitle(VideoEmbedSubtitleParams),
+    EbookConvert(EbookConvertParams),
+    ArchiveCreate(ArchiveCreateParams),
+    ArchiveExtract(ArchiveExtractParams),
 }

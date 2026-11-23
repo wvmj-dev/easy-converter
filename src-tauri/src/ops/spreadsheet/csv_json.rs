@@ -21,6 +21,7 @@ use serde::Deserialize;
 use serde_json::Value;
 
 use crate::error::{AppError, AppResult};
+pub use crate::ops::office::decode_text as decode;
 
 /// Largest CSV or JSON file accepted. Both are read into memory.
 pub const MAX_INPUT_BYTES: u64 = 100 * 1024 * 1024;
@@ -63,26 +64,6 @@ fn read_limited(path: &Path) -> AppResult<Vec<u8>> {
         bytes.drain(..BOM.len());
     }
     Ok(bytes)
-}
-
-/// Text of a CSV file: UTF-8, or Windows-1252 when the bytes are not valid UTF-8.
-pub fn decode(bytes: Vec<u8>) -> String {
-    match String::from_utf8(bytes) {
-        Ok(text) => text,
-        Err(err) => err.as_bytes().iter().map(|&b| windows_1252(b)).collect(),
-    }
-}
-
-fn windows_1252(byte: u8) -> char {
-    const HIGH: [char; 32] = [
-        '€', '\u{81}', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u{8d}', 'Ž',
-        '\u{8f}', '\u{90}', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u{9d}',
-        'ž', 'Ÿ',
-    ];
-    match byte {
-        0x80..=0x9f => HIGH[usize::from(byte - 0x80)],
-        _ => char::from(byte),
-    }
 }
 
 /// The delimiter used by a CSV text: among `, ; tab |`, the one found the same number of

@@ -1,5 +1,6 @@
 //! External tools: definitions, resolution and process execution.
 
+pub mod calibre;
 pub mod capabilities;
 pub mod ffmpeg;
 pub mod libreoffice;
@@ -7,6 +8,7 @@ pub mod pandoc;
 pub mod process;
 pub mod qpdf;
 pub mod resolver;
+pub mod sevenzip;
 
 use std::path::PathBuf;
 

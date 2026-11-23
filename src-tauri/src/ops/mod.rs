@@ -1,14 +1,17 @@
 //! Operations. Each `JobRequest` variant is turned into a [`JobSpec`] here, with its
 //! parameters validated, and implemented in `ops/<category>.rs`.
 
+pub mod archive;
 pub mod audio;
 pub mod document;
+pub mod ebook;
 pub mod image;
 pub mod media;
 pub mod office;
 pub mod pdf;
 pub mod presentation;
 pub mod spreadsheet;
+pub mod subtitle;
 pub mod video;
 
 use std::future::Future;
@@ -75,6 +78,12 @@ pub fn build_job(request: JobRequest, ctx: &OpsContext) -> AppResult<JobSpec> {
         JobRequest::PresentationToImages(params) => {
             presentation::to_images(params, &planner, tools)
         }
+        JobRequest::SubtitleConvert(params) => subtitle::convert(params, &planner),
+        JobRequest::SubtitleShift(params) => subtitle::shift(params, &planner),
+        JobRequest::VideoEmbedSubtitle(params) => subtitle::embed(params, &planner, tools),
+        JobRequest::EbookConvert(params) => ebook::convert(params, &planner, tools),
+        JobRequest::ArchiveCreate(params) => archive::create(params, &planner),
+        JobRequest::ArchiveExtract(params) => archive::extract(params, &planner, tools),
     }
 }
 
@@ -110,15 +119,6 @@ impl OutputPlanner {
         planner.destination(input, ext)
     }
 
-    /// Destination for the result of `input` with the extension `ext`.
-    /// `input` must already be validated (absolute and canonical).
-    pub fn destination(&self, input: &Path, ext: &str) -> AppResult<PathBuf> {
-        fs_utils::validate_extension(ext)?;
-        let folder = match &self.folder {
-            Some(folder) => folder.clone(),
-            None => input
-                .parent()
-                .map(Path::to_path_buf)
     /// Destination for a folder made from `input`, named `<stem>-<suffix>`. `stem` comes
     /// from the input's name (without its extensions) and is checked again here.
     pub fn destination_folder(&self, input: &Path, stem: &str) -> AppResult<PathBuf> {
@@ -143,6 +143,15 @@ impl OutputPlanner {
         Ok(folder.join(format!("{stem}-{}", self.suffix)))
     }
 
+    /// Destination for the result of `input` with the extension `ext`.
+    /// `input` must already be validated (absolute and canonical).
+    pub fn destination(&self, input: &Path, ext: &str) -> AppResult<PathBuf> {
+        fs_utils::validate_extension(ext)?;
+        let folder = match &self.folder {
+            Some(folder) => folder.clone(),
+            None => input
+                .parent()
+                .map(Path::to_path_buf)
                 .ok_or_else(|| AppError::InvalidPath(input.display().to_string()))?,
         };
         Ok(folder.join(fs_utils::output_file_name(input, &self.suffix, ext)))
@@ -228,15 +237,6 @@ mod tests {
     }
 
     #[test]
-    fn rejects_missing_output_folder_and_bad_suffix() {
-        let settings = Settings {
-            output: OutputLocation::Folder {
-                path: PathBuf::from("/definitely/not/here"),
-            },
-            ..Settings::default()
-        };
-        assert!(OutputPlanner::from_settings(&settings).is_err());
-    #[test]
     fn folder_destinations() {
         let dir = std::env::temp_dir().canonicalize().unwrap();
         let planner = OutputPlanner::from_settings(&Settings::default()).unwrap();
@@ -250,6 +250,15 @@ mod tests {
         }
     }
 
+    #[test]
+    fn rejects_missing_output_folder_and_bad_suffix() {
+        let settings = Settings {
+            output: OutputLocation::Folder {
+                path: PathBuf::from("/definitely/not/here"),
+            },
+            ..Settings::default()
+        };
+        assert!(OutputPlanner::from_settings(&settings).is_err());
 
         let settings = Settings {
             output_suffix: "../escape".into(),
