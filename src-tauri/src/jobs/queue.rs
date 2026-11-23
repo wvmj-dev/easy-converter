@@ -18,7 +18,7 @@ const PROGRESS_INTERVAL: Duration = Duration::from_millis(150);
 /// Progress changes smaller than this (in percentage points) are throttled.
 const PROGRESS_STEP: f32 = 0.5;
 
-/// A file produced in the job's temporary folder and where it should end up.
+/// A file (or folder) produced in the job's temporary folder and where it should end up.
 /// The final name is numbered if `destination` already exists.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PlannedOutput {
@@ -446,8 +446,15 @@ async fn execute(
 fn finalize_outputs(planned: Vec<PlannedOutput>) -> AppResult<Vec<PathBuf>> {
     let mut finals = Vec::with_capacity(planned.len());
     for output in planned {
-        let reserved = fs_utils::reserve_unique_path(&output.destination)?;
-        fs_utils::move_into_reserved(&output.temp, &reserved)?;
+        let reserved = if output.temp.is_dir() {
+            let reserved = fs_utils::reserve_unique_dir(&output.destination)?;
+            fs_utils::move_dir_into_reserved(&output.temp, &reserved)?;
+            reserved
+        } else {
+            let reserved = fs_utils::reserve_unique_path(&output.destination)?;
+            fs_utils::move_into_reserved(&output.temp, &reserved)?;
+            reserved
+        };
         finals.push(reserved);
     }
     Ok(finals)

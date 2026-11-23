@@ -119,6 +119,30 @@ impl OutputPlanner {
             None => input
                 .parent()
                 .map(Path::to_path_buf)
+    /// Destination for a folder made from `input`, named `<stem>-<suffix>`. `stem` comes
+    /// from the input's name (without its extensions) and is checked again here.
+    pub fn destination_folder(&self, input: &Path, stem: &str) -> AppResult<PathBuf> {
+        let invalid = stem.trim().is_empty()
+            || stem == "."
+            || stem == ".."
+            || stem
+                .chars()
+                .any(|c| c.is_control() || c == '/' || c == '\\');
+        if invalid {
+            return Err(AppError::InvalidParameter(format!(
+                "invalid folder name: {stem:?}"
+            )));
+        }
+        let folder = match &self.folder {
+            Some(folder) => folder.clone(),
+            None => input
+                .parent()
+                .map(Path::to_path_buf)
+                .ok_or_else(|| AppError::InvalidPath(input.display().to_string()))?,
+        };
+        Ok(folder.join(format!("{stem}-{}", self.suffix)))
+    }
+
                 .ok_or_else(|| AppError::InvalidPath(input.display().to_string()))?,
         };
         Ok(folder.join(fs_utils::output_file_name(input, &self.suffix, ext)))
@@ -212,6 +236,20 @@ mod tests {
             ..Settings::default()
         };
         assert!(OutputPlanner::from_settings(&settings).is_err());
+    #[test]
+    fn folder_destinations() {
+        let dir = std::env::temp_dir().canonicalize().unwrap();
+        let planner = OutputPlanner::from_settings(&Settings::default()).unwrap();
+        let input = dir.join("fotos.tar.gz");
+        assert_eq!(
+            planner.destination_folder(&input, "fotos").unwrap(),
+            dir.join("fotos-convertido")
+        );
+        for bad in ["", "..", "a/b", "a\\b"] {
+            assert!(planner.destination_folder(&input, bad).is_err(), "{bad}");
+        }
+    }
+
 
         let settings = Settings {
             output_suffix: "../escape".into(),

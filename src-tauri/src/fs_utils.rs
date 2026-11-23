@@ -287,6 +287,62 @@ pub fn move_into_reserved(temp: &Path, reserved: &Path) -> AppResult<()> {
     }
 }
 
+/// Like [`reserve_unique_path`], for a folder: creates an empty folder at `desired`, or at
+/// `desired (2)`, `desired (3)`... when the name is taken. Folder names get the number at
+/// the end, since a dot in them does not start an extension.
+pub fn reserve_unique_dir(desired: &Path) -> AppResult<PathBuf> {
+    let name = desired
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .ok_or_else(|| AppError::InvalidPath(desired.display().to_string()))?;
+    for n in 1..=10_000u32 {
+        let candidate = if n == 1 {
+            desired.to_path_buf()
+        } else {
+            desired.with_file_name(format!("{name} ({n})"))
+        };
+        match fs::create_dir(&candidate) {
+            Ok(()) => return Ok(candidate),
+            Err(err) if err.kind() == ErrorKind::AlreadyExists => continue,
+            Err(err) => return Err(err.into()),
+        }
+    }
+    Err(AppError::Internal(format!(
+        "could not find a free folder name for {}",
+        desired.display()
+    )))
+}
+
+/// Moves the contents of a finished folder into a folder reserved by
+/// [`reserve_unique_dir`], copying what cannot be renamed (another file system). On
+/// failure, the reservation and whatever was moved into it are removed.
+pub fn move_dir_into_reserved(temp: &Path, reserved: &Path) -> AppResult<()> {
+    let result = move_children(temp, reserved);
+    if result.is_err() {
+        let _ = fs::remove_dir_all(reserved);
+    }
+    result
+}
+
+fn move_children(from: &Path, to: &Path) -> AppResult<()> {
+    for entry in fs::read_dir(from)? {
+        let entry = entry?;
+        let target = to.join(entry.file_name());
+        if fs::rename(entry.path(), &target).is_ok() {
+            continue;
+        }
+        let kind = entry.file_type()?;
+        if kind.is_dir() {
+            fs::create_dir(&target)?;
+            move_children(&entry.path(), &target)?;
+        } else if kind.is_file() {
+            fs::copy(entry.path(), &target)?;
+        }
+        // Anything else (links, devices) is never produced by the app and is left behind.
+    }
+    Ok(())
+}
+
 /// Temporary workspace for the current app session.
 ///
 /// Layout: `<system temp>/<app identifier>/session-<pid>/job-<id>/`.
@@ -563,6 +619,25 @@ mod tests {
 
         assert!(!stale.exists());
         assert!(unrelated.exists());
+        fs::remove_dir_all(base).unwrap();
+    }
+
+    #[test]
+    fn folders_are_reserved_and_moved_without_overwriting() {
+        let base = std::env::temp_dir().join(format!("ec-dir-move-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&base);
+        let temp = base.join("temp");
+        fs::create_dir_all(temp.join("sub")).unwrap();
+        fs::write(temp.join("a.txt"), "a").unwrap();
+        fs::write(temp.join("sub/b.txt"), "b").unwrap();
+
+        let desired = base.join("pack.v2-convertido");
+        fs::create_dir(&desired).unwrap();
+        let reserved = reserve_unique_dir(&desired).unwrap();
+        assert_eq!(reserved, base.join("pack.v2-convertido (2)"));
+        move_dir_into_reserved(&temp, &reserved).unwrap();
+        assert_eq!(fs::read_to_string(reserved.join("sub/b.txt")).unwrap(), "b");
+        assert_eq!(fs::read_dir(&desired).unwrap().count(), 0);
         fs::remove_dir_all(base).unwrap();
     }
 }
