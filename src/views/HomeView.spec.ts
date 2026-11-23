@@ -64,7 +64,7 @@ describe('HomeView', () => {
     expect(link.text()).toBe('Editar 1 imagem')
   })
 
-  it('tells which categories have no operations yet', async () => {
+  it('links every category to its screen', async () => {
     invoke.mockResolvedValue({
       path: '/home/u/book.epub',
       name: 'book.epub',
@@ -79,8 +79,9 @@ describe('HomeView', () => {
     dropHandler?.({ payload: { type: 'drop', paths: ['/home/u/book.epub'] } })
     await flushPromises()
 
-    expect(wrapper.text()).toContain('Ebook')
-    expect(wrapper.findComponent(RouterLinkStub).exists()).toBe(false)
+    const link = wrapper.findComponent(RouterLinkStub)
+    expect(link.props('to')).toBe('/ebook')
+    expect(link.text()).toContain('1 ebook')
   })
 
   it('shows translated errors for files the backend rejects', async () => {

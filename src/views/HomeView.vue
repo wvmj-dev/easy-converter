@@ -9,8 +9,8 @@ import type { JobCategory } from '../types/JobCategory'
 import { errorMessage } from '../utils/errors'
 import { baseName } from '../utils/format'
 
-/** Categories that already have a screen with operations. */
-const SCREENS: Partial<Record<JobCategory, string>> = {
+/** The screen of each category. */
+const SCREENS: Record<JobCategory, string> = {
   image: '/image',
   pdf: '/pdf',
   video: '/video',
@@ -18,6 +18,9 @@ const SCREENS: Partial<Record<JobCategory, string>> = {
   document: '/document',
   spreadsheet: '/spreadsheet',
   presentation: '/presentation',
+  subtitle: '/subtitle',
+  ebook: '/ebook',
+  archive: '/archive',
 }
 
 const { t } = useI18n()
@@ -25,12 +28,7 @@ const store = useFilesStore()
 const errors = ref<string[]>([])
 
 const ready = computed(() =>
-  [...store.categories]
-    .filter(([category]) => SCREENS[category])
-    .map(([category, count]) => ({ category, count, to: SCREENS[category] ?? '/' })),
-)
-const pending = computed(() =>
-  [...store.categories.keys()].filter((category) => !SCREENS[category]),
+  [...store.categories].map(([category, count]) => ({ category, count, to: SCREENS[category] })),
 )
 
 async function addPaths(paths: string[]) {
@@ -90,12 +88,6 @@ async function addPaths(paths: string[]) {
           {{ t(`home.open.${item.category}`, item.count) }}
         </RouterLink>
       </section>
-      <p
-        v-if="pending.length > 0"
-        class="page__subtitle"
-      >
-        {{ t('home.noOperations', { categories: pending.map((c) => t(`categories.${c}`)).join(', ') }) }}
-      </p>
     </template>
   </div>
 </template>

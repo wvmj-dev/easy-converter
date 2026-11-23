@@ -14,7 +14,10 @@
     "audio": "Áudio",
     "document": "Documentos",
     "spreadsheet": "Planilhas",
-    "presentation": "Apresentações"
+    "presentation": "Apresentações",
+    "subtitle": "Legendas",
+    "ebook": "Ebooks",
+    "archive": "Compactados"
   },
   "common": {
     "loading": "Carregando…",
@@ -23,7 +26,6 @@
   "home": {
     "title": "Converta e edite arquivos sem sair do seu computador",
     "subtitle": "Nenhum arquivo é enviado para a internet.",
-    "noOperations": "Ainda não há operações para: {categories}. Elas chegam nas próximas versões.",
     "next": "Próximo passo",
     "open": {
       "image": "Editar {n} imagem | Editar {n} imagens",
@@ -32,7 +34,10 @@
       "audio": "Editar {n} áudio | Editar {n} áudios",
       "document": "Editar {n} documento | Editar {n} documentos",
       "spreadsheet": "Editar {n} planilha | Editar {n} planilhas",
-      "presentation": "Editar {n} apresentação | Editar {n} apresentações"
+      "presentation": "Editar {n} apresentação | Editar {n} apresentações",
+      "subtitle": "Editar {n} legenda | Editar {n} legendas",
+      "ebook": "Editar {n} ebook | Editar {n} ebooks",
+      "archive": "Abrir {n} compactado | Abrir {n} compactados"
     }
   },
   "dropZone": {
@@ -119,7 +124,13 @@
       "audioConvert": "Converter áudio",
       "audioTrim": "Cortar áudio",
       "audioNormalize": "Normalizar volume",
-      "audioMono16k": "Mono 16 kHz"
+      "audioMono16k": "Mono 16 kHz",
+      "subtitleConvert": "Converter legenda",
+      "subtitleShift": "Deslocar legenda",
+      "videoEmbedSubtitle": "Adicionar legenda",
+      "ebookConvert": "Converter ebook",
+      "archiveCreate": "Compactar",
+      "archiveExtract": "Extrair"
     }
   },
   "tools": {
@@ -621,6 +632,10 @@
       "audioTrack": {
         "label": "Trilha de áudio",
         "description": "Remove ou troca o som."
+      },
+      "embedSubtitle": {
+        "label": "Adicionar legenda",
+        "description": "Legenda como faixa que pode ser ligada e desligada."
       }
     },
     "unavailable": {
@@ -684,6 +699,24 @@
       "none": "Nenhum arquivo escolhido.",
       "replaceHelp": "O vídeo mantém a duração: um áudio mais longo é cortado.",
       "chooseAudio": "Escolha o novo arquivo de áudio."
+    },
+    "embedSubtitle": {
+      "choose": "Escolher legenda…",
+      "none": "Nenhuma legenda escolhida.",
+      "filter": "Legendas",
+      "chooseSubtitle": "Escolha o arquivo de legenda.",
+      "language": "Idioma da legenda",
+      "languages": {
+        "none": "Não informar",
+        "por": "Português",
+        "eng": "Inglês",
+        "spa": "Espanhol",
+        "fra": "Francês",
+        "deu": "Alemão",
+        "ita": "Italiano",
+        "jpn": "Japonês"
+      },
+      "help": "Vídeo e áudio são copiados sem recodificar. MP4 e MOV guardam a legenda como texto simples (sem estilos); MKV mantém SRT, VTT e ASS como estão; AVI e formatos antigos viram MKV."
     }
   },
   "audio": {
@@ -867,6 +900,124 @@
     },
     "toImages": {
       "dpiHelp": "150 dpi dá cerca de 2000 pixels de largura num slide 16:9; 96 dpi basta para a tela."
+    }
+  },
+  "subtitle": {
+    "title": "Legendas",
+    "subtitle": "Converter entre SRT, VTT e ASS e acertar o tempo. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é legenda e fica fora desta tela. | {n} arquivos da lista não são legendas e ficam fora desta tela.",
+    "noNewFiles": "Nenhuma legenda nova foi adicionada: os arquivos já estão na lista ou não são legendas.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "convert": {
+        "label": "Converter",
+        "description": "SRT, VTT ou ASS."
+      },
+      "shift": {
+        "label": "Deslocar tempos",
+        "description": "Adiantar ou atrasar todas as falas."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione legendas primeiro."
+    },
+    "convert": {
+      "same": "{name} já está em {format}. Remova-o da lista ou escolha outro formato."
+    },
+    "format": {
+      "legend": "Converter para",
+      "names": {
+        "srt": "SRT",
+        "vtt": "WebVTT (VTT)",
+        "ass": "ASS (Advanced SubStation)"
+      },
+      "hints": {
+        "srt": "O formato mais aceito. Estilos do ASS viram texto simples; itálico, negrito e sublinhado são mantidos.",
+        "vtt": "Para vídeos na web. Itálico, negrito e sublinhado são mantidos.",
+        "ass": "As falas ficam num estilo padrão, que pode ser ajustado depois em editores como o Aegisub."
+      }
+    },
+    "shift": {
+      "offset": "Quanto deslocar",
+      "placeholder": "1,5 ou 0:02,5",
+      "help": "Segundos (1,5), m:ss (0:02,5) ou h:mm:ss. Falas que terminariam antes do início do vídeo são removidas.",
+      "direction": "Sentido",
+      "directions": {
+        "later": "Atrasar (a legenda aparece depois)",
+        "earlier": "Adiantar (a legenda aparece antes)"
+      },
+      "invalid": "Informe um tempo maior que zero e de até 24 horas."
+    }
+  },
+  "ebook": {
+    "title": "Ebooks",
+    "subtitle": "Converter entre EPUB, AZW3, MOBI e PDF com o Calibre. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é ebook e fica fora desta tela. | {n} arquivos da lista não são ebooks e ficam fora desta tela.",
+    "noNewFiles": "Nenhum ebook novo foi adicionado: os arquivos já estão na lista ou não são ebooks.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "convertTitle": "Converter",
+    "unavailable": {
+      "noFiles": "Adicione ebooks primeiro.",
+      "same": "{name} já está em {format}. Remova-o da lista ou escolha outro formato."
+    },
+    "format": {
+      "legend": "Converter para",
+      "names": {
+        "epub": "EPUB",
+        "azw3": "AZW3 (Kindle)",
+        "mobi": "MOBI (Kindle antigo)",
+        "pdf": "PDF"
+      },
+      "hints": {
+        "azw3": "O formato dos Kindles atuais. Para enviar a um Kindle pelo e-mail da Amazon, use EPUB.",
+        "mobi": "Só para Kindles muito antigos.",
+        "pdf": "Páginas de tamanho fixo; bom para imprimir, ruim para ler no celular.",
+        "epub": "Funciona na maioria dos leitores e no Kindle (pelo envio da Amazon)."
+      }
+    }
+  },
+  "archive": {
+    "title": "Compactados",
+    "subtitle": "Extrair e criar ZIP, 7z e TAR. RAR, xz e bzip2 precisam do 7-Zip. Tudo é processado no seu computador.",
+    "otherFiles": "{n} arquivo da lista não é compactado e fica fora desta tela. | {n} arquivos da lista não são compactados e ficam fora desta tela.",
+    "noNewFiles": "Nenhum arquivo novo foi adicionado: eles já estão na lista.",
+    "start": "Iniciar ({n} tarefa) | Iniciar ({n} tarefas)",
+    "started": "{n} tarefa adicionada à fila. Acompanhe no painel de tarefas. | {n} tarefas adicionadas à fila. Acompanhe no painel de tarefas.",
+    "startFailed": "Uma tarefa não pôde ser criada | {n} tarefas não puderam ser criadas",
+    "ops": {
+      "extract": {
+        "label": "Extrair",
+        "description": "Uma pasta por arquivo compactado.",
+        "help": "Cada arquivo vira uma pasta ao lado dele (ou na pasta de saída). Nada fora dessa pasta é escrito: caminhos que tentam sair dela e atalhos (links) são ignorados. Arquivos protegidos por senha ainda não podem ser extraídos."
+      },
+      "create": {
+        "label": "Compactar",
+        "description": "Todos os arquivos da lista num só."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Adicione arquivos primeiro.",
+      "tooMany": "No máximo {max} arquivos por vez.",
+      "notArchive": "{name} não é um arquivo compactado. Remova-o da lista para extrair."
+    },
+    "format": {
+      "legend": "Formato",
+      "names": {
+        "zip": "ZIP",
+        "sevenZ": "7z",
+        "tarGz": "TAR.GZ",
+        "tar": "TAR (sem compressão)"
+      },
+      "hints": {
+        "zip": "Abre em qualquer sistema sem instalar nada.",
+        "sevenZ": "Arquivos menores, mas a criação é mais lenta e o Windows antigo precisa do 7-Zip para abrir.",
+        "tarGz": "O comum no Linux.",
+        "tar": "Só junta os arquivos, sem comprimir."
+      }
     }
   }
 }

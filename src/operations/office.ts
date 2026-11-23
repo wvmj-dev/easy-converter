@@ -7,6 +7,8 @@ const TOOL_NAMES: Partial<Record<ToolId, string>> = {
   libreoffice: 'LibreOffice',
   pandoc: 'Pandoc',
   pdfium: 'PDFium',
+  calibre: 'Calibre',
+  sevenZip: '7-Zip',
 }
 
 /** The first of `tools` that is missing, as a problem to show. */

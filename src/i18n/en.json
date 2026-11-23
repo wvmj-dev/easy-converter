@@ -14,7 +14,10 @@
     "audio": "Audio",
     "document": "Documents",
     "spreadsheet": "Spreadsheets",
-    "presentation": "Presentations"
+    "presentation": "Presentations",
+    "subtitle": "Subtitles",
+    "ebook": "Ebooks",
+    "archive": "Archives"
   },
   "common": {
     "loading": "Loading…",
@@ -23,7 +26,6 @@
   "home": {
     "title": "Convert and edit files without leaving your computer",
     "subtitle": "No file is ever uploaded to the internet.",
-    "noOperations": "There are no operations yet for: {categories}. They come in upcoming versions.",
     "next": "Next step",
     "open": {
       "image": "Edit {n} image | Edit {n} images",
@@ -32,7 +34,10 @@
       "audio": "Edit {n} audio file | Edit {n} audio files",
       "document": "Edit {n} document | Edit {n} documents",
       "spreadsheet": "Edit {n} spreadsheet | Edit {n} spreadsheets",
-      "presentation": "Edit {n} presentation | Edit {n} presentations"
+      "presentation": "Edit {n} presentation | Edit {n} presentations",
+      "subtitle": "Edit {n} subtitle | Edit {n} subtitles",
+      "ebook": "Edit {n} ebook | Edit {n} ebooks",
+      "archive": "Open {n} archive | Open {n} archives"
     }
   },
   "dropZone": {
@@ -119,7 +124,13 @@
       "audioConvert": "Convert audio",
       "audioTrim": "Trim audio",
       "audioNormalize": "Normalize volume",
-      "audioMono16k": "Mono 16 kHz"
+      "audioMono16k": "Mono 16 kHz",
+      "subtitleConvert": "Convert subtitle",
+      "subtitleShift": "Shift subtitle",
+      "videoEmbedSubtitle": "Add subtitle",
+      "ebookConvert": "Convert ebook",
+      "archiveCreate": "Compress",
+      "archiveExtract": "Extract"
     }
   },
   "tools": {
@@ -621,6 +632,10 @@
       "audioTrack": {
         "label": "Audio track",
         "description": "Removes or replaces the sound."
+      },
+      "embedSubtitle": {
+        "label": "Add subtitle",
+        "description": "Subtitle as a track that can be turned on and off."
       }
     },
     "unavailable": {
@@ -684,6 +699,24 @@
       "none": "No file chosen.",
       "replaceHelp": "The video keeps its length: longer audio is cut.",
       "chooseAudio": "Choose the new audio file."
+    },
+    "embedSubtitle": {
+      "choose": "Choose subtitle…",
+      "none": "No subtitle chosen.",
+      "filter": "Subtitles",
+      "chooseSubtitle": "Choose the subtitle file.",
+      "language": "Subtitle language",
+      "languages": {
+        "none": "Do not set",
+        "por": "Portuguese",
+        "eng": "English",
+        "spa": "Spanish",
+        "fra": "French",
+        "deu": "German",
+        "ita": "Italian",
+        "jpn": "Japanese"
+      },
+      "help": "Video and audio are copied without re-encoding. MP4 and MOV keep the subtitle as plain text (no styles); MKV keeps SRT, VTT and ASS as they are; AVI and older formats become MKV."
     }
   },
   "audio": {
@@ -867,6 +900,124 @@
     },
     "toImages": {
       "dpiHelp": "150 dpi gives about 2000 pixels of width on a 16:9 slide; 96 dpi is enough for screens."
+    }
+  },
+  "subtitle": {
+    "title": "Subtitles",
+    "subtitle": "Convert between SRT, VTT and ASS and fix timing. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not a subtitle and is left out of this screen. | {n} files in the list are not subtitles and are left out of this screen.",
+    "noNewFiles": "No new subtitle was added: the files are already in the list or are not subtitles.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "convert": {
+        "label": "Convert",
+        "description": "SRT, VTT or ASS."
+      },
+      "shift": {
+        "label": "Shift times",
+        "description": "Make every line appear earlier or later."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add subtitles first."
+    },
+    "convert": {
+      "same": "{name} is already {format}. Remove it from the list or choose another format."
+    },
+    "format": {
+      "legend": "Convert to",
+      "names": {
+        "srt": "SRT",
+        "vtt": "WebVTT (VTT)",
+        "ass": "ASS (Advanced SubStation)"
+      },
+      "hints": {
+        "srt": "The most widely supported format. ASS styles become plain text; italic, bold and underline are kept.",
+        "vtt": "For videos on the web. Italic, bold and underline are kept.",
+        "ass": "Lines get a default style, which can be adjusted later in editors such as Aegisub."
+      }
+    },
+    "shift": {
+      "offset": "How much to shift",
+      "placeholder": "1.5 or 0:02.5",
+      "help": "Seconds (1.5), m:ss (0:02.5) or h:mm:ss. Lines that would end before the video starts are removed.",
+      "direction": "Direction",
+      "directions": {
+        "later": "Later (the subtitle shows up after)",
+        "earlier": "Earlier (the subtitle shows up before)"
+      },
+      "invalid": "Enter a time greater than zero and up to 24 hours."
+    }
+  },
+  "ebook": {
+    "title": "Ebooks",
+    "subtitle": "Convert between EPUB, AZW3, MOBI and PDF with Calibre. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not an ebook and is left out of this screen. | {n} files in the list are not ebooks and are left out of this screen.",
+    "noNewFiles": "No new ebook was added: the files are already in the list or are not ebooks.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "convertTitle": "Convert",
+    "unavailable": {
+      "noFiles": "Add ebooks first.",
+      "same": "{name} is already {format}. Remove it from the list or choose another format."
+    },
+    "format": {
+      "legend": "Convert to",
+      "names": {
+        "epub": "EPUB",
+        "azw3": "AZW3 (Kindle)",
+        "mobi": "MOBI (old Kindle)",
+        "pdf": "PDF"
+      },
+      "hints": {
+        "azw3": "The format of current Kindles. To send to a Kindle through Amazon's e-mail, use EPUB.",
+        "mobi": "Only for very old Kindles.",
+        "pdf": "Fixed-size pages; good for printing, poor for reading on a phone.",
+        "epub": "Works on most readers and on Kindle (through Amazon's send service)."
+      }
+    }
+  },
+  "archive": {
+    "title": "Archives",
+    "subtitle": "Extract and create ZIP, 7z and TAR. RAR, xz and bzip2 need 7-Zip. Everything is processed on your computer.",
+    "otherFiles": "{n} file in the list is not an archive and is left out of this screen. | {n} files in the list are not archives and are left out of this screen.",
+    "noNewFiles": "No new file was added: they are already in the list.",
+    "start": "Start ({n} job) | Start ({n} jobs)",
+    "started": "{n} job added to the queue. Follow it in the jobs panel. | {n} jobs added to the queue. Follow them in the jobs panel.",
+    "startFailed": "One job could not be created | {n} jobs could not be created",
+    "ops": {
+      "extract": {
+        "label": "Extract",
+        "description": "One folder per archive.",
+        "help": "Each archive becomes a folder next to it (or in the output folder). Nothing is written outside that folder: paths that try to leave it and shortcuts (links) are ignored. Password-protected archives cannot be extracted yet."
+      },
+      "create": {
+        "label": "Compress",
+        "description": "Every file in the list into one."
+      }
+    },
+    "unavailable": {
+      "noFiles": "Add files first.",
+      "tooMany": "At most {max} files at a time.",
+      "notArchive": "{name} is not an archive. Remove it from the list to extract."
+    },
+    "format": {
+      "legend": "Format",
+      "names": {
+        "zip": "ZIP",
+        "sevenZ": "7z",
+        "tarGz": "TAR.GZ",
+        "tar": "TAR (no compression)"
+      },
+      "hints": {
+        "zip": "Opens on any system without installing anything.",
+        "sevenZ": "Smaller files, but slower to create, and older Windows needs 7-Zip to open it.",
+        "tarGz": "The usual choice on Linux.",
+        "tar": "Only bundles the files, without compressing."
+      }
     }
   }
 }

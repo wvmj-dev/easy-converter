@@ -6,6 +6,7 @@ import FileList from '../components/FileList.vue'
 import OperationPicker, { type OperationChoice } from '../components/OperationPicker.vue'
 import MediaQualityOptions from '../components/options/MediaQualityOptions.vue'
 import VideoAudioTrackOptions from '../components/options/VideoAudioTrackOptions.vue'
+import VideoEmbedSubtitleOptions from '../components/options/VideoEmbedSubtitleOptions.vue'
 import VideoConvertOptions from '../components/options/VideoConvertOptions.vue'
 import VideoExtractAudioOptions from '../components/options/VideoExtractAudioOptions.vue'
 import VideoResizeOptions from '../components/options/VideoResizeOptions.vue'
@@ -138,6 +139,10 @@ function start() {
         <VideoAudioTrackOptions
           v-else-if="operation === 'audioTrack'"
           v-model="options.audioTrack"
+        />
+        <VideoEmbedSubtitleOptions
+          v-else-if="operation === 'embedSubtitle'"
+          v-model="options.embedSubtitle"
         />
         <p
           v-else

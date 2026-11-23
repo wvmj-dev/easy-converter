@@ -73,6 +73,24 @@ onMounted(() => {
       </RouterLink>
       <RouterLink
         class="sidebar__link"
+        to="/subtitle"
+      >
+        {{ t('nav.subtitle') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
+        to="/ebook"
+      >
+        {{ t('nav.ebook') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
+        to="/archive"
+      >
+        {{ t('nav.archive') }}
+      </RouterLink>
+      <RouterLink
+        class="sidebar__link"
         to="/tools"
       >
         {{ t('nav.tools') }}

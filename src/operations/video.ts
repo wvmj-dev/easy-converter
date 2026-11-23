@@ -29,6 +29,7 @@ export const VIDEO_OPERATIONS = [
   'toGif',
   'merge',
   'audioTrack',
+  'embedSubtitle',
 ] as const
 export type VideoOperation = (typeof VIDEO_OPERATIONS)[number]
 
@@ -54,6 +55,7 @@ export interface VideoOptions {
   extractAudio: { format: 'original' | AudioFormat }
   toGif: RangeText & { fps: number; width: number }
   audioTrack: { mode: 'remove' | 'replace'; audio: string }
+  embedSubtitle: { subtitle: string; language: string }
 }
 
 export function defaultVideoOptions(): VideoOptions {
@@ -65,6 +67,7 @@ export function defaultVideoOptions(): VideoOptions {
     extractAudio: { format: 'original' },
     toGif: { start: '', end: '', fps: 10, width: 480 },
     audioTrack: { mode: 'remove', audio: '' },
+    embedSubtitle: { subtitle: '', language: '' },
   }
 }
 
@@ -140,6 +143,8 @@ export function validateOptions(
       return options.audioTrack.mode === 'replace' && options.audioTrack.audio === ''
         ? { key: 'video.audioTrack.chooseAudio' }
         : null
+    case 'embedSubtitle':
+      return options.embedSubtitle.subtitle === '' ? { key: 'video.embedSubtitle.chooseSubtitle' } : null
     case 'compress':
     case 'extractAudio':
     case 'merge':
@@ -194,6 +199,15 @@ export function buildVideoRequests(
       const o = options.audioTrack
       const action = o.mode === 'replace' ? { mode: 'replace' as const, audio: o.audio } : { mode: 'remove' as const }
       return each((input) => ({ type: 'videoAudioTrack', input, action }))
+    }
+    case 'embedSubtitle': {
+      const { subtitle, language } = options.embedSubtitle
+      return each((input) => ({
+        type: 'videoEmbedSubtitle',
+        input,
+        subtitle,
+        ...(language !== '' ? { language } : {}),
+      }))
     }
   }
 }
