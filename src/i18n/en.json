@@ -157,14 +157,14 @@
     "purpose": {
       "ffmpeg": "Video and audio",
       "ffprobe": "Video and audio information",
-      "qpdf": "PDF: merge, split, passwords and compression",
+      "qpdf": "PDF: join, split, rotate, passwords and compression",
       "tesseract": "OCR (text recognition)",
       "pdfium": "PDF: page rendering and text extraction",
-      "libreoffice": "Documents, spreadsheets and presentations",
-      "pandoc": "Markdown, HTML and TXT ↔ DOCX",
-      "calibre": "Ebooks (EPUB, MOBI, AZW3)",
+      "libreoffice": "Documents, spreadsheets, presentations and PDF → DOCX/ODT",
+      "pandoc": "Markdown and HTML ↔ DOCX, ODT, RTF and TXT",
+      "calibre": "Ebooks (EPUB, AZW3, MOBI and PDF)",
       "ghostscript": "Strong PDF compression",
-      "sevenZip": "Reading RAR files"
+      "sevenZip": "Extract RAR, xz and bzip2"
     },
     "install": {
       "title": "How to install",

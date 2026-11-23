@@ -75,8 +75,10 @@ Debian / Ubuntu:
 
 ```bash
 sudo apt install libreoffice-writer libreoffice-calc libreoffice-impress \
-  pandoc calibre ghostscript 7zip
+  pandoc calibre ghostscript p7zip-full
 ```
+
+No Debian 12+ e no Ubuntu 24.04+ também dá para usar o pacote `7zip`, mais novo, no lugar do `p7zip-full`.
 
 Fedora:
 
@@ -85,7 +87,7 @@ sudo dnf install libreoffice-writer libreoffice-calc libreoffice-impress \
   pandoc calibre ghostscript 7zip
 ```
 
-Suporte a RAR: no Debian, fica no pacote `7zip-rar` (repositório non-free); o pacote `7zip` oficial do Fedora não lê RAR.
+Suporte a RAR: no Debian e no Ubuntu, fica no pacote `p7zip-rar` (ou `7zip-rar`, para quem usa o `7zip`), do repositório non-free/multiverse; o pacote `7zip` oficial do Fedora não lê RAR.
 
 ## Desenvolvimento
 

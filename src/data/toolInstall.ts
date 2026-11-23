@@ -30,7 +30,9 @@ export const TOOL_INSTALL: Record<ToolId, ToolInstallInfo> = {
     fedora: 'sudo dnf install ghostscript',
     windowsSite: 'ghostscript.com',
   },
-  sevenZip: { debian: 'sudo apt install 7zip', fedora: 'sudo dnf install 7zip', windowsSite: '7-zip.org' },
+  // `7zip` only exists from Debian 12 and Ubuntu 24.04; `p7zip-full` works on every
+  // supported release. RAR needs the non-free `p7zip-rar` (or `7zip-rar`).
+  sevenZip: { debian: 'sudo apt install p7zip-full', fedora: 'sudo dnf install 7zip', windowsSite: '7-zip.org' },
 }
 
 export const FEDORA_FULL_FFMPEG = 'sudo dnf swap ffmpeg-free ffmpeg --allowerasing'
