@@ -67,9 +67,9 @@ Algumas funções dependem de programas que não vêm com o app. O app detecta s
 |---|---|
 | LibreOffice | Documentos, planilhas e apresentações (DOCX, XLSX, PPTX, ODT etc.) e PDF → DOCX/ODT |
 | Pandoc | Markdown e HTML ↔ DOCX, ODT, RTF e TXT (para PDF, junto com o LibreOffice) |
-| Calibre | Ebooks (EPUB, MOBI, AZW3) |
+| Calibre | Ebooks (EPUB, AZW3, MOBI e PDF) |
 | Ghostscript | Compressão forte de PDF |
-| 7-Zip | Leitura de arquivos RAR |
+| 7-Zip | Extrair RAR, xz e bzip2 (ZIP, 7z e TAR não precisam dele) |
 
 Debian / Ubuntu:
 
