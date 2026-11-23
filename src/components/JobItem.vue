@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { api } from '../services/api'
 import { isFinal } from '../stores/jobs'
 import type { Job } from '../types/Job'
-import { errorMessage } from '../utils/errors'
+import { errorMessage, errorParts } from '../utils/errors'
 import { baseName } from '../utils/format'
 
 const props = defineProps<{ job: Job }>()
@@ -17,6 +17,9 @@ const title = computed(() => {
   const name = first ? baseName(first) : props.job.kind
   return props.job.inputs.length > 1 ? `${name} +${props.job.inputs.length - 1}` : name
 })
+const failure = computed(() =>
+  props.job.status === 'failed' && props.job.error ? errorParts(t, props.job.error) : null,
+)
 const kindLabel = computed(() =>
   te(`jobs.kinds.${props.job.kind}`) ? t(`jobs.kinds.${props.job.kind}`) : props.job.kind,
 )
@@ -66,12 +69,17 @@ async function run(action: (path: string) => Promise<void>) {
       />
     </div>
 
-    <p
-      v-if="job.status === 'failed' && job.error"
-      class="job__error"
-    >
-      {{ errorMessage(t, job.error) }}
-    </p>
+    <template v-if="failure">
+      <p class="job__error">
+        {{ failure.message }}
+      </p>
+      <p
+        v-if="failure.detail"
+        class="job__detail"
+      >
+        {{ t('errors.detail', { detail: failure.detail }) }}
+      </p>
+    </template>
     <p
       v-if="actionError"
       class="job__error"
@@ -162,6 +170,13 @@ async function run(action: (path: string) => Promise<void>) {
   margin: 0;
   color: var(--color-danger);
   font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.job__detail {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
   overflow-wrap: anywhere;
 }
 

@@ -46,14 +46,20 @@ describe('SettingsView', () => {
     await flushPromises()
 
     await wrapper.find('#suffix').setValue('final')
-    invoke.mockRejectedValueOnce({ code: 'invalidParameter', message: 'invalid file name fragment' })
+    invoke.mockRejectedValueOnce({
+      code: 'invalidParameter',
+      message: 'invalid parameter: invalid file name fragment',
+      detail: 'invalid file name fragment',
+    })
     await wrapper.find('form').trigger('submit')
     await flushPromises()
 
     expect(invoke).toHaveBeenLastCalledWith('update_settings', {
       newSettings: expect.objectContaining({ outputSuffix: 'final' }),
     })
-    expect(wrapper.find('[role="alert"]').text()).toContain('Valor inválido.')
+    const alert = wrapper.find('[role="alert"]').text()
+    expect(alert).toContain('Uma das opções tem um valor inválido.')
+    expect(alert).toContain('(invalid file name fragment)')
   })
 
   it('asks for a folder before saving when "chosen folder" is selected', async () => {

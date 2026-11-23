@@ -67,7 +67,13 @@ pub enum ErrorCode {
 #[ts(export)]
 pub struct ErrorPayload {
     pub code: ErrorCode,
+    /// Full English message, for logs.
     pub message: String,
+    /// What went wrong, without the generic part the interface already translates: a
+    /// path, a tool name or the tool's own explanation.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[ts(optional)]
+    pub detail: Option<String>,
 }
 
 impl AppError {
@@ -91,10 +97,33 @@ impl AppError {
         }
     }
 
+    /// The specific part of the message, when there is one.
+    pub fn detail(&self) -> Option<String> {
+        let detail = match self {
+            AppError::InvalidPath(d)
+            | AppError::NotFound(d)
+            | AppError::InvalidParameter(d)
+            | AppError::InvalidFile(d)
+            | AppError::TooLarge(d)
+            | AppError::Password(d)
+            | AppError::ToolMissing(d)
+            | AppError::ProcessFailed(d)
+            | AppError::NotAllowed(d)
+            | AppError::Settings(d)
+            | AppError::Internal(d) => d.clone(),
+            AppError::Io(err) => err.to_string(),
+            AppError::JobNotFound(id) => id.to_string(),
+            AppError::Timeout | AppError::Cancelled => return None,
+        };
+        let detail = detail.trim();
+        (!detail.is_empty()).then(|| detail.to_owned())
+    }
+
     pub fn payload(&self) -> ErrorPayload {
         ErrorPayload {
             code: self.code(),
             message: self.to_string(),
+            detail: self.detail(),
         }
     }
 }
@@ -128,5 +157,10 @@ mod tests {
         let json = serde_json::to_value(AppError::InvalidParameter("quality".into())).unwrap();
         assert_eq!(json["code"], "invalidParameter");
         assert_eq!(json["message"], "invalid parameter: quality");
+        assert_eq!(json["detail"], "quality");
+
+        let json = serde_json::to_value(AppError::Timeout).unwrap();
+        assert_eq!(json["code"], "timeout");
+        assert!(json.get("detail").is_none());
     }
 }
