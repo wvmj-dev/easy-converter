@@ -615,3 +615,21 @@ Nenhuma no momento. Perguntar ao autor antes de assumir qualquer decisão nova d
 - **Polimento (M7)**: o `ErrorPayload` ganhou `detail` (só a parte específica: caminho, nome da ferramenta ou explicação dela); a interface mostra a mensagem traduzida do código e, numa linha menor, "Detalhe: …" (nada para tempo esgotado e cancelamento; ferramenta ausente vira "{ferramenta} não foi encontrado…"). Testes impedem regressões: toda chave de i18n escrita no código existe em pt-BR e en, toda operação do backend tem nome no painel de tarefas, e o `THIRD_PARTY_LICENSES.md` tem a versão exata de cada dependência direta (Rust e npm). No Debian/Ubuntu, o 7-Zip recomendado é o `p7zip-full` (o pacote `7zip` não existe no Ubuntu 22.04).
 - **Crates aprovadas no M6**: `zip` (só deflate/deflate64), `tar` (sem xattr), `flate2` e `sevenz-rust2` (só LZMA/LZMA2 e compressão). Usamos o `sevenz-rust2`, fork mantido do `sevenz-rust` (parado desde 2024).
 - **Crates aprovadas no M1**: `tokio` (processos filhos, timeout, sincronização), `thiserror` (`AppError`), `serde`, `serde_json`, `ts-rs` (tipos TypeScript).
+
+---
+
+## 15. Depois do 1.0
+
+### Ideias (não planejadas; consultar o autor antes de começar)
+
+- Senha para extrair compactados (hoje, arquivos com senha falham com erro de senha).
+- PDF → EPUB (Calibre).
+- Legenda gravada na imagem do vídeo (hoje só como faixa que pode ser ligada e desligada).
+- HEIC, AVIF e RAW nas imagens (exigem libheif ou libraw; ver Fase 1).
+
+### Verificações pendentes
+
+- Build e uso no Windows (instalador com sidecars; detecção de LibreOffice, Calibre e 7-Zip nas pastas de instalação padrão).
+- Teste manual de instalação e uso no Ubuntu LTS, Fedora atual e Windows 11 (seção 10).
+- `rpm -qpR <arquivo>.rpm` para conferir a dependência `(ffmpeg-free or ffmpeg)` (seção 8.2).
+- CI com as ferramentas opcionais do Ubuntu 22.04 (LibreOffice, Pandoc 2.9, Calibre 5, p7zip 16), mais antigas que as usadas no desenvolvimento.
