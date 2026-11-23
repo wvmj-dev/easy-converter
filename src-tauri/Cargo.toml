@@ -1,6 +1,6 @@
 [package]
 name = "easy-converter"
-version = "0.4.0"
+version = "0.5.0"
 description = "Convert and edit files locally, without uploading anything"
 authors = ["Wender"]
 license = "GPL-3.0-only"
